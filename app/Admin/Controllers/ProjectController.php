@@ -224,7 +224,7 @@ class ProjectController extends Controller
                 $form->textarea('issue_explain', '期限说明')->value($notation);
                 $form->number('weight', '权重');
                 $form->textarea('characteristic', '项目特点');
-                $form->file('contract_file_name', '合同文件');
+           //     $form->image('contract_file_name', '合同文件');
             })->tab('房屋信息', function (Form $form) {
                 $form->text('house_address', '房屋地址')->rules('required');
                 $form->select('house_status', '房屋状态')->options([1 => '优秀', 2 => '良好', 3 => '差']);
@@ -236,7 +236,7 @@ class ProjectController extends Controller
                 $form->text('house_property_certificate', '房产证号')->rules('required');
                 $form->text('house_id_card', '身份证号')->rules('required|numeric');
                 $form->text('house_residence', '户口本编号')->rules('required');
-                $form->multipleImage('house_contract_img_ids','图片')->rules('required')->removable();
+       //         $form->multipleImage('house_contract_img_ids','图片')->rules('required')->removable();
             })->tab('风险评估', function (Form $form) {
                 $form->text('risk_assessment', '风险评估');
                 $form->text('safeguard_measures', '保障措施');
