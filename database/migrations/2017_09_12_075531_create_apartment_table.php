@@ -33,7 +33,7 @@ class CreateApartmentTable extends Migration
             $table->tinyInteger('bathroom')->comment('卫生间数量');
             $table->tinyInteger('kitchen')->comment('厨房数量');
             $table->tinyInteger('balcony')->comment('阳台数量');
-            $table->tinyInteger('area')->comment('面积');
+            $table->unsignedTinyInteger('area')->comment('面积');
             $table->tinyInteger('decoration_style')->comment('装修风格');
             $table->tinyInteger('direction')->comment('朝向');
             $table->string('bathroom_utils')->comment('配套设施-卫浴');

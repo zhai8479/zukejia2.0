@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0",
+        "barryvdh/laravel-ide-helper": "^2.4",
         "barryvdh/laravel-cors": "^0.9.3",
         "dingo/api": "1.0.*@dev",
         "doctrine/dbal": "^2.5",
@@ -22,7 +23,6 @@
         "stevenyangecho/laravel-u-editor": "~1.4"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.4",
         "erusev/parsedown": "^1.6",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",

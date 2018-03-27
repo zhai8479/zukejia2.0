@@ -52,13 +52,10 @@ class SignUpsController extends BaseController
      *     @Parameter("mobile", description="手机号", required=true),
      *     @Parameter("address", description="地址", required=true),
      *     @Parameter("signUpTitle", description="报名标题", required=true),
-     *     @Parameter("type", description="报名来源, app|pc|web|wap", required=true)
-     *     @Parameter("area",, description="房屋面积", required=false)
-     *
+     *     @Parameter("type", description="报名来源 app|pc|web|wap", required=true),
+     *     @Parameter("area", description="房屋面积", required=false)
      * })
-     *
      * @param HttpRequest $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function store(HttpRequest $request)

@@ -10,6 +10,12 @@ use App\Repositories\UserIntegralRepository;
 use App\Repositories\UserIntegralRepositoryEloquent;
 use App\Repositories\UserVoucherRepository;
 use App\Repositories\UserVoucherRepositoryEloquent;
+use App\Repositories\ProjectRepository;
+use App\Repositories\ProjectRepositoryEloquent;
+use App\Repositories\ProjectInvestmentRepository;
+use App\Repositories\ProjectInvestmentRepositoryEloquent;
+use App\Repositories\ProjectRepaymentRepository;
+use App\Repositories\ProjectRepaymentRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -43,5 +49,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserIntegralLogRepository::class, UserIntegralLogRepositoryEloquent::class);
         $this->app->bind(SignUpRepository::class, SignUpRepositoryEloquent::class);
         $this->app->bind(UserVoucherRepository::class, UserVoucherRepositoryEloquent::class);
+        $this->app->bind(ProjectRepository::class, ProjectRepositoryEloquent::class);
+        $this->app->bind(ProjectInvestmentRepository::class, ProjectInvestmentRepositoryEloquent::class);
+        $this->app->bind(ProjectRepaymentRepository::class, ProjectRepaymentRepositoryEloquent::class);
     }
 }

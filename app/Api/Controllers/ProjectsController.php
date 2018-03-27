@@ -9,6 +9,7 @@ use App\Models\ProjectInvestment;
 use App\Models\ProjectRepayment;
 use App\Models\Upload;
 use App\Models\User;
+use App\Models\Apartment;
 use App\Repositories\ProjectInvestmentRepository;
 use App\Repositories\ProjectInvestmentRepositoryEloquent;
 use App\Repositories\ProjectRepositoryEloquent;
@@ -20,7 +21,7 @@ use Dingo\Blueprint\Annotation\Parameter;
 use Dingo\Blueprint\Annotation\Parameters;
 use Dingo\Blueprint\Annotation\Resource;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rule;use Monolog\Handler\SyslogUdp\UdpSocket;
 
 
 /**
@@ -262,17 +263,9 @@ class ProjectsController extends BaseController
         $this->validate($request, [
             'apartment_id' => 'required|integer'
         ]);
-        $url = config('app.bzg_url') . "/api/users/show_apartment";
-        $repository = \Requests::post($url, [], [
-            'apartment_id' => $request->input('apartment_id')
-        ]);
-        $body = $repository->body;
-        $json_body = json_decode($body);
-        if ($json_body->code === 0) {
-            return $this->array_response($json_body->data);
-        } else {
-            return $this->no_content();
-        }
+        $id = $request->apartment_id;
+        $apartment =Apartment::find($id);
+        return $this->array_response($apartment);
     }
 
     /**
@@ -298,6 +291,5 @@ class ProjectsController extends BaseController
             'total_reg_num' => $total_reg_num,
             'total_profit' => $total_profit
         ]);
-
     }
 }

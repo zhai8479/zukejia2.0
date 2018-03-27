@@ -561,7 +561,6 @@ class ProjectInvestmentsController extends BaseController
      * 投资排名
      * - sum_money 总投资金额
      * - user_name 用户名
-     *
      * @Get("investment_rank")
      * @Parameters({
      *      @Parameter("length", description="返回数据条数")
@@ -583,5 +582,4 @@ class ProjectInvestmentsController extends BaseController
             ->get();
         return $this->array_response($rank);
     }
-
 }

@@ -229,6 +229,7 @@ class ProjectController extends Controller
                 $form->text('house_address', '房屋地址')->rules('required');
                 $form->select('house_status', '房屋状态')->options([1 => '优秀', 2 => '良好', 3 => '差']);
                 $form->number('house_area', '面积（m²）');
+                $form->number('house_id','房屋编号');
                 $form->textarea('house_competitive_power', '房屋核心竞争力');
                 $form->select('house_management_status', '房屋状态')->options([1 => '筹备中', 2 => '装修中', 3 => '运营中', 4 => '暂停运营', 5 => '下架'])->rules('required');
             })->tab('房主信息', function (Form $form) {

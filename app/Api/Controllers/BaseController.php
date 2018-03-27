@@ -14,6 +14,13 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\ResponseTrait;
 use Illuminate\Routing\Controller;
 
+
+
+
+/**
+ * Class BaseController
+ * @package App\Api\Controllers
+ */
 class BaseController extends Controller
 {
     use Helpers, ValidatesRequests;
@@ -113,4 +120,15 @@ class BaseController extends Controller
         return $this->error_response('验证码错误', 102);
     }
 
+    /**
+     * 生成一个订单号
+     */
+    protected function generate_order_no()
+    {
+        if (function_exists('dk_get_next_id')) {
+            return dk_get_next_id();
+        } else {
+            return date('Ymd') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
+        }
+    }
 }

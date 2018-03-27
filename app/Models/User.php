@@ -64,11 +64,6 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     // 注册平台
-    const FROM_PLATFORM_PC = 1;
-    const FROM_PLATFORM_APP = 2;
-    const FROM_PLATFORM_WAP = 3;
-    const FROM_ADMIN_ADD = 4;       // 管理员添加
-
     public static $from_platform = [
         1 => 'pc',
         2 => 'app',
@@ -76,16 +71,23 @@ class User extends Authenticatable implements JWTSubject
         4 => 'admin_add'
     ];
 
-    // 性别
-    const SEX_UNKNOWN = 0;
-    const SEX_MALE = 1;
-    const SEX_WOMAN = 2;
+    const FROM_PLATFORM_PC = 1;
+    const FROM_PLATFORM_APP = 2;
+    const FROM_PLATFORM_WAP = 3;
+    const FROM_ADMIN_ADD = 4;       // 管理员添加
 
+
+    // 性别
     public static $sexes = [
         0 => '未知',
         1 => '男',
         2 => '女'
     ];
+    const SEX_UNKNOWN = 0;
+    const SEX_MALE = 1;
+    const SEX_WOMAN = 2;
+
+
 
     public static $bloods = [
         1 => 'AB',
@@ -158,14 +160,31 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getProvinceAttribute($value)
     {
-        return intval($value);
+        return (int)$value;
     }
 
     public function getCityAttribute($value)
     {
-        return intval($value);
+        return (int)$value;
     }
 
+    public function province_str()
+    {
+        if ($this->province) {
+            return ChainDistrict::find($this->province)->value('name');
+        } else {
+            return '';
+        }
+    }
+
+    public function city_str()
+    {
+        if ($this->province) {
+            return ChainDistrict::find($this->province)->value('name');
+        } else {
+            return '';
+        }
+    }
     /**
      * 管理员添加用户
      *

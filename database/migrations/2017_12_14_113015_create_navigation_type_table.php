@@ -34,6 +34,7 @@ class CreateNavigationTypeTable extends Migration
             $table->string('excerpt')->comment('文章摘要')->nullable();
             $table->integer('hits')->comment('点击量')->default(0);
             $table->integer('display')->comment('文章显示  0显示1不显示')->default(0);
+            $table->string('keywords')->comment('关键词');
             $table->timestamps();
         });
         $this->information();

@@ -93,9 +93,7 @@ class OrderController extends Controller
             });
 
             $grid->apartment_id('房源')->display(function ($value) {
-                $apartmentModel = new Apartment();
-                $apartment = $apartmentModel->where('id', $value)->first();
-                return $apartment->title;
+                return Apartment::whereId($value)->value('title')??'';
             });
 
             $grid->status('订单状态')->display(function ($value)use($model){

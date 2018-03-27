@@ -90,9 +90,9 @@ DingoRoute::version('v1', function () {
 
         // 入住人接口
         DingoRoute::group(['prefix' => 'stay_people', 'middleware' => ['api.auth']], function () {
-            // 获取入住人列表
-            DingoRoute::get('show/{id}', 'StayPeopleController@show');
             // 根据id获取入住人信息
+            DingoRoute::get('show/{id}', 'StayPeopleController@show');
+            // 获取入住人列表
             DingoRoute::get('index', 'StayPeopleController@index');
             // 删除入住人
             DingoRoute::delete('delete/{id}', 'StayPeopleController@delete');
@@ -179,6 +179,30 @@ DingoRoute::version('v1', function () {
             DingoRoute::post('mark', 'SignUpsController@mark');
         });
 
+        // 项目
+        DingoRoute::group(['prefix' => 'project'], function () {
+            // 项目还款
+            DingoRoute::group(['prefix' => 'investment', 'middleware' => ['api.auth']], function () {
+                DingoRoute::post('create_order', 'ProjectInvestmentsController@create_order');//创建项目订单
+                DingoRoute::post('pay_order', 'ProjectInvestmentsController@pay_order');//支付项目订单
+                DingoRoute::post('cancel_order', 'ProjectInvestmentsController@cancel_order');//取消项目订单
+                DingoRoute::get('index', 'ProjectInvestmentsController@index');//获取项目订单列表
+                DingoRoute::get('show/{id}', 'ProjectInvestmentsController@show');//获取项目订单详情
+                DingoRoute::get('repayment_index', 'ProjectInvestmentsController@repayment_index');//获取还款列表
+                DingoRoute::get('repayment_show/{id}', 'ProjectInvestmentsController@repayment_show');//获取还款详情
+                DingoRoute::get('account_survey', 'ProjectInvestmentsController@account_survey');       // 账户概况
+                DingoRoute::get('investment_survey', 'ProjectInvestmentsController@investment_survey'); // 投资概况
+            });
+            // 项目
+            DingoRoute::get('index', 'ProjectsController@index');//获取项目列表
+            DingoRoute::get('show/{id}', 'ProjectsController@show');//获取项目详情
+            DingoRoute::get('recommend_index', 'ProjectsController@recommend_index');//获取项目推荐列表
+            DingoRoute::get('config', 'ProjectsController@config');//返回项目相关配置信息
+            DingoRoute::get('show_apartment_order_list', 'ProjectsController@show_apartment_order_list');//获取房源信息
+            DingoRoute::get('investment_rank', 'ProjectInvestmentsController@investment_rank');//投资排名
+            DingoRoute::get('platform_info', 'ProjectsController@platform_info');//平台信息
+        });
+
         // 代金卷
         DingoRoute::group(['prefix' => 'voucher'], function () {
             DingoRoute::group(['middleware' => 'api.auth'], function () {
@@ -191,7 +215,7 @@ DingoRoute::version('v1', function () {
 
         //菜单管理
         DingoRoute::group(['prefix' => 'menu'],function(){
-            //获取帮助中心菜单名
+            //获取所有菜单名
             DingoRoute::get('help_center_menu','NavigationController@help_center_menu');
             //获取资讯中心菜单名
             DingoRoute::get('information_menu','NavigationController@information_menu');

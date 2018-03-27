@@ -71,7 +71,7 @@ class UserMoneyLogController extends Controller
     /**
      * Charge interface.
      *
-     * @param $id
+     * @param $user_id
      * @return Content
      */
     public function charge($user_id)

@@ -63,7 +63,6 @@ class UserController extends Controller
                 $form->display('province_str', '省')->value($user->province_str());
                 $form->display('city_str', '市')->value($user->city_str());
                 $form->display('recommend_code', '邀请码')->value($user->recommend_code);
-                $form->display('from_user_id', '邀请者id')->value($user->from_user_id);
                 $form->display('blood_type','血型')->value($user->blood_type);
                 $form->display('education','学历')->value($user->education);
                 $form->display('profession','职位')->value($user->profession);
@@ -150,7 +149,7 @@ class UserController extends Controller
                 $actions->disableDelete();
                 $id = $actions->getKey();
                 $actions->prepend('<a href="/admin/users/show/' . $id . '"><i class="fa fa-eye" aria-hidden="true">详情</i></a>');
-                $actions->prepend('<a href="/admin/user_money_log/' . $id . '"title="用户资金" style="padding-right: 5px"><i class="fa fa-rmb"></i></a>');
+                $actions->prepend('<a href="/admin/user_money/' . $id . '"title="用户资金" style="padding-right: 5px"><i class="fa fa-rmb"></i></a>');
                 $actions->prepend('<a href="/admin/user_apartment/' . $id . '" title="用户房源" style="padding-right: 5px"><i class="fa fa-home" aria-hidden="true"></i></a>');
                 $actions->prepend('<a href="/admin/project_investment' . '?user_id=' . $id . '"><i class="fa fa-line-chart" aria-hidden="true">投资</i></a>');
             });
@@ -214,7 +213,6 @@ class UserController extends Controller
             $form->select('blood_type', '血型')->options(User::$bloods);
             $form->select('education', '学历')->options(User::$educations);
             $form->text('profession', '职位');
-            $form->select('from_platform', '注册平台')->options(User::$from_platforms);
 
             $form->saving(function (Form $form) {
 
