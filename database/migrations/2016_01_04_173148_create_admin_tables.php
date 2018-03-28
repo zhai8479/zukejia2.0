@@ -202,7 +202,7 @@ class CreateAdminTables extends Migration
             //7
             [
                 'parent_id' =>'6',
-                'order'     =>'3',
+                'order'     =>'1',
                 'title'     =>'项目',
                 'icon'      =>'fa-list',
                 'uri'       =>'project'
@@ -210,7 +210,7 @@ class CreateAdminTables extends Migration
             //8
             [
                 'parent_id' =>'6',
-                'order'     =>'3',
+                'order'     =>'2',
                 'title'     =>'项目类型',
                 'icon'      =>'fa-sliders',
                 'uri'       =>'project-types'
