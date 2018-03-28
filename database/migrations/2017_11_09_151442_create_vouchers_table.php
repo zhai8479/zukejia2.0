@@ -54,7 +54,7 @@ class CreateVouchersTable extends Migration
         Schema::create('vouchers_rules', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('type')->length(1)->comment('规则类型 1: 满减 2: 房屋类型');
-            $table->integer('val')->comment('type=1时为要求满的金额(单位分) type=2时为需求的房屋类型(0: 短租, 1: 长租)');
+            $table->float('val')->comment('type=1时为要求满的金额(单位元) type=2时为需求的房屋类型(0: 短租, 1: 长租)');
             $table->timestamps();
         });
         DB::table('vouchers_rules')->insert([
@@ -66,8 +66,8 @@ class CreateVouchersTable extends Migration
         ]);
         Schema::create('vouchers_schemes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('reduce')->comment('减多少');
-            $table->integer('is_open')->comment('代金卷减值,单位分');
+            $table->float('reduce')->comment('减多少');
+            $table->float('is_open')->comment('代金卷减值,单位元');
             $table->timestamps();
         });
         DB::table('vouchers_schemes')->insert([

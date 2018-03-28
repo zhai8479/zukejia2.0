@@ -53,31 +53,31 @@ class ProjectRepayment extends Model
 
     public function getMoneyAttribute($value)
     {
-        return $value / 100;
+        return $value ;
     }
 
     public function setMoneyAttribute($value)
     {
-        $this->attributes['money'] = $value * 100;
+        $this->attributes['money'] = $value ;
     }
 
     public function getPrincipalAttribute($value)
     {
-        return $value / 100;
+        return $value ;
     }
 
     public function setPrincipalAttribute($value)
     {
-        $this->attributes['principal'] = $value * 100;
+        $this->attributes['principal'] = $value ;
     }
 
     public function getInterestAttribute($value)
     {
-        return $value / 100;
+        return $value ;
     }
 
     public function setInterestAttribute($value)
     {
-        $this->attributes['interest'] = $value * 100;
+        $this->attributes['interest'] = $value ;
     }
 }

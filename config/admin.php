@@ -5,17 +5,17 @@ return [
     /*
      * Laravel-admin name.
      */
-    'name'      => '租客家管理后台',
+    'name'      => '租客家2.0管理后台',
 
     /*
      * Logo in admin panel header.
      */
-    'logo'      => '<b>租客家</b> 管理后台',
+    'logo'      => '<b>租客家2.0</b> 管理后台',
 
     /*
      * Mini-logo in admin panel header.
      */
-    'logo-mini' => '<b>租客家</b>',
+    'logo-mini' => '<b>租客家2.0</b>',
 
     /*
      * Route configration.
@@ -34,7 +34,7 @@ return [
     /*
      * Laravel-admin html title.
      */
-    'title'  => '租客家后台',
+    'title'  => '租客家2.0后台',
 
     /*
          * Use `https`.

@@ -408,8 +408,8 @@ class OrdersController extends BaseController
         if ($pay_type == 1) {
             // 余额支付
             $userMoney = $this->userMoneyRepository->firstOrCreate(['user_id' => $user->id]);
-            $money = $userMoney->money;
-            \Log::debug('money', [$money, $pay_money]);
+        //    $money = $userMoney->money;
+    //        \Log::debug('money', [$money, $pay_money]);
             // 执行支付操作
             try {
                 $this->userMoneyRepository->pay($pay_money, $user->id, '支付房租与押金');

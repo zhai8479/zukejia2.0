@@ -148,8 +148,8 @@ class ProjectTypeController extends Controller
                 }
                 if (isset($error)) return back()->withInput()->with(compact('error'));
 
-                $form->input('max_money', $form->input('max_money') * 100);
-                $form->input('min_money', $form->input('min_money') * 100);
+                $form->input('max_money', $form->input('max_money') );
+                $form->input('min_money', $form->input('min_money') );
 
 
             });

@@ -142,7 +142,7 @@ class ProjectController extends Controller
                 return $money . ' 元';
             })->sortable();
             $grid->column('客户收益')->display(function () {
-                return ($this->rental_money - $this->collect_money) * 100 . ' 元/期';
+                return ($this->rental_money - $this->collect_money)  . ' 元/期';
             });
             $grid->rental_money('租房价格')->display(function ($money) {
                 return $money . ' 元';
@@ -208,9 +208,9 @@ class ProjectController extends Controller
 
                 $form->text('name', '标的名称')->rules('required');
 
-                $form->currency('money', '标的价格')->symbol('元')->rules('required');
-                $form->currency('rental_money', '租赁价格')->symbol('元')->rules('required');
-                $form->currency('collect_money', '收房价格')->symbol('元')->rules('required');
+                $form->number('money', '标的价格（元）')->rules('required');
+                $form->number('rental_money', '租赁价格（元）')->rules('required');
+                $form->number('collect_money', '收房价格（元）')->rules('required');
 
                 // 计算得出
                 $form->financial_term('issue_total_num', '期数');

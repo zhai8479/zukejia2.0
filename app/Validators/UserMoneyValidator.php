@@ -13,8 +13,8 @@ class UserMoneyValidator extends LaravelValidator
             'user_id' => 'required|integer|min:1'
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'money' => 'integer|min:0',
-            'freeze' => 'integer|min:0',
+            'money' => 'numeric|min:0',
+            'freeze' => 'numeric|min:0',
         ],
    ];
 }

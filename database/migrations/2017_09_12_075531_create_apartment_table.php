@@ -44,8 +44,8 @@ class CreateApartmentTable extends Migration
             $table->string('facilities')->comment('配套设施-设备');
             $table->text('images')->comment('图片');
             $table->tinyInteger('rental_type')->comment('0-短租 1-长租 2-特价');
-            $table->decimal('rental_price',14,2)->comment('租金');
-            $table->decimal('rental_deposit',14,2)->comment('押金');
+            $table->float('rental_price')->comment('租金');
+            $table->float('rental_deposit')->comment('押金');
             $table->string('single_bed')->comment('单人床');
             $table->string('double_bed')->comment('双人床');
             $table->string('tatami')->comment('榻榻米');

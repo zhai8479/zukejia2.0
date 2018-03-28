@@ -75,11 +75,11 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 
     /**
      * 计算最终应支付金额
-     * @param integer $rental_price     租金
-     * @param integer $rental_deposit   押金
-     * @param integer $coupons_money    优惠卷抵扣金额
-     * @param integer $activity_money   活动抵扣金额
-     * @return integer
+     * @param float $rental_price     租金
+     * @param float $rental_deposit   押金
+     * @param float $coupons_money    优惠卷抵扣金额
+     * @param float $activity_money   活动抵扣金额
+     * @return float
      */
     public function count_pay_money($rental_price, $rental_deposit, $coupons_money, $activity_money)
     {

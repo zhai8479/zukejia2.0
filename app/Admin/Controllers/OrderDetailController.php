@@ -131,11 +131,11 @@ class OrderDetailController extends Controller
             });
 
             $form->display('rental_price', '租金')->with(function ($value) {
-                return $value / 100;
+                return $value ;
             });;
 
             $form->display('rental_deposit', '押金')->with(function ($value) {
-                return $value / 100;
+                return $value ;
             });;
 
             $form->display('start_date', '入住开始日期');
@@ -159,7 +159,7 @@ class OrderDetailController extends Controller
             $form->display('pay_account', '付款账户');
 
             $form->display('pay_money', '付款金额')->with(function ($value) {
-                return $value / 100;
+                return $value ;
             });;
 
             $form->display('external_id', '外部付款单号');
@@ -171,7 +171,7 @@ class OrderDetailController extends Controller
             });
 
             $form->display('refunds_total_money', '退款金额')->with(function ($value) {
-                return $value / 100;
+                return $value ;
             });
 
             $form->display('is_refunds', '是否需要发票')->with(function ($value) {

@@ -119,8 +119,8 @@ class UserMoneyLogController extends Controller
             });
 
             $grid->money('资金增量')->display(function ($value) {
-                if ($this->in_out) return '￥ -'.($value/100);
-                return '￥ +'.($value/100);
+                if ($this->in_out) return '￥ -'.($value);
+                return '￥ +'.($value);
             });
 
             $grid->admin_id('管理员')->display(function ($value) {
@@ -147,7 +147,7 @@ class UserMoneyLogController extends Controller
     {
         return Admin::form(UserMoneyLog::class, function (Form $form) use($money_id, $user_id){
             $form->display('money', '现有资金')->with(function()use($money_id, $user_id){
-                return \DB::table('user_money')->where('user_id', $user_id)->value('money') / 100;
+                return \DB::table('user_money')->where('user_id', $user_id)->value('money') ;
             });
             $form->radio('in_out', '操作')->values([
                 1 => '增加',
@@ -167,9 +167,9 @@ class UserMoneyLogController extends Controller
                 $user_money_obj = UserMoney::where('user_id', $form->user_id)->first();
                 $user_money = $user_money_obj->money;
                 $operator = $form->in_out ? - $form->money : $form->money;
-                $user_money_obj->money = ($user_money / 100 + $operator) * 100;
+                $user_money_obj->money = ($user_money  + $operator) ;
                 $user_money_obj->save();
-                $form->money *= 100;
+                $form->money ;
             });
         });
     }

@@ -193,31 +193,31 @@ class Project extends Model implements Transformable
 
     public function setMoneyAttribute($value)
     {
-        $this->attributes['money'] = $value * 100;
+        $this->attributes['money'] = $value ;
     }
 
     public function getMoneyAttribute($value)
     {
-        return $value / 100;
+        return $value ;
     }
 
     public function setRentalMoneyAttribute($value)
     {
-        $this->attributes['rental_money'] = $value * 100;
+        $this->attributes['rental_money'] = $value ;
     }
 
     public function getRentalMoneyAttribute($value)
     {
-        return $value / 100;
+        return $value;
     }
 
     public function setCollectMoneyAttribute($value)
     {
-        $this->attributes['collect_money'] = $value * 100;
+        $this->attributes['collect_money'] = $value ;
     }
 
     public function getCollectMoneyAttribute($value)
     {
-        return $value / 100;
+        return $value ;
     }
 }

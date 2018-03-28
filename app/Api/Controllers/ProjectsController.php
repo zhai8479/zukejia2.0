@@ -129,8 +129,8 @@ class ProjectsController extends BaseController
                 $issue_min = $request->input('issue_total_num.min');
                 $issue_max = $request->input('issue_total_num.max');
 
-                if ($max !== '' && $max !== null) $query->where('money', '<=', $max * 100);
-                if ($min !== '' && $min !== null) $query->where('money', '>=', $min * 100);
+                if ($max !== '' && $max !== null) $query->where('money', '<=', $max );
+                if ($min !== '' && $min !== null) $query->where('money', '>=', $min );
 
                 if ($issue_min !== '' && $issue_min !== null) $query->where('issue_total_num', '>=', $issue_min);
                 if ($issue_max !== '' && $issue_max !== null) $query->where('issue_total_num', '<=', $issue_max);
@@ -279,11 +279,11 @@ class ProjectsController extends BaseController
     {
         $total_investment = Project::query()
             ->whereIn('status', [Project::STATUS_OVER, Project::STATUS_REPAYMENT])
-            ->select(\DB::raw('sum(money)/100 as num'))
+            ->select(\DB::raw('sum(money) as num'))
             ->value('num');
         $total_profit = ProjectRepayment::query()
             ->where('is_repayment', ProjectRepayment::IS_REPAYMENT)
-            ->select(\DB::raw('sum(principal - interest)/100 as num'))
+            ->select(\DB::raw('sum(principal - interest)as num'))
             ->value('num');
         $total_reg_num = User::query()->count();
         return $this->array_response([

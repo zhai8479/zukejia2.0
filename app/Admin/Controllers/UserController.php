@@ -132,7 +132,7 @@ class UserController extends Controller
                 if ($value === null){
                     return 0;
                 };
-                return $value/100;
+                return $value;
             });
             $grid->ip('最后访问ip');
 

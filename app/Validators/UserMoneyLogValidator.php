@@ -13,7 +13,7 @@ class UserMoneyLogValidator extends LaravelValidator
             'user_id' => 'required|integer|min:1|exists:users,id',
             'type' => 'required|integer|min:1',
             'in_out' => 'required|integer|in:0,1',
-            'money' => 'required|integer|min:0',
+            'money' => 'required|numeric|min:0',
             'admin_id' => 'integer|min:1',
             'description' => 'string|max:255',
             'admin_note' => 'string|max:255',
