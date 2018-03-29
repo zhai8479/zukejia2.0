@@ -16,8 +16,8 @@ class CreateUserMoneyTable extends Migration
         Schema::create('user_money', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->unique()->comment('账户的用户id');
-            $table->float('money')->default(0)->comment('用户资金');
-            $table->float('freeze')->default(0)->comment('用户冻结资金');
+            $table->float('money',15,2)->default(0)->comment('用户资金');
+            $table->float('freeze',15,2)->default(0)->comment('用户冻结资金');
             $table->foreign('user_id')
                   ->references('id')->on('users')
                   ->onDelete('cascade');

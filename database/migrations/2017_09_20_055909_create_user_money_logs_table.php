@@ -18,7 +18,7 @@ class CreateUserMoneyLogsTable extends Migration
             $table->unsignedInteger('user_id')->comment('用户id');
             $table->smallInteger('type')->unsigned()->comment('操作类型');
             $table->smallInteger('in_out')->unsigned()->comment('收入和支付类型 0: 收入 1：支出');
-            $table->float('money')->comment('操作金额');
+            $table->float('money',15,2)->comment('操作金额');
             $table->unsignedInteger('admin_id')->nullable()->comment('操作管理员id');
             $table->string('description', 255)->nullable()->comment('操作描述');
             $table->string('admin_note', 255)->nullable()->comment('管理员操作备注');

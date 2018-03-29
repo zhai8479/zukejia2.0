@@ -19,7 +19,7 @@ class CreateProjectTable extends Migration
                 ->comment('项目名称');
             $table->unsignedInteger('type_id')
                 ->comment('类型id');
-            $table->float('money')
+            $table->float('money',15,2)
                 ->comment('项目价格');
             $table->tinyInteger('status')
                 ->comment('项目状态 1. 进行中 2. 还款中 3. 已完结');
@@ -82,9 +82,9 @@ class CreateProjectTable extends Migration
             $table->increments('id');
             $table->string('name', 100)->unique()
                 ->comment('类型名称');
-            $table->float('max_money')
+            $table->float('max_money',15,2)
                 ->comment('最大金额');
-            $table->float('min_money')
+            $table->float('min_money',15,2)
                 ->comment('最小金额');
             $table->tinyInteger('repayment_type')
                 ->comment('还款方式 1. 等额本息 2. 先息后本');
@@ -132,9 +132,9 @@ class CreateProjectTable extends Migration
                 ->comment('期数');
             $table->float('money')
                 ->comment('金额');
-            $table->float('principal')
+            $table->float('principal',15,2)
                 ->comment('本金');
-            $table->float('interest')
+            $table->float('interest',15,2)
                 ->comment('利息');
             $table->tinyInteger('is_repayment')->default(1)
                 ->comment('是否还款 1. 未还款 2. 已还款');

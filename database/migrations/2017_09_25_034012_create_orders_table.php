@@ -17,14 +17,14 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('order_no', 100)->unique()->comment('订单号');
             $table->unsignedInteger('user_id');
-            $table->float('rental_price')->comment('房租价格');
-            $table->float('rental_deposit')->comment('押金');
+            $table->float('rental_price',15,2)->comment('房租价格');
+            $table->float('rental_deposit',15,2)->comment('押金');
             $table->unsignedInteger('apartment_id')->comment('房源id');
             $table->unsignedInteger('coupons_id')->comment('优惠券ID')->nullable();
-            $table->float('coupons_money')->comment('优惠券抵扣金额,单位：元')->nullable();
+            $table->float('coupons_money',15,2)->comment('优惠券抵扣金额,单位：元')->nullable();
             $table->unsignedInteger('activity_id')->comment('活动ID')->nullable();
-            $table->float('activity_money')->comment('活动抵扣金额, 单位：元')->nullable();
-            $table->float('pay_money')->comment('实际支付金额');
+            $table->float('activity_money',15,2)->comment('活动抵扣金额, 单位：元')->nullable();
+            $table->float('pay_money',15,2)->comment('实际支付金额');
             $table->tinyInteger('status')->default(1)->comment('订单状态：1.已提交 2.已支付, 3.已退房  3.订单完成, 4.已支付取消订单, 5. 未支付取消');
 
             $table->date('start_date')->comment('租房开始时间');
@@ -41,7 +41,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('pay_over_at')->comment('支付结束时间')->nullable();
             $table->tinyInteger('pay_status')->comment('支付状态: 1.待支付,2.支付中,3.支付完成')->default(1);
             $table->boolean('is_refunds')->comment('是否发生退款')->default(false);
-            $table->float('refunds_total_money')->comment('退款总金额')->default(0);
+            $table->float('refunds_total_money',15,2)->comment('退款总金额')->default(0);
             $table->string('order_pay_no', 100)->comment('支付单号')->nullable();
             $table->string('cancel_reason')->nullable()->comment('取消订单理由');
             $table->timestamp('cancel_at')->nullable()->comment('取消订单时间');

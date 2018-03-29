@@ -23,7 +23,7 @@ class CreateOrderRefundsTable extends Migration
             $table->tinyInteger('refund_status')->comment('退款状态:1. 退款中 2. 退款成功 3. 退款失败')->default(1);
             $table->dateTime('refund_over_at')->comment('退款完成时间');
             $table->ipAddress('ip')->comment('发起者所在ip');
-            $table->float('money')->comment('退款金额，单位为元');
+            $table->float('money',15,2)->comment('退款金额，单位为元');
             $table->unsignedInteger('user_id')->comment('用户id');
             $table->timestamps();
 		});
