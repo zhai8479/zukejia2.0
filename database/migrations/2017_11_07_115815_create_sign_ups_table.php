@@ -28,6 +28,7 @@ class CreateSignUpsTable extends Migration
 		});
         Schema::create('appointments', function(Blueprint $table) {
             $table->increments('id');
+            $table->integer('apartment_id')->comment('房源id');
             $table->string('name',20)->comment('姓名');
             $table->string('mobile', 20)->comment('电话');
             $table->integer('sex')->default(0)->comment('性别 0:男,1:女');
@@ -45,6 +46,7 @@ class CreateSignUpsTable extends Migration
 	public function down()
 	{
 		Schema::drop('sign_ups');
+        Schema::drop('appointments');
 	}
 
 }

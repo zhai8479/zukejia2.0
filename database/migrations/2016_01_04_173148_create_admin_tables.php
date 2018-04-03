@@ -352,6 +352,14 @@ class CreateAdminTables extends Migration
                 'icon'      => 'fa-user-plus',
                 'uri'       => 'api-tester',
             ],
+            //26
+            [
+                'parent_id' => 14,
+                'order'     => 1300,
+                'title'     => '轮播管理',
+                'icon'      => 'fa-user-plus',
+                'uri'       => '/banner',
+            ]
 
         ]);
 
