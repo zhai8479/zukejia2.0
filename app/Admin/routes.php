@@ -45,6 +45,8 @@ Route::group([
     //资讯管理
     $router->resource('articles',ArticlesController::class);// 1
     $router->get('articles/{id}','ArticlesController@show');// 1
+    //轮播管理
+    $router->resource('banner',BannerContorller::class);
 });
 
 Route::group([

@@ -94,6 +94,7 @@ class ActivityController extends Controller
             $grid->type('来源');
             $grid->ip('IP地址');
             $grid->area('面积');
+            $grid->community('小区/楼盘');
 
             $grid->actions(function ($action){
                 $action->disableEdit();
@@ -126,6 +127,7 @@ class ActivityController extends Controller
             $form->text('address','地址');
             $form->text('signUpTitle','报名标题');
             $form->text('ip','ip地址');
+            $form->text('community','小区/楼盘');
         });
     }
 }

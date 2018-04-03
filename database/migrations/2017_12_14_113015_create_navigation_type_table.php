@@ -37,6 +37,15 @@ class CreateNavigationTypeTable extends Migration
             $table->string('keywords')->comment('关键词');
             $table->timestamps();
         });
+
+        Schema::create('banners', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title')->comment('标题');
+            $table->string('banner_url')->comment('轮播图片');
+            $table->string('link')->comment('跳转链接');
+            $table->integer('order')->comment('权重');
+            $table->timestamps();
+        });
         $this->information();
     }
     public function information()
@@ -125,5 +134,6 @@ class CreateNavigationTypeTable extends Migration
     {
         Schema::dropIfExists('navigation_type');
         Schema::dropIfExists('articles');
+        Schema::dropIfExists('banners');
     }
 }

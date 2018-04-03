@@ -54,6 +54,7 @@ class SignUpsController extends BaseController
      *     @Parameter("signUpTitle", description="报名标题", required=true),
      *     @Parameter("type", description="报名来源 app|pc|web|wap", required=true),
      *     @Parameter("area", description="房屋面积", required=false)
+     *     @Parameter("community", description="小区-楼盘", required=false)
      * })
      * @param HttpRequest $request
      * @return \Illuminate\Http\Response

@@ -22,6 +22,7 @@ class CreateSignUpsTable extends Migration
             $table->string('signUpTitle', 100)->comment('报名标题');
             $table->string('type', 10)->comment('报名类型');
             $table->ipAddress('ip')->comment('ip地址');
+            $table->string('community')->comment('小区/楼盘');
             $table->integer('status')->default(0)->comment('标记是否查看 0:未看,1:已查看');
             $table->timestamps();
 		});

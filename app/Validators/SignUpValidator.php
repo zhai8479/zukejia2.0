@@ -11,6 +11,7 @@ class SignUpValidator extends LaravelValidator
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
             'name' => 'required|string|max:20',
+            'community' =>'community|string|max:50',
             'mobile' => 'required|string|regex:/^1[34578][0-9]{9}$/',
             'address' => 'required|string|max:255',
             'signUpTitle' => 'required|string|max:100',

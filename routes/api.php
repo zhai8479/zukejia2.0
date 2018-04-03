@@ -238,6 +238,10 @@ DingoRoute::version('v1', function () {
             //文章详情
             DingoRoute::get('show/{id}','ArticlesController@show');
         });
+        //轮播设置
+        DingoRoute::group(['prefix' => 'banner'],function(){
+            DingoRoute::get('index','BannerController@index');
+     });
     });
 });
 
