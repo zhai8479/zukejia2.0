@@ -359,7 +359,16 @@ class CreateAdminTables extends Migration
                 'title'     => '轮播管理',
                 'icon'      => 'fa-user-plus',
                 'uri'       => '/banner',
+            ],
+            //27
+            [
+                'parent_id' => 0,
+                'order'     => 6,
+                'title'     => '预约看房',
+                'icon'      => 'fa-user-plus',
+                'uri'       => '/appointments',
             ]
+
 
         ]);
 

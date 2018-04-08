@@ -179,6 +179,13 @@ DingoRoute::version('v1', function () {
             DingoRoute::post('mark', 'SignUpsController@mark');
         });
 
+        //预约看房
+        DingoRoute::group(['prefix' => 'appointment'], function(){
+            //创建一个预约看房记录
+            DingoRoute::post('store','AppointmentsController@store');
+            //修改一个预约记录状态值
+            DingoRoute::post('update','AppointmentsController@update');
+        });
         // 项目
         DingoRoute::group(['prefix' => 'project'], function () {
             // 项目还款

@@ -7,12 +7,12 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 
-class SignUp extends Model implements Transformable
+class Appointment extends Model implements Transformable
 {
     use TransformableTrait;
 
     public $timestamps = true;
 
-    protected $fillable = ['name', 'mobile', 'address', 'type', 'signUpTitle', 'ip','area','community'];
+    protected $fillable = ['name', 'mobile', 'sex', 'apartment_id', 'appointments_time', 'message'];
 
 }

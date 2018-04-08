@@ -31,6 +31,10 @@ Route::group([
     $router->get('/activities/title_index/{name}', 'ActivityController@title_index');    //0元装修 1
     $router->get('/activities/title_indexT/{name}', 'ActivityController@title_indexT');    //毛胚房报名 1
 
+    //预约看房
+    $router->resource('appointments',AppointmentsController::class);
+
+
     // 项目
     $router->resource('project-types', ProjectTypeController::class);
     $router->resource('project', ProjectController::class);

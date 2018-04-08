@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\SignUp;
+use App\Models\Appointment;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -10,10 +10,8 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
-use App\Admin\Extensions\Mark;
-use App\Admin\Extensions\Tools\BatchMark;
 
-class ActivityController extends Controller
+class AppointmentsController extends Controller
 {
     use ModelForm;
 
@@ -26,37 +24,10 @@ class ActivityController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('报名管理');
-            $content->description('活动报名');
+            $content->header('预约看房');
+            $content->description('预约看房列表');
 
             $content->body($this->grid());
-        });
-    }
-    /**
-     * 免费装修列表
-     */
-    public function title_index($name)
-    {
-        return Admin::content(function (Content $content) use ($name){
-
-            $content->header('报名管理');
-            $content->description('活动报名');
-
-            $content->body($this->grid($name));
-        });
-    }
-
-    /**
-     * 毛胚房报名列表
-     */
-    public function title_indexT($name)
-    {
-        return Admin::content(function (Content $content) use ($name){
-
-            $content->header('报名管理');
-            $content->description('毛胚房报名');
-
-            $content->body($this->grid($name));
         });
     }
 
@@ -65,38 +36,27 @@ class ActivityController extends Controller
      *
      * @return Grid
      */
-    protected function grid($name = null)
+    protected function grid()
     {
-        return Admin::grid(SignUp::class, function (Grid $grid) use ($name){
-            if ($name) {
-                $grid->model()->where('signUpTitle', $name);
-            }
-            $grid->model()->orderBy('id', 'desc');
+        return Admin::grid(Appointment::class, function (Grid $grid){
+
+            $grid->model()->orderBy('id');
             $grid->disableCreation();
 
 
             $grid->filter(function(Grid\Filter $filter){
-
                 // 去掉默认的id过滤器
                 $filter->disableIdFilter();
-
-//                // 在这里添加字段过滤器
-//                $filter->like('signUpTitle', '活动的标题');
                 $filter->equal('status','状态')->select(['0' => '未查看','1' => '已查看']);
-
             });
-
 
             $grid->id('编号')->sortable();
             $grid->name('姓名')->sortable();
             $grid->mobile('手机')->sortable();
-            $grid->address('地址');
-            $grid->signUpTitle('活动标题');
-            $grid->type('来源');
-            $grid->ip('IP地址');
-            $grid->area('面积');
-            $grid->community('小区/楼盘');
-            // 设置text、color、和存储值
+            $grid->sex('性别');
+            $grid->apartment_id('房源id');
+            $grid->appointments_time('预约时间');
+            $grid->message('留言');
             $states = [
                 'on'  => ['value' => 0, 'text' => '未查看', 'color' => 'primary'],
                 'off' => ['value' => 1, 'text' => '已查看', 'color' => 'default'],
@@ -122,15 +82,14 @@ class ActivityController extends Controller
      */
     protected function form()
     {
-        return Admin::form(SignUp::class, function (Form $form) {
+        return Admin::form(Appointment::class, function (Form $form) {
 
             $form->display('id', 'ID');
             $form->text('name','姓名');
             $form->text('mobile','电话');
-            $form->text('address','地址');
-            $form->text('signUpTitle','报名标题');
-            $form->text('ip','ip地址');
-            $form->text('community','小区/楼盘');
+            $form->text('sex','地址');
+            $form->text('apartment_id','房源ID');
+            $form->text('appointments_time','预约时间');
             $states = [
                 'on'  => ['value' => 0, 'text' => '未查看', 'color' => 'success'],
                 'off' => ['value' => 1, 'text' => '已查看', 'color' => 'danger'],

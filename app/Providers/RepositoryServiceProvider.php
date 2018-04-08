@@ -16,6 +16,8 @@ use App\Repositories\ProjectInvestmentRepository;
 use App\Repositories\ProjectInvestmentRepositoryEloquent;
 use App\Repositories\ProjectRepaymentRepository;
 use App\Repositories\ProjectRepaymentRepositoryEloquent;
+use App\Repositories\AppointmentRepository;
+use App\Repositories\AppointmentRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -52,5 +54,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProjectRepository::class, ProjectRepositoryEloquent::class);
         $this->app->bind(ProjectInvestmentRepository::class, ProjectInvestmentRepositoryEloquent::class);
         $this->app->bind(ProjectRepaymentRepository::class, ProjectRepaymentRepositoryEloquent::class);
+        $this->app->bind(AppointmentRepository::class, AppointmentRepositoryEloquent::class);
+
     }
 }
