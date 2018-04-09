@@ -110,8 +110,10 @@ return [
     */
     'attributes' => [
         'username' => '用户名',
+        'user_name' => '用户名',
         'account'  => '账号',
         'captcha'  => '验证码',
+        'code'  => '验证码',
         'mobile'   => '手机号',
         'password' => '密码',
         'content'  => '内容',

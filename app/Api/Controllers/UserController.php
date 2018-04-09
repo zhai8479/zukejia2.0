@@ -191,7 +191,7 @@ class UserController extends BaseController
         if ($pwd->check_password($password, $user->password)) {
             // 验证密码成功
             $token = JWTAuth::fromUser($user);
-            return $this->response->array(['msg' => '登陆成功', 'code' => 0])->withHeader('Authorization', 'Bearer ' . $token);
+            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'token' =>$token,'user' => $user])->withHeader('Authorization', 'Bearer ' . $token);
         } else {
             // 验证密码错误
             return $this->error_response('密码错误');
