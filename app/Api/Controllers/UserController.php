@@ -98,8 +98,8 @@ class UserController extends BaseController
     public function mobile_register(HttpRequest $request, Password $pwd)
     {
         $this->validate($request, [
-            'code' => 'required|string',
-            'mobile' => 'required|string|unique:users,mobile|regex:/^1[34578][0-9]{9}$/',
+            'code' => 'required|int',
+            'mobile' => 'required|unique:users,mobile|regex:/^1[345789][0-9]{9}$/',
             'password' => 'required|string|min:6|max:40',
             'user_name' => 'min:4|max:40|unique:users,user_name',
             'from_user_mobile' => 'string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/'
@@ -726,7 +726,7 @@ class UserController extends BaseController
         if (!$check_ret) return $this->sms_code_error();
         $user = User::where('mobile', $mobile)->first();
         $token = JWTAuth::fromUser($user);
-        return $this->response->array(['msg' => '登陆成功', 'code' => 0])->withHeader('Authorization', 'Bearer ' . $token);;
+        return $this->response->array(['msg' => '登陆成功', 'code' => 0,'user'=>$user,'token'=>$token])->withHeader('Authorization', 'Bearer ' . $token);;
     }
 
     /**
