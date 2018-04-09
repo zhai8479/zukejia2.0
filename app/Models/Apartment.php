@@ -71,7 +71,7 @@ class Apartment extends Model implements Transformable
     ];
 
     /**
-     * 判断是否在维修中
+     * 判断是否在欲租中
      * @return boolean
      */
     public function is_in_maintenance()

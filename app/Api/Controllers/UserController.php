@@ -163,7 +163,7 @@ class UserController extends BaseController
     /**
      * 手机号登陆
      *
-     * @Post("/mobile_register")
+     * @Post("/mobile_login")
      * @Versions({"v1"})
      *
      * @Parameters({
