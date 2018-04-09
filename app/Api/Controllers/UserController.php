@@ -718,7 +718,7 @@ class UserController extends BaseController
     {
         $this->validate($request, [
             'mobile' => 'required|string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/',
-            'code' => 'required|string|min:4'
+            'code' => 'required|int|min:4'
         ]);
         $mobile = $request->input('mobile');
         $code = $request->input('code');
