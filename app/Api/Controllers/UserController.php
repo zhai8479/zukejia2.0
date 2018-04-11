@@ -7,6 +7,7 @@ use App\Models\ChainDistrict;
 use App\Library\Password;
 use App\Library\Recommend;
 use App\Models\Order;
+use App\Models\Tags;
 use App\Models\User;
 use App\Models\UserIntegralLog;
 use App\Repositories\UserIntegralRepository;
@@ -98,13 +99,12 @@ class UserController extends BaseController
     public function mobile_register(HttpRequest $request, Password $pwd)
     {
         $this->validate($request, [
-            'code' => 'required|int',
-            'mobile' => 'required|unique:users,mobile|regex:/^1[345789][0-9]{9}$/',
-            'password' => 'required|string|min:6|max:40',
-            'user_name' => 'min:4|max:40|unique:users,user_name',
-            'from_user_mobile' => 'string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/'
+            'code' => 'bail|required|int',
+            'mobile' => 'bail|required|unique:users,mobile|regex:/^1[345789][0-9]{9}$/',
+            'password' => 'bail|required|string|min:6|max:40',
+            'user_name' => 'bail|min:4|max:40|unique:users,user_name',
+            'from_user_mobile' => 'bail|string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/'
         ]);
-
         $code = $request->input('code');
         $mobile = $request->input('mobile');
 
@@ -239,6 +239,8 @@ class UserController extends BaseController
         $user = $this->user();
         $apartment = Apartment::where('user_id',['user_id' => $user->id])
                                 ->get();
+        $tag_List = Tags::All()->get();
+        $apartment->electrics_name = [];
         return $this->array_response(['data' => $apartment]);
     }
     /**
@@ -857,6 +859,20 @@ class UserController extends BaseController
             $user->country = $country;
             $user->province = $province;
             $user->city = $city;
+        }
+        if ($request->has([ 'province_id', 'city_id', 'district_id'])) {
+            $province = $request->province_id;
+            $city = $request->city_id;
+            $district = $request->district_id;
+             $exist_province = ChainDistrict::where('id', $province)->where('levels','1')->exists();
+            $exist_city = ChainDistrict::where('id', $city)->where('levels','2')->exists();
+            $exist_district = ChainDistrict::where('id', $district)->where('levels','3')->exists();
+            if (!$exist_province) return $this->error_response('code 对应省不存在');
+            if (!$exist_city) return $this->error_response('code 对应市不存在');
+            if (!$exist_district) return $this->error_response('code 对应区不存在');
+            $user->province_id = $province;
+            $user->city_id = $city;
+            $user->district_id = $district;
         }
         $user->save();
         return $this->no_content('保存成功');
