@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\UserIntegralLog;
 use App\Repositories\UserIntegralRepository;
 use App\Repositories\UserIntegralRepositoryEloquent;
+use App\Repositories\UserRepository;
+use App\Repositories\UserRepositoryEloquent;
 use App\Repositories\UserVoucherRepository;
 use App\Repositories\UserVoucherRepositoryEloquent;
 use Dingo\Blueprint\Annotation\Method\Get;
@@ -40,13 +42,19 @@ class UserController extends BaseController
      */
     public $userIntegralRepository;
 
+
+
+
+    protected $userRepository;
+
     /**
      * UserController constructor.
      * @param UserIntegralRepository $userIntegralRepository
      */
-    public function __construct(UserIntegralRepository $userIntegralRepository)
+    public function __construct(UserIntegralRepository $userIntegralRepository,UserRepository $userRepository)
     {
         $this->userIntegralRepository = $userIntegralRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -97,14 +105,14 @@ class UserController extends BaseController
      */
     public function mobile_register(HttpRequest $request, Password $pwd)
     {
-        $this->validate($request, [
-            'code' => 'required|int',
-            'mobile' => 'required|unique:users,mobile|regex:/^1[345789][0-9]{9}$/',
-            'password' => 'required|string|min:6|max:40',
-            'user_name' => 'min:4|max:40|unique:users,user_name',
-            'from_user_mobile' => 'string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/'
-        ]);
-
+//        $this->validate($request, [
+//            'code' => 'required|int',
+//            'mobile' => 'required|unique:users,mobile|regex:/^1[345789][0-9]{9}$/',
+//            'password' => 'required|string|min:6|max:40',
+//            'user_name' => 'min:4|max:40|unique:users,user_name',
+//            'from_user_mobile' => 'string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/'
+//        ]);
+//        $userRepository->check_forms;
         $code = $request->input('code');
         $mobile = $request->input('mobile');
 
@@ -191,7 +199,7 @@ class UserController extends BaseController
         if ($pwd->check_password($password, $user->password)) {
             // 验证密码成功
             $token = JWTAuth::fromUser($user);
-            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'token' =>$token,'user' => $user])->withHeader('Authorization', 'Bearer ' . $token);
+            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> [$token,$mobile], 'user'=>$user]])->withHeader('Authorization', 'Bearer ' . $token);
         } else {
             // 验证密码错误
             return $this->error_response('密码错误');
@@ -726,7 +734,7 @@ class UserController extends BaseController
         if (!$check_ret) return $this->sms_code_error();
         $user = User::where('mobile', $mobile)->first();
         $token = JWTAuth::fromUser($user);
-        return $this->response->array(['msg' => '登陆成功', 'code' => 0,'user'=>$user,'token'=>$token])->withHeader('Authorization', 'Bearer ' . $token);;
+        return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user]])->withHeader('Authorization', 'Bearer ' . $token);;
     }
 
     /**
@@ -759,20 +767,6 @@ class UserController extends BaseController
         $user->save();
         return $this->array_response(['path' => $path, 'full_path' => '/avatar/'.$file_name]);
 
-//
-//        $this->validate($request, [
-//            'avatar' => 'required|image'
-//        ]);
-//        $avatar = $request->file('avatar');
-//        $path = $avatar->store('/avatar', 'public');
-//
-//        /**
-//         * @var  User $user
-//         */
-//        $user = $this->auth->user();
-//        $user->avatar_url = $path;
-//        $user->save();
-//        return $this->array_response(['path' => $path, 'full_path' => url(\Storage::url($path))]);
     }
 
     /**

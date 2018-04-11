@@ -30,6 +30,7 @@ class CreateChainDistrictTable extends Migration
             $table->char('code', 30);
             $table->string('area_code', 30);
             $table->tinyInteger('order')->length(2);
+            $table->tinyInteger('levels')->comment('层级');
         });
         if (file_exists(__DIR__ . '/district-full.sql')) {
             $file = fopen(__DIR__ . '/district-full.sql', 'r');
