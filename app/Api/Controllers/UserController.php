@@ -19,13 +19,15 @@ use Dingo\Blueprint\Annotation\Method\Get;
 use Dingo\Blueprint\Annotation\Method\Post;
 use Dingo\Blueprint\Annotation\Parameter;
 use Dingo\Blueprint\Annotation\Parameters;
-use Dingo\Blueprint\Annotation\Request;
+//use Dingo\Blueprint\Annotation\Request;
 use Dingo\Blueprint\Annotation\Resource;
 use Dingo\Blueprint\Annotation\Response;
 use Dingo\Blueprint\Annotation\Transaction;
 use Dingo\Blueprint\Annotation\Versions;
-use Illuminate\Http\Request as HttpRequest;
+use Dingo\Api\Http\Request as HttpRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use JWTAuth;
 use Sms;
 
@@ -45,16 +47,13 @@ class UserController extends BaseController
 
 
 
-    protected $userRepository;
-
     /**
      * UserController constructor.
      * @param UserIntegralRepository $userIntegralRepository
      */
-    public function __construct(UserIntegralRepository $userIntegralRepository,UserRepository $userRepository)
+    public function __construct(UserIntegralRepository $userIntegralRepository)
     {
         $this->userIntegralRepository = $userIntegralRepository;
-        $this->userRepository = $userRepository;
     }
 
     /**
@@ -72,10 +71,13 @@ class UserController extends BaseController
      */
     public function mobile_register_code(HttpRequest $request)
     {
-        $this->validate($request, [
-            'mobile' => 'required|string|unique:users,mobile|regex:/^1[34578][0-9]{9}$/'
-        ]);
+//        $this->validate($request, [
+//            'mobile' => 'required|string|unique:users,mobile|regex:/^1[34578][0-9]{9}$/'
+//        ]);
         $mobile = $request->input('mobile');
+        if (!is_string($mobile) || !preg_match("/^1[34578]{1}\d{9}$/", $mobile)) {
+            return $this->error_response('手机号格式不正确');
+        }
         $send_ret = Sms::sendCode($mobile, 'template_register_key_name', true);
         return $this->send_code_sms($send_ret);
     }
@@ -105,16 +107,25 @@ class UserController extends BaseController
      */
     public function mobile_register(HttpRequest $request, Password $pwd)
     {
-//        $this->validate($request, [
-//            'code' => 'required|int',
-//            'mobile' => 'required|unique:users,mobile|regex:/^1[345789][0-9]{9}$/',
-//            'password' => 'required|string|min:6|max:40',
-//            'user_name' => 'min:4|max:40|unique:users,user_name',
-//            'from_user_mobile' => 'string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/'
-//        ]);
-//        $userRepository->check_forms;
-        $code = $request->input('code');
         $mobile = $request->input('mobile');
+        $password = $request->input('password');
+        if (empty($mobile) || empty($password)) return $this->error_response('手机号与密码必须传入');
+        if (!is_string($mobile) || !preg_match("/^1[34578]{1}\d{9}$/", $mobile)) {
+            return $this->error_response('手机号格式不正确');
+        }
+        if (!is_string($password) || strlen($password) < 6) {
+            return $this->error_response('密码格式不正确');
+        }
+        $mobile_exists = User::whereMobile($mobile)->exists();
+        if ($mobile_exists) return $this->error_response('手机号已被注册');
+
+        if (isset($request['user_name'])) {
+            $user_name = $request['user_name'];
+            if (!is_string($user_name) || strlen($user_name) > 40) return $this->error_response('用户名格式不正确');
+            if (User::whereUserName($user_name)->exists()) return $this->error_response('用户名已被使用');
+        }
+
+        $code = $request->input('code');
 
         // 校验验证码
         $check_code  = Sms::checkCode($mobile, 'template_register_key_name', $code);
