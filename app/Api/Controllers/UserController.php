@@ -239,7 +239,6 @@ class UserController extends BaseController
         $user = $this->user();
         $apartment = Apartment::where('user_id',['user_id' => $user->id])
                                 ->get();
-        $tag_List = Tags::All()->get();
         $apartment->electrics_name = [];
         return $this->array_response(['data' => $apartment]);
     }

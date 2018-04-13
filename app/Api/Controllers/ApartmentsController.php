@@ -89,6 +89,7 @@ class ApartmentsController extends BaseController
         $room = $request->input('room') ? $request->input('room') : 0;
         $facilities = $request->input('facilities') ? $request->input('facilities') : 0;
         $keyword = $request->input('keyword');
+        $user_id = $request->input( 'user_id');
         if ($page < 0) return response()->json([
             'error' => ['code' => -1, 'message' => 'page不能小于0']
         ]);
@@ -97,6 +98,7 @@ class ApartmentsController extends BaseController
 
         // 搜索条件
         if ($keyword) $qr = $qr->where('keyword','like',"%{$keyword}%");
+        if($user_id) $qr = $qr->where('user_id',$user_id);
         if ($city) $qr = $qr->where('city', $city);
         if ($district) $qr = $qr->where('district', $district);
         if ($startDate && $endDate) $qr = $qr->whereBetween('updated_at', [$startDate, $endDate]);
@@ -141,6 +143,8 @@ class ApartmentsController extends BaseController
             ]
         ]);
     }
+
+
 
 
     /**
