@@ -71,9 +71,6 @@ class UserController extends BaseController
      */
     public function mobile_register_code(HttpRequest $request)
     {
-//        $this->validate($request, [
-//            'mobile' => 'required|string|unique:users,mobile|regex:/^1[34578][0-9]{9}$/'
-//        ]);
         $mobile = $request->input('mobile');
         if (!is_string($mobile) || !preg_match("/^1[34578]{1}\d{9}$/", $mobile)) {
             return $this->error_response('手机号格式不正确');
@@ -124,9 +121,7 @@ class UserController extends BaseController
             if (!is_string($user_name) || strlen($user_name) > 40) return $this->error_response('用户名格式不正确');
             if (User::whereUserName($user_name)->exists()) return $this->error_response('用户名已被使用');
         }
-
         $code = $request->input('code');
-
         // 校验验证码
         $check_code  = Sms::checkCode($mobile, 'template_register_key_name', $code);
         if (! $check_code) {
