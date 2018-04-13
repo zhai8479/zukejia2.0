@@ -12,8 +12,6 @@ use App\Models\User;
 use App\Models\UserIntegralLog;
 use App\Repositories\UserIntegralRepository;
 use App\Repositories\UserIntegralRepositoryEloquent;
-use App\Repositories\UserRepository;
-use App\Repositories\UserRepositoryEloquent;
 use App\Repositories\UserVoucherRepository;
 use App\Repositories\UserVoucherRepositoryEloquent;
 use Dingo\Blueprint\Annotation\Method\Get;
@@ -105,17 +103,6 @@ class UserController extends BaseController
      */
     public function mobile_register(HttpRequest $request, Password $pwd)
     {
-<<<<<<< HEAD
-        $this->validate($request, [
-            'code' => 'bail|required|int',
-            'mobile' => 'bail|required|unique:users,mobile|regex:/^1[345789][0-9]{9}$/',
-            'password' => 'bail|required|string|min:6|max:40',
-            'user_name' => 'bail|min:4|max:40|unique:users,user_name',
-            'from_user_mobile' => 'bail|string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/'
-        ]);
-        $code = $request->input('code');
-=======
->>>>>>> 5dc8c2f40758353bfc17f14e93f7de8c6f16a4a3
         $mobile = $request->input('mobile');
         $password = $request->input('password');
         if (empty($mobile) || empty($password)) return $this->error_response('手机号与密码必须传入');
