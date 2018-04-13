@@ -74,7 +74,7 @@ class UserController extends BaseController
     }
 
     /**
-     * 手机号注册
+     * 手机号注册//
      *
      * @Post("/mobile_register")
      * @Versions({"v1"})
