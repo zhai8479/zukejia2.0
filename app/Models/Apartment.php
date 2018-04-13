@@ -211,6 +211,8 @@ class Apartment extends Model implements Transformable
             'traffic_desc'          =>  $model->traffic_desc,
             'environment'           =>  $model->environment,
             'type'                  =>  $typeFilter($model->type),
+            'total_floor'           =>  $model->total_floor,
+            'current_floor'         =>  $model->current_floor,
             'room'                  =>  $model->room,
             'hall'                  =>  $model->hall,
             'bathroom'              =>  $model->bathroom,

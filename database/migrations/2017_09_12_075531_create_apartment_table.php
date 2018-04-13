@@ -52,6 +52,8 @@ class CreateApartmentTable extends Migration
             $table->string('round_bed')->comment('圆床');
             $table->string('big_bed')->comment('大床');
             $table->text('keyword')->comment('关键词组');
+            $table->tinyInteger('total_floor')->comment('总楼层');
+            $table->tinyInteger('current_floor')->comment('当前楼层');
             $table->softDeletes();
             $table->timestamps();
         });

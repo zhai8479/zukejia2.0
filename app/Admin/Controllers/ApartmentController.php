@@ -270,6 +270,8 @@ class ApartmentController extends Controller
                     4 => '酒店式公寓'
                 ])->default(1);
 
+                $form->number('total_floor', '总楼层')->rules('required|numeric|min:1');
+                $form->number('current_floor', '当前楼层')->rules('required|numeric|min:1');
                 $form->number('room', '室')->rules('required|numeric|min:1');
                 $form->number('hall', '厅')->rules('required|numeric|min:0');
                 $form->number('bathroom', '卫')->rules('required|numeric|min:0');
