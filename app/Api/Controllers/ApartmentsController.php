@@ -552,4 +552,46 @@ class ApartmentsController extends BaseController
 
         return $this->array_response([$cities],'success');
     }
+    /**
+     * 获取更多类型信息列表
+     */
+    public function more(){
+        $model = new Tags();
+        $decorationStyle = $model
+            ->where('type',1)
+            ->where('name', '<>', '装修风格')
+            ->get([
+                'id',
+                'name'
+            ]);
+        $direction = $model
+            ->where('type',2)
+            ->where('name', '<>', '房屋朝向')
+            ->get([
+                'id',
+                'name'
+            ]);
+        $facilities = [
+            $model->where('name', '淋浴')->get(['name', 'id'])->first(),
+            $model->where('name', '空调')->get(['name', 'id'])->first(),
+            $model->where('name', '电视')->get(['name', 'id'])->first(),
+            $model->where('name', '有线网络')->get(['name', 'id'])->first(),
+            $model->where('name', '无线网络')->get(['name', 'id'])->first(),
+            $model->where('name', '允许做饭')->get(['name', 'id'])->first(),
+            $model->where('name', '暖气')->get(['name', 'id'])->first(),
+            $model->where('name', '独立卫生间')->get(['name', 'id'])->first()
+        ];
+        $type = [
+            ['name' => '短租', 'value' => 0],
+            ['name' => '长租', 'value' => 1],
+        ];
+        $room = [
+            ['name' => '一居', 'value' => '1'],
+            ['name' => '二居', 'value' => '2'],
+            ['name' => '三居', 'value' => '3'],
+            ['name' => '四居', 'value' => '4'],
+            ['name' => '其它', 'value' => '-1'],
+        ];
+        return $this->array_response(['type'=>$type,'direction'=>$direction,'decorationStyle'=>$decorationStyle,'room'=>$room,'facilities'=>$facilities],'success');
+    }
 }
