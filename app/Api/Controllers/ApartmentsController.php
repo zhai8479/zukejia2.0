@@ -582,8 +582,10 @@ class ApartmentsController extends BaseController
             $model->where('name', '独立卫生间')->get(['name', 'id'])->first()
         ];
         $type = [
-            ['name' => '短租', 'value' => 0],
-            ['name' => '长租', 'value' => 1],
+            ['name' => '整体出租', 'value' => 1],
+            ['name' => '独立单间', 'value' => 2],
+            ['name' => '合租房屋', 'value' => 3],
+            ['name' => '酒店式公寓', 'value' => 4],
         ];
         $room = [
             ['name' => '一居', 'value' => '1'],
