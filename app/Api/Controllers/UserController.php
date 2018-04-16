@@ -190,21 +190,23 @@ class UserController extends BaseController
      * @param Password $pwd
      * @return array
      */
-    public function mobile_login(HttpRequest $request, Password $pwd)
+    public function mobile_login(HttpRequest $request , Password $pwd)
     {
         $this->validate($request, [
             'mobile' => 'required|string|regex:/^1[34578][0-9]{9}$/|exists:users',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6',
+            'url' =>'string'
         ]);
         $password = $request->input('password');
         $mobile = $request->input('mobile');
+        $url = $request->input('url');
 
         /* @var $user User*/
         $user = User::query()->where('mobile', $mobile)->first();
         if ($pwd->check_password($password, $user->password)) {
             // 验证密码成功
             $token = JWTAuth::fromUser($user);
-            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> [$token,$mobile], 'user'=>$user]])->withHeader('Authorization', 'Bearer ' . $token);
+            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> [$token,$mobile], 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);
         } else {
             // 验证密码错误
             return $this->error_response('密码错误');
@@ -732,7 +734,8 @@ class UserController extends BaseController
     {
         $this->validate($request, [
             'mobile' => 'required|string|exists:users,mobile|regex:/^1[34578][0-9]{9}$/',
-            'code' => 'required|int|min:4'
+            'code' => 'required|int|min:4',
+            'url' =>'string'
         ]);
         $mobile = $request->input('mobile');
         $code = $request->input('code');
@@ -740,7 +743,8 @@ class UserController extends BaseController
         if (!$check_ret) return $this->sms_code_error();
         $user = User::where('mobile', $mobile)->first();
         $token = JWTAuth::fromUser($user);
-        return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user]])->withHeader('Authorization', 'Bearer ' . $token);;
+        $url = $request->input('url');
+        return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);;
     }
 
     /**

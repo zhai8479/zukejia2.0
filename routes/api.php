@@ -140,7 +140,7 @@ DingoRoute::version('v1', function () {
             DingoRoute::get('get_recommend_list', 'ApartmentsController@getRecommendList');//获取推荐列表
             DingoRoute::get('get_hot_list', 'ApartmentsController@getHotList');//获取热门列表
             DingoRoute::get('get_rental_list', 'ApartmentsController@getRentalList');//获取不同类型房源列表
-            DingoRoute::get('more','ApartmentsController@more');
+            DingoRoute::get('more','ApartmentsController@more');//获取更多类型信息列表
         });
 
         // 订单
