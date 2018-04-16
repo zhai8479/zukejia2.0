@@ -83,6 +83,14 @@ class BaseController extends Controller
         return $this->array_response([], $msg, $code, $errors);
     }
 
+    public function fail($code,$message= '')
+    {
+        return $this->response()->json([
+            'code'=> $code,
+            'message'=> $message
+        ]);
+    }
+
     /**
      * 未登录
      * @return array
