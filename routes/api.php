@@ -116,6 +116,13 @@ DingoRoute::version('v1', function () {
             DingoRoute::get('show/{id}', "UserMoneyLogsController@show");
         });
 
+
+        // 短信相关
+        DingoRoute::group(['prefix' => 'Sms'], function () {
+            // 获取资金记录详情
+            DingoRoute::get('sms_codes/image', 'SmsController@image');
+        });
+
         // 房源信息
         DingoRoute::group(['prefix' => 'house'], function () {
             // 获取房源详情
