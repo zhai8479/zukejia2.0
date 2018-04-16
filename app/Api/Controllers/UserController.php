@@ -118,7 +118,6 @@ class UserController extends BaseController
         if (isset($request['user_name'])) {
             $user_name = $request['user_name'];
             if (!is_string($user_name) || strlen($user_name) > 40) return $this->error_response('用户名格式不正确');
-            if (User::whereUserName($user_name)->exists()) return $this->error_response('用户名已被使用');
         }
         $code = $request->input('code');
         // 校验验证码
