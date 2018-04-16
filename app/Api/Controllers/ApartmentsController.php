@@ -86,8 +86,8 @@ class ApartmentsController extends BaseController
         $decorationStyle = $request->input('decoration_style') ? (int)$request->input('decoration_style') : 0;
         $startPrice = $request->input('start_price') ? (float)$request->input('start_price') : 0.00;
         $endPrice = $request->input('end_price') ? (float)$request->input('end_price') : 0.00;
-        $room = $request->input('room') ? $request->input('room') : 0;
-        $facilities = $request->input('facilities') ? $request->input('facilities') : 0;
+        $roomtemp = $request->input('room') ? $request->input('room')  : 0;
+        $facilitiestemp = $request->input('facilities') ? $request->input('facilities') : 0;
         $keyword = $request->input('keyword');
         $user_id = $request->input( 'user_id');
         if ($page < 0) return response()->json([
@@ -106,26 +106,47 @@ class ApartmentsController extends BaseController
         if ($decorationStyle) $qr = $qr->where('decoration_style', $decorationStyle);
         if ($direction) $qr = $qr->where('direction', $direction);
         if ($endPrice) $qr = $qr->whereBetween('rental_price', [$startPrice, $endPrice]);
+        $room = $roomtemp;
+        if(strpos( $roomtemp,',')) {
+            $room = explode(",", $roomtemp);
+        }
         if ($room) {
             $otherRoom = '';
-            foreach ($room as $key => $value) {
-                if ($value == -1) {
-                    $otherRoom = $value;
-                    unset($room[$key]);
+            if(is_array( $room)) {
+                foreach ($room as $key => $value) {
+                    if ($value == -1) {
+                        $otherRoom = $value;
+                        unset($room[$key]);
+                    }
                 }
             }
-            $qr = $qr->whereIn('room', $room);
+            if(is_array( $room)) {
+                $qr = $qr->whereIn('room', $room);
+            }
+            else {
+                $qr = $qr->where('room', $room);
+            }
             if ($otherRoom) $qr = $qr->where('room', '>', 4);
+        }
+        $facilities = $facilitiestemp;
+
+        if(strpos( $facilitiestemp,',')) {
+            $facilities = explode(",", $facilitiestemp);
         }
         if ($facilities) {
             $raw = '';
-            foreach ($facilities as $value) {
-                if ($value == $facilities[0]) $raw = "FIND_IN_SET({$value},CONCAT(bathroom_utils,',',electrics,',',bed,',',kitchen_utils,',',facilities,',',requires))";
-                else $raw .= " AND FIND_IN_SET({$value},CONCAT(bathroom_utils,',',electrics,',',bed,',',kitchen_utils,',',facilities,',',requires))";
+            if(is_array( $facilities)) {
+                foreach ($facilities as $value) {
+                    if ($value == $facilities[0]) $raw = "FIND_IN_SET({$value},CONCAT(bathroom_utils,',',electrics,',',bed,',',kitchen_utils,',',facilities,',',requires))";
+                    else $raw .= " AND FIND_IN_SET({$value},CONCAT(bathroom_utils,',',electrics,',',bed,',',kitchen_utils,',',facilities,',',requires))";
+                }
+            }
+            else
+            {
+                $raw = "FIND_IN_SET({$facilities},CONCAT(bathroom_utils,',',electrics,',',bed,',',kitchen_utils,',',facilities,',',requires))";
             }
             $qr = $qr->whereRaw($raw);
         }
-
         $count = $qr->count();
         $totalPages = ceil($count / $pageSize) ;
         $apartments = $qr->limit($pageSize)->offset(($page - 1) * $pageSize)->get();
