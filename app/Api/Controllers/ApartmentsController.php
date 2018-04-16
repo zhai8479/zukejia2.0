@@ -136,6 +136,8 @@ class ApartmentsController extends BaseController
         });
         return response()->json([
             'data' => $result,
+            'code' => '0',
+            'msg' => 'success',
             'pageinfo' => [
                 'curPage' => $page,
                 'pageSize' => $pageSize,
@@ -197,9 +199,7 @@ class ApartmentsController extends BaseController
     public function show($id)
     {
         $apartment = $this->repository->find($id);
-        return response()->json([
-            'data' => $apartment,
-        ]);
+        return $this->array_response([$apartment],'success');
 
     }
 
@@ -263,9 +263,7 @@ class ApartmentsController extends BaseController
                 city.id
 	    ");
 
-        return response()->json([
-            'data' => $apartment,
-        ]);
+        return $this->array_response([$apartment],'success');
 
     }
 
@@ -300,9 +298,7 @@ class ApartmentsController extends BaseController
                 'initials'
             ]);
 
-        return response()->json([
-            'data' => $result,
-        ]);
+        return $this->array_response([$result],'success');
 
     }
 
@@ -327,10 +323,7 @@ class ApartmentsController extends BaseController
                 'name'
             ]);
 
-        return response()->json([
-            'data' => $result,
-        ]);
-
+        return $this->array_response([$result],'success');
     }
 
     /**
@@ -354,9 +347,7 @@ class ApartmentsController extends BaseController
                 'name'
             ]);
 
-        return response()->json([
-            'data' => $result,
-        ]);
+        return $this->array_response([$result],'success');
 
     }
 
@@ -379,9 +370,7 @@ class ApartmentsController extends BaseController
             ['name' => '酒店式公寓', 'value' => 4],
         ];
 
-        return response()->json([
-            'data' => $result,
-        ]);
+        return $this->array_response([$result],'success');
 
     }
 
@@ -405,9 +394,7 @@ class ApartmentsController extends BaseController
             ['name' => '其它', 'value' => '-1'],
         ];
 
-        return response()->json([
-            'data' => $result,
-        ]);
+        return $this->array_response([$result],'success');
 
     }
 
@@ -435,9 +422,7 @@ class ApartmentsController extends BaseController
             $model->where('name', '独立卫生间')->get(['name', 'id'])->first()
         ];
 
-        return response()->json([
-            'data' => $result,
-        ]);
+        return $this->array_response([$result],'success');
 
     }
 
@@ -461,9 +446,7 @@ class ApartmentsController extends BaseController
         $apartments->reject(function($item)use(&$result, $apartments){
             $result[] = $item->indexListFilter($item);
         });
-        return response()->json([
-            'data' => $result
-        ]);
+        return $this->array_response([$result],'success');
     }
 
     /**
@@ -486,9 +469,7 @@ class ApartmentsController extends BaseController
         $apartments->reject(function($item)use(&$result, $apartments){
             $result[] = $item->indexListFilter($item);
         });
-        return response()->json([
-            'data' => $result
-        ]);
+        return $this->array_response([$result],'success');
     }
 
     /**
@@ -513,9 +494,7 @@ class ApartmentsController extends BaseController
         $apartments->reject(function($item)use(&$result, $apartments){
             $result[] = $item->indexListFilter($item);
         });
-        return response()->json([
-            'data' => $result
-        ]);
+        return $this->array_response([$result],'success');
     }
 
     /**
@@ -571,8 +550,6 @@ class ApartmentsController extends BaseController
             LIMIT 0,10
 	    ");
 
-        return response()->json([
-            'data' => $cities,
-        ]);
+        return $this->array_response([$cities],'success');
     }
 }

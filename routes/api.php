@@ -122,17 +122,17 @@ DingoRoute::version('v1', function () {
             DingoRoute::get('show/{id}', 'ApartmentsController@show');
             // 获取房源列表
             DingoRoute::get('index', 'ApartmentsController@index');
-            DingoRoute::get('city', 'ApartmentsController@city');
+            DingoRoute::get('city', 'ApartmentsController@city');//获取城市信息
             DingoRoute::get('get_city_by_key', 'ApartmentsController@get_city_by_key');
-            DingoRoute::get('district', 'ApartmentsController@district');
-            DingoRoute::get('decoration_style', 'ApartmentsController@decorationStyle');
-            DingoRoute::get('direction', 'ApartmentsController@direction');
-            DingoRoute::get('type', 'ApartmentsController@type');
-            DingoRoute::get('room', 'ApartmentsController@room');
-            DingoRoute::get('facilities', 'ApartmentsController@facilities');
-            DingoRoute::get('get_recommend_list', 'ApartmentsController@getRecommendList');
-            DingoRoute::get('get_hot_list', 'ApartmentsController@getHotList');
-            DingoRoute::get('get_rental_list', 'ApartmentsController@getRentalList');
+            DingoRoute::get('district', 'ApartmentsController@district');//获取行政区域信息
+            DingoRoute::get('decoration_style', 'ApartmentsController@decorationStyle');//获取装修风格
+            DingoRoute::get('direction', 'ApartmentsController@direction');//获取房屋朝向
+            DingoRoute::get('type', 'ApartmentsController@type');//获取房屋类型
+            DingoRoute::get('room', 'ApartmentsController@room');//获取房屋户型
+            DingoRoute::get('facilities', 'ApartmentsController@facilities');//获取配套设施
+            DingoRoute::get('get_recommend_list', 'ApartmentsController@getRecommendList');//获取推荐列表
+            DingoRoute::get('get_hot_list', 'ApartmentsController@getHotList');//获取热门列表
+            DingoRoute::get('get_rental_list', 'ApartmentsController@getRentalList');//获取不同类型房源列表
         });
 
         // 订单
