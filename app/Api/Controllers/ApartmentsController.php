@@ -457,19 +457,19 @@ class ApartmentsController extends BaseController
      *
      * @Get("get_recommend_list")
      *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function getRecommendList()
     {
         $qr = new Apartment();
 
-        $apartments = $qr->where('status', '4')->limit(6)->get();
+        $apartments = $qr->where('status', '4')->get();
+       // $apartments = $qr->where('status', '4')->limit(6)->get();
 
-        $result = [];
-        $apartments->reject(function($item)use(&$result, $apartments){
-            $result[] = $item->indexListFilter($item);
-        });
-        return $this->array_response([$result],'success');
+//        $result = [];
+//        $apartments->reject(function($item)use(&$result, $apartments){
+//            $result[] = $item->indexListFilter($item);
+//        });
+        return $this->array_response([$apartments],'success');
     }
 
     /**
