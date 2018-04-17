@@ -240,8 +240,16 @@ class ApartmentsController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function city()
+    public function city(HttpRequest $request)
     {
+        $open = $request->input('open') ? $request->input('open')  : 0;
+        $strwhere = '';
+        $strwhere1= '';
+        if($open>0)
+        {
+            $strwhere = ' AND is_open_shop = 1';
+            $strwhere1= ' WHERE city.is_open_shop = 1';
+        }
         $apartment = \DB::select("
             SELECT
                 city. NAME AS c_name,
@@ -257,7 +265,7 @@ class ApartmentsController extends BaseController
                     FROM
                         chain_district
                     WHERE
-                        id IN (1, 2, 3, 4)
+                        id IN (1, 2, 3, 4) ".$strwhere."
                 ) AS city
             LEFT JOIN apartment ON city.id = apartment.city
             GROUP BY
@@ -282,6 +290,7 @@ class ApartmentsController extends BaseController
                 ) AS province
             INNER JOIN chain_district AS city ON city.parent_id = province.id
             LEFT JOIN apartment ON city.id = apartment.city
+            ".$strwhere1."
             GROUP BY
                 city.id
 	    ");
