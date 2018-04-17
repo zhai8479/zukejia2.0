@@ -199,13 +199,16 @@ class UserController extends BaseController
         $password = $request->input('password');
         $mobile = $request->input('mobile');
         $url = $request->input('url');
-
+        if(!isset($url))
+        {
+            $url = '';
+        }
         /* @var $user User*/
         $user = User::query()->where('mobile', $mobile)->first();
         if ($pwd->check_password($password, $user->password)) {
             // 验证密码成功
             $token = JWTAuth::fromUser($user);
-            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> [$token,$mobile], 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);
+            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);
         } else {
             // 验证密码错误
             return $this->error_response('密码错误');
@@ -227,18 +230,21 @@ class UserController extends BaseController
          * @var $user User
          */
         $user = $this->user;
-        $province = ChainDistrict::where('code', $user->province)->first(['id', 'name']);
-        $city = ChainDistrict::where('code', $user->city)->first(['id', 'name']);
+        $province = ChainDistrict::where('id', $user->province_id)->first(['id', 'name']);
+        $city = ChainDistrict::where('id', $user->city_id)->first(['id', 'name']);
+        $district = ChainDistrict::where('id', $user->district_id)->first(['id', 'name']);
         if (!empty($province)) {
             $user->province_str = $province->name;
             $user->province_id = $province->id;
-
         }
         if (!empty($city)) {
             $user->city_str = $city->name;
             $user->city_id = $city->id;
         }
-
+        if (!empty($district)) {
+            $user->district_str = $district->name;
+            $user->district_id = $district->id;
+        }
 
         $user->country_str = User::$countries[$user->country]??'';
         $user->education_str = User::$educations[$user->education]??'';
@@ -743,6 +749,10 @@ class UserController extends BaseController
         $user = User::where('mobile', $mobile)->first();
         $token = JWTAuth::fromUser($user);
         $url = $request->input('url');
+        if(!isset($url))
+        {
+            $url = '';
+        }
         return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);;
     }
 
@@ -812,7 +822,10 @@ class UserController extends BaseController
      *  @Parameter("profession", required=false, description="职业"),
      *  @Parameter("country", required=false, description="国家代码 传默认值1"),
      *  @Parameter("province", required=false, description="省代码 通过 /district/province_list 获取"),
-     *  @Parameter("city", required=false, description="市代码 通过 /district/city_list 获取")
+     *  @Parameter("city", required=false, description="市代码 通过 /district/city_list 获取"),
+     *  @Parameter("province_id", required=false, description="省id "),
+     *  @Parameter("city_id", required=false, description="市id "),
+     *  @Parameter("district_id", required=false, description="区id "),
      * })
      *
      * @param HttpRequest $request
@@ -828,7 +841,10 @@ class UserController extends BaseController
             'profession' => 'string|max:50',
             'country' => 'integer',
             'province' => 'integer',
-            'city' => 'integer'
+            'city' => 'integer',
+            'province_id' => 'integer',
+            'city_id' => 'integer',
+            'district_id' => 'integer',
         ]);
         /**
          * @var User $user
