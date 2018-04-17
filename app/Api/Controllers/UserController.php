@@ -230,18 +230,21 @@ class UserController extends BaseController
          * @var $user User
          */
         $user = $this->user;
-        $province = ChainDistrict::where('code', $user->province)->first(['id', 'name']);
-        $city = ChainDistrict::where('code', $user->city)->first(['id', 'name']);
+        $province = ChainDistrict::where('id', $user->province_id)->first(['id', 'name']);
+        $city = ChainDistrict::where('id', $user->city_id)->first(['id', 'name']);
+        $district = ChainDistrict::where('id', $user->district_id)->first(['id', 'name']);
         if (!empty($province)) {
             $user->province_str = $province->name;
             $user->province_id = $province->id;
-
         }
         if (!empty($city)) {
             $user->city_str = $city->name;
             $user->city_id = $city->id;
         }
-
+        if (!empty($district)) {
+            $user->district_str = $district->name;
+            $user->district_id = $district->id;
+        }
 
         $user->country_str = User::$countries[$user->country]??'';
         $user->education_str = User::$educations[$user->education]??'';
