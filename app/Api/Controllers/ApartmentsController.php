@@ -463,12 +463,12 @@ class ApartmentsController extends BaseController
         $qr = new Apartment();
 
         $apartments = $qr->where('status', '4')->get();
-       // $apartments = $qr->where('status', '4')->limit(6)->get();
+        $apartments = $qr->where('status', '4')->limit(6)->get();
 
-//        $result = [];
-//        $apartments->reject(function($item)use(&$result, $apartments){
-//            $result[] = $item->indexListFilter($item);
-//        });
+        $result = [];
+        $apartments->reject(function($item)use(&$result, $apartments){
+            $result[] = $item->indexListFilter($item);
+        });
         return $this->array_response([$apartments],'success');
     }
 
