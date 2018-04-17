@@ -295,7 +295,7 @@ class ApartmentsController extends BaseController
                 city.id
 	    ");
 
-        return $this->array_response([$apartment],'success');
+        return $this->array_response($apartment,'success');
 
     }
 
@@ -478,7 +478,8 @@ class ApartmentsController extends BaseController
         $apartments->reject(function($item)use(&$result, $apartments){
             $result[] = $item->indexListFilter($item);
         });
-        return $this->array_response([$apartments],'success');
+
+        return $this->array_response([$result],'success');
     }
 
     /**

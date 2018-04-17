@@ -133,7 +133,12 @@ class OrdersController extends BaseController
         $orders = $this->repository->paginate($pageSize);
         if ($orders) {
             foreach ($orders as $order) {
-                $order->apartment_info = Apartment::find($order->apartment_id);
+                $apartments = Apartment::find($order->apartment_id);
+                $result = [];
+                $apartments->reject(function($item)use(&$result, $apartments){
+                    $result[] = $item->indexListFilter($item);
+                });
+                $order->apartment_info = $result;
                 $order->status_str = Order::$order_status[$order->status];
             }
         }
