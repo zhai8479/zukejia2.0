@@ -133,7 +133,7 @@ class OrdersController extends BaseController
         $orders = $this->repository->paginate($pageSize);
         if ($orders) {
             foreach ($orders as $order) {
-                $apartments = Apartment::find($order->apartment_id);
+                $apartments = Apartment::query()->where('id',$order->apartment_id)->get();
                 $result = [];
                 $apartments->reject(function($item)use(&$result, $apartments){
                     $result[] = $item->indexListFilter($item);
