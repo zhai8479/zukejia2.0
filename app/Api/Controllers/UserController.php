@@ -199,13 +199,16 @@ class UserController extends BaseController
         $password = $request->input('password');
         $mobile = $request->input('mobile');
         $url = $request->input('url');
-
+        if(!isset($url))
+        {
+            $url = '';
+        }
         /* @var $user User*/
         $user = User::query()->where('mobile', $mobile)->first();
         if ($pwd->check_password($password, $user->password)) {
             // 验证密码成功
             $token = JWTAuth::fromUser($user);
-            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> [$token], 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);
+            return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);
         } else {
             // 验证密码错误
             return $this->error_response('密码错误');
@@ -743,6 +746,10 @@ class UserController extends BaseController
         $user = User::where('mobile', $mobile)->first();
         $token = JWTAuth::fromUser($user);
         $url = $request->input('url');
+        if(!isset($url))
+        {
+            $url = '';
+        }
         return $this->response->array(['msg' => '登陆成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user,'url'=>$url]])->withHeader('Authorization', 'Bearer ' . $token);;
     }
 
