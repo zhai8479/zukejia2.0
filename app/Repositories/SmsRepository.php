@@ -16,7 +16,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Carbon\Carbon;
-use App\Models\Notification;
 
 class SmsRepository
 {

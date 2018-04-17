@@ -22,7 +22,8 @@
         "zhan3333/aliyun-sms": "v0.2",
         "zhan3333/api-tester": "v1.0.3",
         "stevenyangecho/laravel-u-editor": "~1.4",
-        "gregwar/captcha": "1.*"
+        "gregwar/captcha": "1.*",
+        "qiniu/php-sdk": "7.1.*"
     },
     "require-dev": {
         "erusev/parsedown": "^1.6",

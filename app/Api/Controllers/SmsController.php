@@ -2,10 +2,16 @@
 
 namespace App\Api\Controllers;
 
-use Illuminate\Http\Request as HttpRequest;
+use Dingo\Blueprint\Annotation\Method\Get;
+use Dingo\Blueprint\Annotation\Method\Post;
+use Dingo\Blueprint\Annotation\Parameter;
+use Dingo\Blueprint\Annotation\Parameters;
+use Dingo\Blueprint\Annotation\Resource;
+use Dingo\Api\Http\Request as HttpRequest;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Redis;
 use App\Repositories\SmsRepository;
+
 
 class SmsController  extends BaseController
 {
@@ -28,11 +34,13 @@ class SmsController  extends BaseController
  */
     public function image(HttpRequest $request)
     {
+
         $width = $request->get('width');
         $height = $request->get('height');
         //生成验证码图片的Builder对象，配置相应属性
 
         $builder = new CaptchaBuilder;
+
         //设置验证码的内容
         $phrase = strtoupper(substr($builder->getPhrase(),0,6));
         $builder->setPhrase($phrase);
