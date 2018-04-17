@@ -819,7 +819,10 @@ class UserController extends BaseController
      *  @Parameter("profession", required=false, description="职业"),
      *  @Parameter("country", required=false, description="国家代码 传默认值1"),
      *  @Parameter("province", required=false, description="省代码 通过 /district/province_list 获取"),
-     *  @Parameter("city", required=false, description="市代码 通过 /district/city_list 获取")
+     *  @Parameter("city", required=false, description="市代码 通过 /district/city_list 获取"),
+     *  @Parameter("province_id", required=false, description="省id "),
+     *  @Parameter("city_id", required=false, description="市id "),
+     *  @Parameter("district_id", required=false, description="区id "),
      * })
      *
      * @param HttpRequest $request
@@ -835,7 +838,10 @@ class UserController extends BaseController
             'profession' => 'string|max:50',
             'country' => 'integer',
             'province' => 'integer',
-            'city' => 'integer'
+            'city' => 'integer',
+            'province_id' => 'integer',
+            'city_id' => 'integer',
+            'district_id' => 'integer',
         ]);
         /**
          * @var User $user
