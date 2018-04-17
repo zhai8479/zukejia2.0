@@ -65,21 +65,26 @@ class SmsController  extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function send(Request $request)
+    public function send(HttpRequest $request)
     {
+
         $mobile = $request->input('mobile');
         $image_code = strtoupper($request->input('image_code'));
         $acid = $request->input('acid');
         $key = "image_code:" . $acid;
+
         if (Redis::exists($key)) {
+
             $code = Redis::get($key);
             if ($code == $image_code) {
                 //清除redis
-                Redis::del($key);
-                return $this->array_response($this->repository->sendSmsCode($mobile),'success');
+         //       Redis::del($key);
+                $result = $this->repository->sendSmsCode($mobile);
+                return $this->array_response([$result],'success');
             }
-            return $this->fail(10503);
+            return $this->fail(10503,'您输入的图形验证码不正确');
         }
-        return $this->fail(10503);
+
+        return $this->fail(10503,'图形验证码过期！');
     }
 }

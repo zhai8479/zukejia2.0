@@ -22,10 +22,10 @@ class SmsRepository
     public function sendSmsCode($mobile)
     {
         $smsCode = $this->generateCode(6);
-        $data = '{"mobilePhoneNumber": "' . $mobile . '", "template":"验证码短信","validCode":"' . $smsCode . '"}';
+        $message = '验证码短信:' . $smsCode ;
         $success = $this->sendSmsCodeSuccess($mobile, $smsCode);
         $exception = $this->sendSmsCodeException($mobile, $smsCode);
-        $this->sendAsyncRequest($data, $success, $exception);
+        return $this->sendAsyncRequest($mobile,$message, $success, $exception);
         return true;
     }
 
@@ -98,18 +98,23 @@ class SmsRepository
 
     public function sendAsyncRequest($mobile,$content, $success, $failure)
     {
+
         $url = $this->getUrl($mobile,$content);
         $client = new Client();
-        $promise = $client->requestAsync('POST', env('SMS_REQUEST_URL').$url,null);
+        $data = $this->getParameter($mobile,$content);
+        return env('SMS_REQUEST_URL');
+        return $promise = $client->requestAsync('POST', env('SMS_REQUEST_URL'),$data);
         $promise->then($success, $failure);
         $promise->wait();
+        return 1111111111;
     }
 
     public function sendSyncRequest($mobile,$content)
     {
         $client = new Client();
         $url = $this->getUrl($mobile,$content);
-        $response = $client->request('POST', env('SMS_REQUEST_URL').$url, null);
+        $data = $this->getParameter($mobile,$content);
+        $response = $client->request('POST', env('SMS_REQUEST_URL').$url, $data);
         return ($response->getStatusCode() == 200);
     }
 
@@ -121,5 +126,15 @@ class SmsRepository
         $time_zoe = date("YmdHis");
         $str = $user_id.$pwd.$time_zoe;
         return '?action=send&userid='.$user_id.'&timestamp='.$time_zoe.'&sign='.md5($str).'&mobile='.$mobile.'&content='.$content.'&sendTime=&extno=';
+    }
+
+    public function getParameter($mobile,$content)
+    {
+        $user_id = 'zkj';
+        $pwd = 'zkj_zkj123';
+        ini_set('date.timezone','Asia/Shanghai');
+        $time_zoe = date("YmdHis");
+        $str = $user_id.$pwd.$time_zoe;
+        return ['action'=>'send','userid'=>'zkj','timestamp'=>$time_zoe,'sign'=>md5($str),'mobile'=>$mobile,'content'=>$content,'sendTime'=>'','extno'=>''];
     }
 }

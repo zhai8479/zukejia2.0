@@ -83,9 +83,9 @@ class BaseController extends Controller
         return $this->array_response([], $msg, $code, $errors);
     }
 
-    public function fail($code,$message= '')
+    protected function fail($code,$message= '')
     {
-        return $this->response()->json([
+        return $this->response->array([
             'code'=> $code,
             'message'=> $message
         ]);
