@@ -30,11 +30,10 @@ class Apartment extends Model implements Transformable
      * @var array
      */
     protected $status_list = [
-        1 => '热销',
-        2 => '预租',
-        3 => '出租',
-        4 => '推荐',
-        5 => '热门'
+        1 => '热销中',
+        2 => '整理中',
+        3 => '预租中',
+        4 => '出租中'
     ];
 
     /**
@@ -43,10 +42,9 @@ class Apartment extends Model implements Transformable
      */
     protected $status_value = [
         1 => '热销中',
-        2 => '预租中',
-        3 => '出租中',
-        4 => '推荐',
-        5 => '热门'
+        2 => '整理中',
+        3 => '预租中',
+        4 => '出租中'
     ];
 
     /**
@@ -234,6 +232,8 @@ class Apartment extends Model implements Transformable
             'rental_deposit'        =>  $model->rental_deposit,
             'total_floor'        =>  $model->total_floor,
             'current_floor'        =>  $model->current_floor,
+            'click_num'        =>  $model->click_num,
+            'is_commend'        =>  $model->is_commend,
             'created_at'            =>  $model->created_at,
             'updated_at'            =>  $model->updated_at
         ];
