@@ -54,6 +54,8 @@ class CreateApartmentTable extends Migration
             $table->text('keyword')->comment('关键词组');
             $table->tinyInteger('total_floor')->comment('总楼层');
             $table->tinyInteger('current_floor')->comment('当前楼层');
+            $table->string('is_commend')->comment('是否推荐');
+            $table->bigInteger('click_num')->comment('点击率');
             $table->softDeletes();
             $table->timestamps();
         });

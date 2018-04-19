@@ -491,7 +491,7 @@ class ApartmentsController extends BaseController
     {
         $qr = new Apartment();
         $pageSize = $request->input('pageSize') ? (int)$request->input('pageSize') : 4;
-        $apartments = $qr->where('status', '4')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
+        $apartments = $qr->where('is_commend', '是')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
 
         $result = [];
         $apartments->reject(function($item)use(&$result, $apartments){

@@ -177,6 +177,7 @@ class OrdersController extends BaseController
         $end_date = $input['end_date'];
         // 填写默认信息
         $input['user_id'] = $user->id;
+        //创建一个订单编号
         $input['order_no'] = $this->repository->generate_order_no();
         /**
          * 处理房源数据
