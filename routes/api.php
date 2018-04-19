@@ -95,7 +95,7 @@ DingoRoute::version('v1', function () {
             // 获取入住人列表
             DingoRoute::get('index', 'StayPeopleController@index');
             // 删除入住人
-            DingoRoute::delete('delete/{id}', 'StayPeopleController@delete');
+            DingoRoute::post('delete/{id}', 'StayPeopleController@delete');
             // 编辑入住人
             DingoRoute::post('update', 'StayPeopleController@update');
             // 添加入住人
