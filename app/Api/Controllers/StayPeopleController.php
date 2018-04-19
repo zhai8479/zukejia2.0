@@ -115,7 +115,13 @@ class StayPeopleController extends BaseController
     {
         if($id) {
             $user = $this->auth->user();
-            $delete_num = StayPeople::whereUserId($user->id)->where('id', $id)->delete();
+            $stayPeople = StayPeople::where('user_id', $user->id)->find($id);
+            if($stayPeople)
+            {
+                $stayPeople->deleted_at = now();
+                $stayPeople->is_del = 1;
+                $stayPeople->save();
+            }
             return $this->array_response([],'删除成功',0);
         }
         return $this->array_response([],'删除成功',0);
