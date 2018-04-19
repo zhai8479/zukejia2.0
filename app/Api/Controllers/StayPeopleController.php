@@ -113,9 +113,13 @@ class StayPeopleController extends BaseController
      */
     public function delete($id)
     {
-        $user = $this->auth->user();
-        $delete_num = StayPeople::whereUserId($user->id)->where('id', $id)->delete();
-        return ['delete_num' => $delete_num];
+        if($id) {
+            $user = $this->auth->user();
+            $delete_num = StayPeople::whereUserId($user->id)->where('id', $id)->delete();
+            return $this->array_response([],'删除成功',0);
+        }
+        return $this->array_response([],'删除成功',0);
+
     }
 
     /**
@@ -152,6 +156,6 @@ class StayPeopleController extends BaseController
             $stayPeople->mobile = $request->mobile;
         }
         $success = $stayPeople->save();
-        return ['success' => $success];
+        return ['code'=>0,'success' => $success,'msg'=>'修改成功'];
     }
 }
