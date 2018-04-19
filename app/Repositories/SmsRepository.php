@@ -12,20 +12,29 @@
 namespace App\Repositories;
 
 use App\Models\SmsCode;
+use Encore\Admin\Grid\Tools\PerPageSelector;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Carbon\Carbon;
+use App\Models\logs;
 
 class SmsRepository
 {
+
+    public  function  loadTemp($tempId,$mobile,$content)
+    {
+
+    }
+
+
     public function sendSmsCode($mobile)
     {
         $smsCode = $this->generateCode(6);
-        $message = '验证码短信:' . $smsCode ;
+        $message = '验证码短信:' . $smsCode .'【租客家】';
         $success = $this->sendSmsCodeSuccess($mobile, $smsCode);
         $exception = $this->sendSmsCodeException($mobile, $smsCode);
-        return $this->sendAsyncRequest($mobile,$message, $success, $exception);
+        $this->sendAsyncRequest($mobile,$message,$success,$exception);
         return true;
     }
 
@@ -36,6 +45,7 @@ class SmsRepository
 
     public function sendSmsCodeSuccess($mobile, $smsCode)
     {
+
         return function (ResponseInterface $res) use ($mobile, $smsCode) {
             $status = $res->getStatusCode();
             $this->saveSmsCode($mobile, $smsCode, $status);
@@ -102,11 +112,10 @@ class SmsRepository
         $url = $this->getUrl($mobile,$content);
         $client = new Client();
         $data = $this->getParameter($mobile,$content);
-        return env('SMS_REQUEST_URL');
-        return $promise = $client->requestAsync('POST', env('SMS_REQUEST_URL'),$data);
+        $promise = $client->requestAsync('POST', env('SMS_REQUEST_URL').$url,[]);
+
         $promise->then($success, $failure);
         $promise->wait();
-        return 1111111111;
     }
 
     public function sendSyncRequest($mobile,$content)
@@ -114,7 +123,7 @@ class SmsRepository
         $client = new Client();
         $url = $this->getUrl($mobile,$content);
         $data = $this->getParameter($mobile,$content);
-        $response = $client->request('POST', env('SMS_REQUEST_URL').$url, $data);
+        $response = $client->request('POST', env('SMS_REQUEST_URL').$url, []);
         return ($response->getStatusCode() == 200);
     }
 
@@ -125,7 +134,7 @@ class SmsRepository
         ini_set('date.timezone','Asia/Shanghai');
         $time_zoe = date("YmdHis");
         $str = $user_id.$pwd.$time_zoe;
-        return '?action=send&userid='.$user_id.'&timestamp='.$time_zoe.'&sign='.md5($str).'&mobile='.$mobile.'&content='.$content.'&sendTime=&extno=';
+        return '?action=send&userid=66&timestamp='.$time_zoe.'&sign='.utf8_encode(md5($str)).'&mobile='.$mobile.'&content='.$content.'&sendTime=&extno=';
     }
 
     public function getParameter($mobile,$content)
@@ -135,6 +144,13 @@ class SmsRepository
         ini_set('date.timezone','Asia/Shanghai');
         $time_zoe = date("YmdHis");
         $str = $user_id.$pwd.$time_zoe;
-        return ['action'=>'send','userid'=>'zkj','timestamp'=>$time_zoe,'sign'=>md5($str),'mobile'=>$mobile,'content'=>$content,'sendTime'=>'','extno'=>''];
+        return ['action'=>'send',
+            'userid'=>66,
+            'timestamp'=>$time_zoe,
+            'sign'=>utf8_encode(md5($str)),
+            'mobile'=>$mobile,
+            'content'=>utf8_encode($content),
+            'sendTime'=>'',
+            'extno'=>''];
     }
 }

@@ -12,6 +12,7 @@ class SmsCode extends Model
      */
     const EXPIRES_IN = 600;
 
+    protected $table = 'sms_codes';
 
     protected $fillable = ['mobile', 'code', 'status'];
 }

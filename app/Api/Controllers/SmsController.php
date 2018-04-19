@@ -53,6 +53,7 @@ class SmsController  extends BaseController
         //$redis->set($key, $phrase);
         //return response()->json($redis->get($key));
         Redis::set($key, $phrase, 'EX', 300);
+        return Redis::get($key);
         //生成图片
         return response($builder->output())->header("Content-type", "image/jpeg");
     }
@@ -86,5 +87,21 @@ class SmsController  extends BaseController
         }
 
         return $this->fail(10503,'图形验证码过期！');
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $smsCode
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function verify(Request $request, $smsCode)
+    {
+        $mobile = $request->input('mobile');
+
+        return $this->successOrFail($this->repository->verifySmsCode($mobile, $smsCode), 10502,'手机验证码不正确');
+
     }
 }

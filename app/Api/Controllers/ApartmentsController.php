@@ -89,6 +89,7 @@ class ApartmentsController extends BaseController
         $endPrice = $request->input('end_price') ? (float)$request->input('end_price') : 0.00;
         $roomtemp = $request->input('room') ? $request->input('room')  : 0;
         $facilitiestemp = $request->input('facilities') ? $request->input('facilities') : 0;
+        $area = $request->input('area') ? $request->input('area') : 0;
         $keyword = $request->input('keyword');
         $user_id = $request->input( 'user_id');
         if ($page < 0) return response()->json([
@@ -148,6 +149,20 @@ class ApartmentsController extends BaseController
                 $raw = "FIND_IN_SET({$facilities},CONCAT(bathroom_utils,',',electrics,',',bed,',',kitchen_utils,',',facilities,',',requires))";
             }
             $qr = $qr->whereRaw($raw);
+        }
+        if($area>0)
+        {
+            $start = 0;
+            $end = 0;
+            switch ($area)
+            {
+                case 1:$end = 60;break;
+                case 2:$start = 60;$end = 100;break;
+                case 3:$start = 100;$end = 140;break;
+                case 4;$start = 140;$end = 180;break;
+                case 5;$start = 180;$end = 100000;break;
+            }
+            $qr = $qr->whereBetween('created_at', [$start, $end]);
         }
         $count = $qr->count();
         $totalPages = ceil($count / $pageSize) ;
@@ -221,8 +236,13 @@ class ApartmentsController extends BaseController
      */
     public function show($id)
     {
-        $apartment = $this->repository->find($id);
-        return $this->array_response([$apartment],'success');
+        $qr = Apartment::query();
+        $apartment = $qr->where('id',$id)->get();
+        $result = [];
+        $apartment->reject(function($item)use(&$result, $apartment){
+            $result[] = $item->indexListFilter($item);
+        });
+        return $this->array_response($result,'success');
 
     }
 
@@ -330,7 +350,7 @@ class ApartmentsController extends BaseController
                 'initials'
             ]);
 
-        return $this->array_response([$result],'success');
+        return $this->array_response($result,'success');
 
     }
 
@@ -467,19 +487,18 @@ class ApartmentsController extends BaseController
      * @Get("get_recommend_list")
      *
      */
-    public function getRecommendList()
+    public function getRecommendList(HttpRequest $request)
     {
         $qr = new Apartment();
-
-        $apartments = $qr->where('status', '4')->get();
-        $apartments = $qr->where('status', '4')->limit(6)->get();
+        $pageSize = $request->input('pageSize') ? (int)$request->input('pageSize') : 4;
+        $apartments = $qr->where('status', '4')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
 
         $result = [];
         $apartments->reject(function($item)use(&$result, $apartments){
             $result[] = $item->indexListFilter($item);
         });
 
-        return $this->array_response([$result],'success');
+        return $this->array_response($result,'success');
     }
 
     /**
@@ -520,14 +539,15 @@ class ApartmentsController extends BaseController
     public function getRentalList(HttpRequest $request)
     {
         $rentalType = $request->input('rental_type');
+        $pageSize = $request->input('pageSize') ? (int)$request->input('pageSize') : 4;
         $qr = new Apartment();
 
-        $apartments = $qr->where('rental_type', $rentalType)->limit(9)->get();
+        $apartments = $qr->where('rental_type', $rentalType)->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
         $result = [];
         $apartments->reject(function($item)use(&$result, $apartments){
             $result[] = $item->indexListFilter($item);
         });
-        return $this->array_response([$result],'success');
+        return $this->array_response($result,'success');
     }
 
     /**

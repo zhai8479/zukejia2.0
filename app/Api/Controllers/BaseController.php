@@ -83,11 +83,24 @@ class BaseController extends Controller
         return $this->array_response([], $msg, $code, $errors);
     }
 
+    public function success($message)
+    {
+        return $this->response->array(['code'=>0,'msg'=>$message]);
+    }
+
+    public function successOrFail($status, $code,$message)
+    {
+        if ($status) {
+            return $this->success($message);
+        }
+        return $this->fail($code);
+    }
+
     protected function fail($code,$message= '')
     {
         return $this->response->array([
             'code'=> $code,
-            'message'=> $message
+            'msg'=> $message
         ]);
     }
 
