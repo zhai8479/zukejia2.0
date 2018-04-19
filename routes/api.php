@@ -121,6 +121,8 @@ DingoRoute::version('v1', function () {
         DingoRoute::group(['prefix' => 'sms'], function () {
             // 图片验证码
             DingoRoute::get('image', 'SmsController@image');
+            // 发送验证码
+            DingoRoute::post('sms_codes', 'SmsController@send');
         });
 
         // 房源信息
