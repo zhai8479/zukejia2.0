@@ -21,7 +21,7 @@ class CreateApartmentTable extends Migration
             $table->smallInteger('district')->comment('区');
             $table->string('address')->comment('地址');
             $table->string('search_address')->comment('详细地址');
-            $table->tinyInteger('status')->comment('状态 1-热销 2-预租 3-出租 4-推荐 5-热门');
+            $table->tinyInteger('status')->comment('状态 1-热销中 2-整理中 3-预租中 4-出租中');
             $table->string('title')->comment('标题');
             $table->text('desc')->comment('个性描述');
             $table->text('inner_desc')->comment('内部描述');
@@ -54,7 +54,7 @@ class CreateApartmentTable extends Migration
             $table->text('keyword')->comment('关键词组');
             $table->tinyInteger('total_floor')->comment('总楼层');
             $table->tinyInteger('current_floor')->comment('当前楼层');
-            $table->string('is_commend')->comment('是否推荐');
+            $table->string('is_commend')->comment('是否推荐 是-是 否-否');
             $table->bigInteger('click_num')->comment('点击率');
             $table->softDeletes();
             $table->timestamps();

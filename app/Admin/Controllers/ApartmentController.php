@@ -146,22 +146,21 @@ class ApartmentController extends Controller
                         $result = '热销中';
                         break;
                     case 2:
-                        $result = '预租中';
+                        $result = '整理中';
                         break;
                     case 3:
-                        $result = '出租中';
+                        $result = '预租中';
                         break;
                     case 4:
-                        $result = '推荐';
-                        break;
-                    case 5:
-                        $result = '热门';
+                        $result = '出租中';
                         break;
                     default:
                         $result = '错误状态';
                 }
                 return $result;
             });
+
+            $grid->click_num('点击率')->editable();
 
             $grid->created_at('创建时间')->display(function($value){
                 return date('Y-m-d', strtotime($value));
@@ -195,7 +194,7 @@ class ApartmentController extends Controller
                 $filter->where(function ($query) {
                     $input = $this->input;
                     $query->where('status', $input);
-                }, '房屋状态')->select(['1' => '热销中', '2' => '预租中', '3' => '出租中', '4' => '推荐', 5 => '热门']);
+                }, '房屋状态')->select(['1' => '热销中', '2' => '整理中', '3' => '预租中', '4' => '出租中']);
 
                 // 文本过滤器嫩绿
                 $filter->where(function ($query) {
@@ -252,7 +251,11 @@ class ApartmentController extends Controller
                     return $tmp;
                 });
 
-                $form->select('status', '状态')->options([1 => '热销中', 2 => '预租中', 3 => '已出租', 4 => '推荐', 5 => '热门']);
+                $form->select('status', '状态')->options([1 => '热销中', 2 => '整理中', 3 => '预租中', 4 => '已出租']);
+
+                $form->radio('is_Commend', '是否推荐')->options(['是' => '是', '否' => '否'])->default('否');
+
+                $form->number('click_num', '点击率')->rules('required|numeric|min:0');
 
                 $form->text('address', '详细地址')->rules('required');
 
