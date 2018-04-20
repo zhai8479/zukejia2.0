@@ -14,27 +14,49 @@ use OSS\OssClient;
 
 class OSS
 {
+
+
+
     private $ossClient;
     private static $bucketName;
 
     public function __construct($isInternal = false)
     {
+        //$this->$bucketName = $bucketName;
         $serverAddress = $isInternal ? config('alioss.ossServerInternal') : config('alioss.ossServer');
-        $this->ossClient = AliyunOSS::boot(
-            $serverAddress,
-            config('alioss.AccessKeyId'),
-            config('alioss.AccessKeySecret')
-        );
+        $this->ossClient = new OssClient(config('alioss.AccessKeyId'), config('alioss.AccessKeySecret'),  config('alioss.ossServer'), true);
     }
 
 
-    public static function upload($ossKey, $filePath)
+    public function getExtension($blob)
+    {
+        $extension = substr($blob, stripos($blob, '/') + 1, stripos($blob, ';') - stripos($blob, '/') - 1);
+        return $extension;
+    }
+
+
+    /**
+     * 随机生成文件名
+     *
+     * @param string $extension
+     *
+     * @return string
+     */
+    public function generateFileName($extension)
+    {
+        return md5(Str::random(10) . Carbon::now()->toDateTimeString()) . '.' . $extension;
+    }
+
+
+
+
+
+   /* public static function uploadFile($object, $file)
     {
         $oss = new OSS(false); // 上传文件使用内网，免流量费
-        $oss->ossClient->setBucket(config('alioss.BucketName'));
-        $res = $oss->ossClient->uploadFile($ossKey, $filePath);
+        $res = $oss->ossClient->uploadFile(self::$bucketName , $object, $file, $options = NULL);
         return $res;
-    }
+    }*/
 
     /**
      * 直接把变量内容上传到oss
