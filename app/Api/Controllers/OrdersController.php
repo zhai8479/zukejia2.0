@@ -252,9 +252,10 @@ class OrdersController extends BaseController
                 $check_in_user_info = [
                     'order_id' => $order->id,
                     'user_id' => $user->id,
-                    'real_name' => $in_user['real_name'],
+                    'stay_people_id' => $in_user['stay_people_id'],
+                   /* 'real_name' => $in_user['real_name'],
                     'id_card' => $in_user['id_card'],
-                    'mobile' => $in_user['mobile'],
+                    'mobile' => $in_user['mobile'],*/
                 ];
                 /**
                  * @var OrderCheckInUser $order_check_user
