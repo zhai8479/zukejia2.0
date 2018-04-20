@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Redis;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use JWTAuth;
 use Sms;
+use App\Traits\OSS;
+use OSS\OssClient;
 
 /**
  * 用户操作接口
@@ -781,12 +783,37 @@ class UserController extends BaseController
         /**
          * @var  User $user
          */
+        $client = new OssClient(config('alioss.AccessKeyId'), config('alioss.AccessKeySecret'),  config('alioss.ossServer'), true);
+        $client->uploadFile('avatar' , $file_name, $request->file('avatar'), $options = NULL);
+      /*  $oss = new OSS();
+        $oss->uploadFile($oss->generateFileName($oss->getExtension($file_name)),$request->file());*/
         $user = $this->auth->user();
         $user->avatar_url = '/avatar/'.$file_name;
         $user->save();
         return $this->array_response(['path' => $path, 'full_path' => '/avatar/'.$file_name]);
 
     }
+
+
+    public function getExtension($blob)
+    {
+        $extension = substr($blob, stripos($blob, '/') + 1, stripos($blob, ';') - stripos($blob, '/') - 1);
+        return $extension;
+    }
+
+
+    /**
+     * 随机生成文件名
+     *
+     * @param string $extension
+     *
+     * @return string
+     */
+    public function generateFileName($extension)
+    {
+        return md5(Str::random(10) . Carbon::now()->toDateTimeString()) . '.' . $extension;
+    }
+
 
     /**
      * 获取用户头像链接

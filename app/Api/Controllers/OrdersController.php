@@ -172,6 +172,7 @@ class OrdersController extends BaseController
         $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
         $user = $this->auth->user();
         $input = $request->all();
+
         $apartment_id = $input['apartment_id'];
         $start_date = $input['start_date'];
         $end_date = $input['end_date'];
@@ -245,23 +246,45 @@ class OrdersController extends BaseController
                     ->update(['is_use' => UserVoucher::IS_USE]);
                 if ($affect != 1) throw new \Exception('代金卷使用失败');
             }
-
-            // 处理入住者信息
-            $order_check_user_ids = [];
-            foreach ($check_in_users as $key => $in_user) {
-                $check_in_user_info = [
-                    'order_id' => $order->id,
-                    'user_id' => $user->id,
-                    'stay_people_id' => $in_user['stay_people_id'],
-                   /* 'real_name' => $in_user['real_name'],
-                    'id_card' => $in_user['id_card'],
-                    'mobile' => $in_user['mobile'],*/
-                ];
-                /**
-                 * @var OrderCheckInUser $order_check_user
-                 */
-                $order_check_user = $this->checkInUserRepository->create($check_in_user_info);
-                $order_check_user_ids[] = $order_check_user->id;
+            if(is_array($check_in_users)) {
+                // 处理入住者信息
+                $order_check_user_ids = [];
+                foreach ($check_in_users as $key => $in_user) {
+                    $check_in_user_info = [
+                        'order_id' => $order->id,
+                        'user_id' => $user->id,
+                        'stay_people_id' => $in_user['stay_people_id'],
+                        /* 'real_name' => $in_user['real_name'],
+                         'id_card' => $in_user['id_card'],
+                         'mobile' => $in_user['mobile'],*/
+                    ];
+                    /**
+                     * @var OrderCheckInUser $order_check_user
+                     */
+                    $order_check_user = $this->checkInUserRepository->create($check_in_user_info);
+                    $order_check_user_ids[] = $order_check_user->id;
+                }
+            }
+            if(is_string($check_in_users))
+            {
+                $json = json_decode($check_in_users,true);
+                // 处理入住者信息
+                $order_check_user_ids = [];
+                for ($i = 0; $i < count($json); $i++) {
+                    $check_in_user_info = [
+                        'order_id' => $order->id,
+                        'user_id' => $user->id,
+                        'stay_people_id' => $json[$i]['stay_people_id'],
+                        /* 'real_name' => $in_user['real_name'],
+                         'id_card' => $in_user['id_card'],
+                         'mobile' => $in_user['mobile'],*/
+                    ];
+                    /**
+                     * @var OrderCheckInUser $order_check_user
+                     */
+                    $order_check_user = $this->checkInUserRepository->create($check_in_user_info);
+                    $order_check_user_ids[] = $order_check_user->id;
+                }
             }
             $order->check_in_user_ids = $order_check_user_ids;
             $order->save();

@@ -18,9 +18,7 @@ class OrderValidator extends LaravelValidator
             'start_date' => 'required|date_format:Y-m-d',
             'end_date' => 'required|date_format:Y-m-d',
             'need_invoice' => 'boolean',
-            'check_in_users' => 'required|array',
-            'check_in_users.*' => 'required|array',
-            'check_in_users.*.id' => 'required|integer',
+            'check_in_users' => 'required'
         ],
         ValidatorInterface::RULE_UPDATE => [],
    ];

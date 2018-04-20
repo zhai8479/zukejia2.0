@@ -31,7 +31,7 @@ class Apartment extends Model implements Transformable
      */
     protected $status_list = [
         1 => '热销中',
-        2 => '整理中',
+        2 => '准备中',
         3 => '预租中',
         4 => '出租中'
     ];
@@ -41,10 +41,10 @@ class Apartment extends Model implements Transformable
      * @var array
      */
     protected $status_value = [
-        1 => '热销中',
-        2 => '整理中',
-        3 => '预租中',
-        4 => '出租中'
+        1 => ['热销中',''],
+        2 => ['准备中','https://static.zukehouse.com/images/zbz.jpg'],
+        3 => ['预租中','https://static.zukehouse.com/images/yzz.jpg'],
+        4 => ['出租中','https://static.zukehouse.com/images/czz.jpg']
     ];
 
     /**
@@ -169,7 +169,7 @@ class Apartment extends Model implements Transformable
 
         $status = $this->status_value;
         $statusFilter = function($tStatus)use($status){
-            return ['name' => $this->status_value[$tStatus], 'value' => $tStatus];
+            return ['name' => $this->status_value[$tStatus][0], 'value' => $tStatus, 'url' => $this->status_value[$tStatus][1]];
         };
 
         $typeFilter = function($type){
@@ -233,7 +233,7 @@ class Apartment extends Model implements Transformable
             'total_floor'        =>  $model->total_floor,
             'current_floor'        =>  $model->current_floor,
             'click_num'        =>  $model->click_num,
-            'is_commend'        =>  $model->is_commend,
+            'is_commend'        =>  $model->is_Commend,
             'created_at'            =>  $model->created_at,
             'updated_at'            =>  $model->updated_at
         ];

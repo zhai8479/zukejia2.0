@@ -167,7 +167,6 @@ class ApartmentsController extends BaseController
         $count = $qr->count();
         $totalPages = ceil($count / $pageSize) ;
         $apartments = $qr->limit($pageSize)->offset(($page - 1) * $pageSize)->get();
-
         $result = [];
         $apartments->reject(function($item)use(&$result, $apartments){
             $result[] = $item->indexListFilter($item);

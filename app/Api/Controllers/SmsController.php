@@ -53,7 +53,6 @@ class SmsController  extends BaseController
         //$redis->set($key, $phrase);
         //return response()->json($redis->get($key));
         Redis::set($key, $phrase, 'EX', 300);
-        return Redis::get($key);
         //生成图片
         return response($builder->output())->header("Content-type", "image/jpeg");
     }
