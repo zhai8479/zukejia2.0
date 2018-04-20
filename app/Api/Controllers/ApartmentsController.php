@@ -502,6 +502,39 @@ class ApartmentsController extends BaseController
     }
 
     /**
+     * 获取首页信息
+     *
+     * - id
+     * - name 首页信息
+     *
+     * @Get("get_recommend_list")
+     *
+     */
+    public function indexList(HttpRequest $request)
+    {
+        $qr = new Apartment();
+        $pageSize = $request->input('pageSize') ? (int)$request->input('pageSize') : 4;
+        $commend = $qr->where('is_commend', '是')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
+        $roommates = $qr->where('type','3')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
+        $wholerent =$qr->where('type','1')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
+        $commendlist = [];
+        $commend->reject(function($item)use(&$commendlist, $commend){
+            $commendlist[] = $item->indexListFilter($item);
+        });
+        $roommateslist = [];
+        $roommates->reject(function($item)use(&$roommateslist, $roommates){
+            $roommateslist[] = $item->indexListFilter($item);
+        });
+        $wholerentlist = [];
+        $wholerent->reject(function($item)use(&$wholerentlist, $wholerent){
+            $wholerentlist[] = $item->indexListFilter($item);
+        });
+
+        return $this->array_response(['commendlist'=>$commendlist,'roommateslist'=>$roommateslist,'wholerentlist'=>$wholerentlist],'success');
+    }
+
+
+    /**
      * 获取热门列表
      *
      * - id
