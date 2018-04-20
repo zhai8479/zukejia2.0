@@ -24,7 +24,8 @@
         "stevenyangecho/laravel-u-editor": "~1.4",
         "gregwar/captcha": "1.*",
         "qiniu/php-sdk": "7.1.*",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "aliyuncs/oss-sdk-php": "~2.0"
     },
     "require-dev": {
         "erusev/parsedown": "^1.6",
