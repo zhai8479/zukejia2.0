@@ -25,7 +25,8 @@
         "gregwar/captcha": "1.*",
         "qiniu/php-sdk": "7.1.*",
         "guzzlehttp/guzzle": "~6.0",
-        "aliyuncs/oss-sdk-php": "~2.0"
+        "aliyuncs/oss-sdk-php": "~2.0",
+        "johnlui/aliyun-oss": "dev-master"
     },
     "require-dev": {
         "erusev/parsedown": "^1.6",

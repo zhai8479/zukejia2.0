@@ -11,6 +11,7 @@ use Dingo\Api\Http\Request as HttpRequest;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Redis;
 use App\Repositories\SmsRepository;
+use Illuminate\Support\Facades\Cache;
 
 
 class SmsController  extends BaseController
@@ -52,7 +53,7 @@ class SmsController  extends BaseController
         //$redis = Redis::connection();
         //$redis->set($key, $phrase);
         //return response()->json($redis->get($key));
-        Redis::set($key, $phrase, 'EX', 300);
+        Cache::set($key, $phrase, 'EX', 300);
         //生成图片
         return response($builder->output())->header("Content-type", "image/jpeg");
     }
@@ -73,12 +74,12 @@ class SmsController  extends BaseController
         $acid = $request->input('acid');
         $key = "image_code:" . $acid;
 
-        if (Redis::exists($key)) {
+        if (Cache::has($key)) {
 
-            $code = Redis::get($key);
+            $code = Cache::get($key);
             if ($code == $image_code) {
                 //清除redis
-         //       Redis::del($key);
+                Cache::delete($key);
                 $result = $this->repository->sendSmsCode($mobile);
                 return $this->array_response([$result],'success');
             }
