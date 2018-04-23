@@ -106,5 +106,11 @@ class AppointmentsController extends BaseController
         }
         return $this->array_response($appointment);
     }
-
+    public function index(HttpRequest $request)
+    {
+        $user_id = $request->input('user_id');
+        $appointment = Appointment::where('user_id',$user_id)
+            ->get();
+        return $this->array_response($appointment);
+    }
 }

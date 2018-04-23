@@ -196,6 +196,8 @@ DingoRoute::version('v1', function () {
             DingoRoute::post('store','AppointmentsController@store');
             //修改一个预约记录状态值
             DingoRoute::post('update','AppointmentsController@update');
+            //我的预约列表
+            DingoRoute::get('index','AppointmentsController@index');
         });
         // 项目
         DingoRoute::group(['prefix' => 'project'], function () {
