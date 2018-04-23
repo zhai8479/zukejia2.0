@@ -51,6 +51,7 @@ class AppointmentsController extends BaseController
      *  @Parameter("name", description="姓名", required=true),
      *     @Parameter("mobile", description="手机号", required=true),
      *     @Parameter("apartment_id", description="房源id", required=true),
+     *     @Parmeter("user_id",description="用户id",required=false),
      *     @Parameter("appointments_time", description="预约时间", required=true),
      *     @Parameter("sex", description="性别 男|女", required=false),
      *     @Parameter("message", description="留言", required=false)

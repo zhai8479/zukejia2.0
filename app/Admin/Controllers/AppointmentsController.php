@@ -55,6 +55,7 @@ class AppointmentsController extends Controller
             $grid->mobile('手机')->sortable();
             $grid->sex('性别');
             $grid->apartment_id('房源id');
+            $grid->user_id('用户id');
             $grid->appointments_time('预约时间');
             $grid->message('留言');
             $states = [
@@ -84,12 +85,6 @@ class AppointmentsController extends Controller
     {
         return Admin::form(Appointment::class, function (Form $form) {
 
-            $form->display('id', 'ID');
-            $form->text('name','姓名');
-            $form->text('mobile','电话');
-            $form->text('sex','地址');
-            $form->text('apartment_id','房源ID');
-            $form->text('appointments_time','预约时间');
             $states = [
                 'on'  => ['value' => 0, 'text' => '未查看', 'color' => 'success'],
                 'off' => ['value' => 1, 'text' => '已查看', 'color' => 'danger'],

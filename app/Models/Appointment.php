@@ -13,6 +13,6 @@ class Appointment extends Model implements Transformable
 
     public $timestamps = true;
 
-    protected $fillable = ['name', 'mobile', 'sex', 'apartment_id', 'appointments_time', 'message'];
+    protected $fillable = ['name', 'mobile', 'sex', 'apartment_id','user_id', 'appointments_time', 'message'];
 
 }

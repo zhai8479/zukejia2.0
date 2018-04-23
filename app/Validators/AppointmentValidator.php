@@ -11,11 +11,12 @@ class AppointmentValidator extends LaravelValidator
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
             'name' => 'required|string|max:20',
-            'apartment_id' =>'required|int|max:50',
+            'apartment_id' =>'required|int',
+            'user_id'=>'int',
             'mobile' => 'required|string|regex:/^1[34578][0-9]{9}$/',
             'sex' => 'int|max:255',
             'appointments_time' => 'required|date',
-            'message' => 'string|max:50',
+            'message' => 'string|max:250',
         ],
         ValidatorInterface::RULE_UPDATE => [],
    ];
