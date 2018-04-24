@@ -110,6 +110,36 @@ class AppointmentsController extends BaseController
     }
 
 
+
+    /**
+     * 删除一条入住者信息
+     * @Delete("delete")
+     *
+     * @Parameters({
+     *  @Parameter("id", description="要删除的入住者记录id", required=true)
+     * })
+     *
+     * @param $id
+     * @return bool|mixed|null
+     */
+    public function delete($id)
+    {
+        if($id) {
+            $user = $this->auth->user();
+            $stayPeople = Appointment::where('user_id', $user->id)->find($id);
+            if($stayPeople)
+            {
+                $stayPeople->deleted_at = now();
+                $stayPeople->is_del = 1;
+                $stayPeople->save();
+            }
+            return $this->array_response([],'删除成功',0);
+        }
+        return $this->array_response([],'删除成功',0);
+
+    }
+
+
     /**
      * 获取预约列表
      *
