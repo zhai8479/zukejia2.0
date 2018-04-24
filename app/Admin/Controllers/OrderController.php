@@ -86,10 +86,9 @@ class OrderController extends Controller
 
             $grid->order_no('订单编号');
 
-            $grid->user_id('用户名')->display(function ($value) {
-                $userModel = new User();
-                $user = $userModel->find($value)->first();
-                return $user->user_name;
+            $grid->user_name('用户名')->display(function () {
+                $user_name = User::query()->where('id', $this->user_id)->value('user_name');
+                return $user_name;
             });
 
             $grid->apartment_id('房源')->display(function ($value) {
