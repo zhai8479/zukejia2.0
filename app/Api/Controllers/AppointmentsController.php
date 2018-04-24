@@ -2,6 +2,7 @@
 
 namespace App\Api\Controllers;
 
+use App\Models\Apartment;
 use App\Models\Appointment;
 use Dingo\Blueprint\Annotation\Method\Post;
 use Dingo\Blueprint\Annotation\Parameter;
@@ -111,6 +112,9 @@ class AppointmentsController extends BaseController
         $user_id = $request->input('user_id');
         $appointment = Appointment::where('user_id',$user_id)
             ->get();
+        $id = $appointment->apartment_id ;
+        $apartment = Apartment::find($id);
+        $apartment->apartment = $appointment;
         return $this->array_response($appointment);
     }
 }

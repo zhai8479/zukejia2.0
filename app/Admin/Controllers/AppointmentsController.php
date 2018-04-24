@@ -51,11 +51,20 @@ class AppointmentsController extends Controller
             });
 
             $grid->id('编号')->sortable();
-            $grid->name('姓名')->sortable();
+            $grid->name('预约者')->sortable();
             $grid->mobile('手机')->sortable();
-            $grid->sex('性别');
+            $grid->sex('性别')->display(function ($value){
+                if ($value == 0) return '未知';
+                else if ($value == 1)return'男';
+                return '女';
+            });
             $grid->apartment_id('房源id');
             $grid->user_id('用户id');
+
+            $grid->user_name('用户名')->display(function () {
+                $user_name = User::query()->where('id', $this->user_id)->value('user_name');
+                return $user_name;
+            });
             $grid->appointments_time('预约时间');
             $grid->message('留言');
             $states = [
