@@ -6,6 +6,7 @@ use App\Models\Apartment;
 use App\Models\ChainDistrict;
 use App\Library\Password;
 use App\Library\Recommend;
+use App\Library\OSS;
 use App\Models\Order;
 use App\Models\Tags;
 use App\Models\User;
@@ -29,7 +30,6 @@ use Illuminate\Support\Facades\Redis;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use JWTAuth;
 use Sms;
-use App\Traits\OSS;
 use OSS\OssClient;
 
 /**
@@ -783,10 +783,11 @@ class UserController extends BaseController
          * @var  User $user
          */
 
-
-        $client = new OssClient('LTAI1wzjD8d4crkn',
+        $oss = new OSS();
+        $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
+        /*$client = new OssClient('LTAI1wzjD8d4crkn',
             '0JOaw5cLewixKXy85QhYIPoEmFIqKR', 'http://oss-cn-zhangjiakou-internal.aliyuncs.com',false);
-         $client->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
+         $client->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);*/
 
         $user = $this->auth->user();
         $user->avatar_url = '/avatar/'.$file_name;
