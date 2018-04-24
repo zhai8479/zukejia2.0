@@ -142,7 +142,19 @@ class OrdersController extends BaseController
                 $order->status_str = Order::$order_status[$order->status];
             }
         }
-        return $this->array_response($orders);
+        ini_set('date.timezone','Asia/Shanghai');
+//        $orders['service_time'] = date("Y-m-d H:i:s");
+
+        $response = [];
+        $tempList = json_decode( json_encode( $orders),true);
+        $tempList['service_time'] = date("Y-m-d H:i:s");
+        $tempList['out_time'] = 1800;
+        $response['data'] =  $tempList;
+        $response['code'] = 0;
+        $response['msg'] = 'success';
+        return $response;
+
+      // return $this->array_response($orders);
     }
 
     /**
@@ -345,7 +357,7 @@ class OrdersController extends BaseController
         $this->repository->pushCriteria(MyCriteria::class);
         $order = $this->repository->find($id);
         if ($order) {
-            $order->check_in_users = OrderCheckInUser::where('order_id', $order->id)->get();
+            $order->check_in_users =  StayPeople::whereIn('id', OrderCheckInUser::where('order_id', $order->id)->pluck('stay_people_id'))->get();
             $order->apartment_info = Apartment::find($order->apartment_id);
             $order->status_str = Order::$order_status[$order->status];
         }
