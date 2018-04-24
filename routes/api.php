@@ -196,6 +196,8 @@ DingoRoute::version('v1', function () {
         DingoRoute::group(['prefix' => 'appointment'], function(){
             //创建一个预约看房记录
             DingoRoute::post('store','AppointmentsController@store');
+            //创建一个预约看房记录
+            DingoRoute::post('delete/{id}','AppointmentsController@delete');
             //修改一个预约记录状态值
             DingoRoute::post('update','AppointmentsController@update');
             //我的预约列表
