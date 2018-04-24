@@ -2,7 +2,7 @@
 return [
 
 	// 安全检验码，以数字和字母组成的32位字符。
-	'key' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+	'key' => '7cu7ioqmq1rzqlmcyv3y9cas7c5j1oha',
 
 	// 签名方式
 	'sign_type' => 'RSA',
@@ -14,5 +14,5 @@ return [
 	'public_key_path' => __DIR__ . '/key/public_key.pem',
 
 	// 异步通知连接。
-	'notify_url' => 'http://xxx'
+    'notify_url' => 'http://api.zukehouse.com/order_alipay_notify',
 ];

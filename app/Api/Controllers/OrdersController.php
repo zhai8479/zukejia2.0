@@ -599,10 +599,10 @@ class OrdersController extends BaseController
                 //调用支付宝支付
                 // 创建支付单。
                 $alipay = app('alipay.mobile');
-                $alipay->setOutTradeNo('order_id');
-                $alipay->setTotalFee('order_price');
-                $alipay->setSubject('goods_name');
-                $alipay->setBody('goods_description');
+                $alipay->setOutTradeNo($order->order_no);
+                $alipay->setTotalFee($order->pay_money);
+                $alipay->setSubject('支付房租与押金');
+                $alipay->setBody('支付房租与押金');
                 $aLipayPara = $alipay->getPayPara();
             }catch (\Exception $exception) {
                 return $this->error_response($exception->getMessage(), 100, [$exception]);
