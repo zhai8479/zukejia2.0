@@ -59,6 +59,26 @@ class DistrictController extends BaseController
         return ChainDistrict::where('parent_id', $province_id)->get();
     }
 
+
+    /**
+     * 获取市列表
+     *
+     * @Get("city_list")
+     *
+     * @Parameter("province_id", description="省id")
+     *
+     * @param HttpRequest $request
+     * @return $this
+     */
+    public function district_list(HttpRequest $request)
+    {
+        $this->validate($request, [
+            'city_id' => 'required|integer|min:1'
+        ]);
+        $city_id = $request->input('city_id');
+        return ChainDistrict::where('parent_id', $city_id)->get();
+    }
+
     /**
      * 根据省代码，查询市列表
      *
