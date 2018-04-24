@@ -62,8 +62,9 @@ class AppointmentsController extends BaseController
      */
     public function store(HttpRequest $request)
     {
+        $user = $this->auth->user();
         $all = $request->all();
-
+        $all['user_id'] = $user->id;
         $all['ip'] = $request->ip();
 
         $this->validator->with($all)->passesOrFail(ValidatorInterface::RULE_CREATE);
@@ -107,14 +108,33 @@ class AppointmentsController extends BaseController
         }
         return $this->array_response($appointment);
     }
+
+
+    /**
+     * 获取预约列表
+     *
+     * @Get("index")
+     *
+     *
+     * @param HttpRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     *
+     */
     public function index(HttpRequest $request)
     {
         $user_id = $request->input('user_id');
         $appointment = Appointment::where('user_id',$user_id)
             ->get();
-        $id = $appointment->apartment_id ;
-        $apartment = Apartment::find($id);
-        $apartment->apartment = $appointment;
+        if ($appointment) {
+            foreach ($appointment as $app) {
+                $apartments = Apartment::query()->where('id',$app->apartment_id)->get();
+                $result = [];
+                $apartments->reject(function($item)use(&$result, $apartments){
+                    $result[] = $item->indexListFilter($item);
+                });
+                $app->apartment_info = $result;
+            }
+        }
         return $this->array_response($appointment);
     }
 }

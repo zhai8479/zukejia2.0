@@ -31,8 +31,6 @@ use JWTAuth;
 use Sms;
 use App\Traits\OSS;
 use OSS\OssClient;
-use App\Traits\OSSTest;
-use JohnLui\AliyunOSS;
 
 /**
  * 用户操作接口
@@ -781,32 +779,15 @@ class UserController extends BaseController
         $path = getcwd() . '/avatar/';
         $file_name =  $request->file('avatar')->hashName();
         $request->file('avatar')->move($path, $file_name);
-//return $path .$file_name;
-       // return config('alioss.ossServerInternal');
         /**
          * @var  User $user
          */
-        /*$isInternal = false;
-        $serverAddress = $isInternal ? config('alioss.ossServerInternal') : config('alioss.ossServer');
-        $ossClient = AliyunOSS::boot(
-            $serverAddress,
-            config('alioss.AccessKeyId'),
-            config('alioss.AccessKeySecret')
-        );
-        $ossClient->setBucket('zkj-public');
-        $ossClient->uploadFile($file_name, $path .$file_name);*/
 
-       /* $client = new OssClient('LTAIfewnsSfKs8oq',
-            'joLPEzjpqopAXvY9j7LBbOQQuX8Cx2', 'https://static.zukehouse.com',false);
-        // $client->putObject('zkj-public' , $file_name,$path .$file_name, $options = NULL);
-         $client->uploadFile('zkj-public' , $file_name,$path .$file_name, $options = NULL);*/
-     /*  $oss = new OSS();
-          $oss->uploadFile($oss->generateFileName($oss->getExtension($file_name)),$request->file());
 
-      $OSSTest = new OSSTest(false);
-      $OSSTest->upload($file_name,$path .$file_name,'zkj-public');
+        $client = new OssClient('LTAI1wzjD8d4crkn',
+            '0JOaw5cLewixKXy85QhYIPoEmFIqKR', 'http://oss-cn-zhangjiakou-internal.aliyuncs.com',false);
+         $client->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
 
-     */
         $user = $this->auth->user();
         $user->avatar_url = '/avatar/'.$file_name;
         $user->save();

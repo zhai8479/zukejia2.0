@@ -20,11 +20,16 @@ class OSS
     private $ossClient;
     private static $bucketName;
 
+    /**
+     * 初始化
+     *
+     * @param string $bucketName （使用仓库名称）
+     *
+     * @return string
+     */
     public function __construct($isInternal = false)
     {
-        //$this->$bucketName = $bucketName;
-        $serverAddress = $isInternal ? config('alioss.ossServerInternal') : config('alioss.ossServer');
-        $this->ossClient = new OssClient(config('alioss.AccessKeyId'), config('alioss.AccessKeySecret'),  config('alioss.ossServer'), true);
+        $this->ossClient = new OssClient(config('alioss.AccessKeyId'), config('alioss.AccessKeySecret'),  config('alioss.ossServerInternal'), false);
     }
 
 
@@ -50,26 +55,24 @@ class OSS
 
 
 
-
-   /* public static function uploadFile($object, $file)
-    {
-        $oss = new OSS(false); // 上传文件使用内网，免流量费
-        $res = $oss->ossClient->uploadFile(self::$bucketName , $object, $file, $options = NULL);
-        return $res;
-    }*/
-
     /**
-     * 直接把变量内容上传到oss
-     * @param $osskey
-     * @param $content
+     * 上传本地文件
+     *
+     * @param string $bucket bucket名称
+     * @param string $object object名称
+     * @param string $file 本地文件路径
+     * @param array $options
+     * @return null
+     * @throws OssException
      */
-    public static function uploadContent($osskey, $content)
+    public static function uploadFile($bucketName,$object, $file)
     {
         $oss = new OSS(false); // 上传文件使用内网，免流量费
-        $oss->ossClient->setBucket(config('alioss.BucketName'));
-        $oss->ossClient->uploadContent($osskey, $content);
-
+        $res = $oss->ossClient->uploadFile($bucketName,$object, $file, $options = NULL);
+        return $res;
     }
+
+
 
     /**
      * 删除存储在oss中的文件
@@ -77,74 +80,48 @@ class OSS
      * @param string $ossKey 存储的key（文件路径和文件名）
      * @return
      */
-    public static function deleteObject($ossKey)
+    public static function deleteObject($bucketName,$ossKey)
     {
         $oss = new OSS(false); // 上传文件使用内网，免流量费
 
-        return $oss->ossClient->deleteObject(config('alioss.BucketName'), $ossKey);
+        return $oss->ossClient->deleteObject($bucketName, $ossKey);
     }
 
     /**
-     * 复制存储在阿里云OSS中的Object
+     * 拷贝一个在OSS上已经存在的object成另外一个object
      *
-     * @param string $sourceBuckt 复制的源Bucket
-     * @param string $sourceKey - 复制的的源Object的Key
-     * @param string $destBucket - 复制的目的Bucket
-     * @param string $destKey - 复制的目的Object的Key
-     * @return Models\CopyObjectResult
+     * @param string $fromBucket 源bucket名称
+     * @param string $fromObject 源object名称
+     * @param string $toBucket 目标bucket名称
+     * @param string $toObject 目标object名称
+     * @param array $options
+     * @return null
+     * @throws OssException
      */
-    public function copyObject($sourceBuckt, $sourceKey, $destBucket, $destKey)
+    public function copyObject($fromBucket, $fromObject, $toBucket, $toObject)
     {
         $oss = new OSS(true); // 上传文件使用内网，免流量费
 
-        return $oss->ossClient->copyObject($sourceBuckt, $sourceKey, $destBucket, $destKey);
+        return $oss->ossClient->copyObject($fromBucket, $fromObject, $toBucket, $toObject);
     }
+
+
+
 
     /**
-     * 移动存储在阿里云OSS中的Object
+     * 创建bucket，默认创建的bucket的ACL是OssClient::OSS_ACL_TYPE_PRIVATE
      *
-     * @param string $sourceBuckt 复制的源Bucket
-     * @param string $sourceKey - 复制的的源Object的Key
-     * @param string $destBucket - 复制的目的Bucket
-     * @param string $destKey - 复制的目的Object的Key
-     * @return Models\CopyObjectResult
+     * @param string $bucket
+     * @param string $acl
+     * @param array $options
+     * @param string $storageType
+     * @return null
      */
-    public function moveObject($sourceBuckt, $sourceKey, $destBucket, $destKey)
-    {
-        $oss = new OSS(true); // 上传文件使用内网，免流量费
-
-        return $oss->ossClient->moveObject($sourceBuckt, $sourceKey, $destBucket, $destKey);
-    }
-
-    public static function getUrl($ossKey)
-    {
-        $oss = new OSS();
-        $oss->ossClient->setBucket(config('alioss.BucketName'));
-        return $oss->ossClient->getUrl($ossKey, new \DateTime("+1 day"));
-    }
-
     public static function createBucket($bucketName)
     {
         $oss = new OSS();
         return $oss->ossClient->createBucket($bucketName);
     }
 
-    public static function getAllObjectKey($bucketName)
-    {
-        $oss = new OSS();
-        return $oss->ossClient->getAllObjectKey($bucketName);
-    }
 
-    /**
-     * 获取指定Object的元信息
-     *
-     * @param  string $bucketName 源Bucket名称
-     * @param  string $key 存储的key（文件路径和文件名）
-     * @return object 元信息
-     */
-    public static function getObjectMeta($bucketName, $osskey)
-    {
-        $oss = new OSS();
-        return $oss->ossClient->getObjectMeta($bucketName, $osskey);
-    }
 }
