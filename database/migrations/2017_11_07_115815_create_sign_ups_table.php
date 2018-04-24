@@ -32,7 +32,7 @@ class CreateSignUpsTable extends Migration
             $table->integer('user_id')->comment('用户id');
             $table->string('name',20)->comment('姓名');
             $table->string('mobile', 20)->comment('电话');
-            $table->integer('sex')->default(0)->comment('性别 0:男,1:女');
+            $table->integer('sex')->default(0)->comment('性别 0:未知,1:男,2:女');
             $table->date('appointments_time')->comment('看房时间');
             $table->string('message')->comment('留言');
             $table->integer('status')->default(0)->comment('标记是否查看 0:未看,1:已查看');
