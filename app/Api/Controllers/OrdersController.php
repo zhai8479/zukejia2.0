@@ -512,6 +512,122 @@ class OrdersController extends BaseController
         }
     }
 
+
+
+    /**
+     * 订单手机支付
+     *
+     * @POST("mobile_pay")
+     *
+     * @Parameters({
+     *     @Parameter("id", description="订单id", required=true, type="integer"),
+     *     @Parameter("pay_type", description="支付方式 1. 余额，2. 支付宝，3. 微信，4. 银行卡", required=true, type="integer")
+     * })
+     * @param HttpRequest $request
+     * @return array
+     */
+    public function mobile_pay(HttpRequest $request)
+    {
+        // 1. 根据订单id，获取订单信息
+        // 2. 根据订单信息，获取待支付金额
+        // 3. 根据支付途径，选择不同的支付方式
+        //   - 若支付方式为账户余额支付，则判断余额是否充足
+        //   - 余额充足，进行支付操作: 1. 添加消费日志user_money_logs, 2. 减少用户资金 user_money 3. 填写支付记录 order_pays 4. 更改订单状态 orders
+        $user = $this->auth->user();
+        $this->validate($request, [
+            'id' => [
+                'required',
+                Rule::exists('orders', 'id')->where('user_id', $user->id)
+            ],
+            'pay_type' => 'required|integer|max:5|min:1',   // 支付方式
+        ]);
+        $pay_type = $request->pay_type;
+        $order_id = $request->id;
+        /**
+         * @var Order $order
+         */
+        $order = $this->repository->find($request->id); // 订单类
+        if ($order->status !=1) return $this->error_response('订单状态不正确');
+
+        /**
+         * @var $created_at Carbon
+         */
+        $created_at = $order->created_at;
+
+        $created_at = $created_at->timestamp;
+
+        if ($created_at < time() - 1800) return $this->error_response('已超过支付时间');
+
+
+        if (RentalRecord::check_room_is_rental($order->apartment_id, $order->start_date, $order->end_date)) {
+            return $this->error_response('选择的日期已被出租');
+        }
+        $pay_money = $order->pay_money; // 待支付金额
+        if ($pay_type == 1) {
+            // 余额支付
+            $userMoney = $this->userMoneyRepository->firstOrCreate(['user_id' => $user->id]);
+            //    $money = $userMoney->money;
+            //        \Log::debug('money', [$money, $pay_money]);
+            // 执行支付操作
+            try {
+                $this->userMoneyRepository->pay($pay_money, $user->id, '支付房租与押金');
+            } catch (\Exception $exception) {
+                return $this->error_response($exception->getMessage(), 100, [$exception]);
+            }
+            // 支付成功后增加支付记录
+            $pay_start_at = $pay_over_at = date('Y-m-d H:i:s');
+            $pay_order_no = $this->repository->generate_order_no();
+            OrderPay::create([
+                'order_id' => $order_id,
+                'order_pay_no' => $pay_order_no,
+                'ip' => $request->ip(),
+                'pay_channel' => 1,
+                'pay_account' => '',
+                'pay_start_at' => $pay_start_at,
+                'pay_over_at' => $pay_over_at,
+                'pay_status' => 3,
+            ]);
+            // 记录房子被租数据
+            RentalRecord::create([
+                'apartment_id' => $order->apartment_id,
+                'start_date' => $order->start_date,
+                'end_date' => $order->end_date,
+                'order_id' => $order->id,
+            ]);
+            $order->pay_channel = 1;
+            $order->pay_start_at = $pay_start_at;
+            $order->pay_over_at = $pay_over_at;
+            $order->pay_account = '';
+            $order->pay_status = 3;
+            $order->order_pay_no = $pay_order_no;
+            $order->status = 2;
+            $order->save();
+            return $this->no_content('支付成功');
+        } elseif ($pay_type == 2){  //支付方式为支付宝支付
+            try{
+                //订单支付渠道改为支付宝
+                $order->pay_channel = 2;
+                $order->save();
+                //调用支付宝支付
+                // 创建支付单。
+                $alipay = app('alipay.mobile');
+                $alipay->setOutTradeNo('order_id');
+                $alipay->setTotalFee('order_price');
+                $alipay->setSubject('goods_name');
+                $alipay->setBody('goods_description');
+                $aLipayPara = $alipay->getPayPara();
+            }catch (\Exception $exception) {
+                return $this->error_response($exception->getMessage(), 100, [$exception]);
+            }
+            $response = [];
+            $response['aLipayPara'] = $aLipayPara;
+            return $this->array_response($response);
+
+        } else {
+            return $this->error_response("暂不支持其他支付方式");
+        }
+    }
+
     /**
      * 已支付订单取消
      *

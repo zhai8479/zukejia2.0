@@ -158,6 +158,8 @@ DingoRoute::version('v1', function () {
             DingoRoute::post('cancel_no_pay', 'OrdersController@cancel_no_pay');
             // 支付订单
             DingoRoute::post('pay', 'OrdersController@pay');
+            // 手机支付订单
+            DingoRoute::post('mobile_pay', 'OrdersController@mobile_pay');
             // 支付订单取消
             DingoRoute::post('cancel_is_pay', 'OrdersController@cancel_is_pay');
             // 退房

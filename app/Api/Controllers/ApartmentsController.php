@@ -104,8 +104,8 @@ class ApartmentsController extends BaseController
         if ($city) $qr = $qr->where('city', $city);
         if ($district) $qr = $qr->where('district', $district);
         if ($startDate && $endDate) $qr = $qr->whereBetween('updated_at', [$startDate, $endDate]);
-        if ($type) $qr = $qr->whereIn('type', $type);
-        if ($rental_type) $qr = $qr->whereIn('rental_type', $rental_type);
+        if ($type) $qr = $qr->whereIn('type', explode(',', $type));
+        if ($rental_type) $qr = $qr->whereIn('rental_type',explode(',', $rental_type));
         if ($decorationStyle) $qr = $qr->where('decoration_style', $decorationStyle);
         if ($direction) $qr = $qr->where('direction', $direction);
         if ($endPrice) $qr = $qr->whereBetween('rental_price', [$startPrice, $endPrice]);

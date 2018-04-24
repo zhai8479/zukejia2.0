@@ -20,6 +20,7 @@ class CreateOrderCheckInUsersTable extends Migration
             $table->string('id_card')->comment('身份证号');
             $table->string('mobile')->comment('手机号')->nullable();
             $table->unsignedInteger('user_id')->comment('用户id');
+            $table->tinyInteger('stay_people_id')->comment('入住人id');
             $table->timestamps();
         });
     }
