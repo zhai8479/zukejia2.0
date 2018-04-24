@@ -36,6 +36,7 @@ class CreateSignUpsTable extends Migration
             $table->date('appointments_time')->comment('看房时间');
             $table->string('message')->comment('留言');
             $table->integer('status')->default(0)->comment('标记是否查看 0:未看,1:已查看');
+            $table->softDeletes();
             $table->timestamps();
         });
 	}
