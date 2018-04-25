@@ -193,7 +193,7 @@ DingoRoute::version('v1', function () {
         });
 
         //预约看房
-        DingoRoute::group(['prefix' => 'appointment'], function(){
+        DingoRoute::group(['prefix' => 'appointment', 'middleware' => ['api.auth']], function(){
             //创建一个预约看房记录
             DingoRoute::post('store','AppointmentsController@store');
             //创建一个预约看房记录
