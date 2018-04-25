@@ -7,8 +7,13 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\ChainDistrict;
+use App\Models\City;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Encore\Admin\Controllers\ModelForm;
+use Encore\Admin\Facades\Admin;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Form;
 
 /**
  * Class DistrictController
@@ -17,7 +22,7 @@ use Illuminate\Http\Request;
  * @Resource("District", uri="/district")
  *
  */
-class AddressController
+class AddressController extends BaseController
 {
     /**
      * 获取省列表
@@ -34,11 +39,11 @@ class AddressController
     public function province(Request $request)
     {
         $q = $request->get('q');
-        $model = new ChainDistrict();
+        $model = new City();
         $result = $model->where('parent_id', 0)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
         return $tmp;
     }
@@ -56,11 +61,11 @@ class AddressController
     public function city(Request $request)
     {
         $q = $request->get('q');
-        $model = new ChainDistrict();
+        $model = new City();
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
         return $tmp;
     }
@@ -78,12 +83,76 @@ class AddressController
     public function district(Request $request)
     {
         $q = $request->get('q');
-        $model = new ChainDistrict();
+        $model = new City();
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
         return $tmp;
+    }
+
+    /**
+     * 获取商圈列表
+     *
+     * @Get("Business_circle")
+     *
+     * @Parameter("district_id", description="区id")
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function Business_circle(Request $request)
+    {
+        $q = $request->get('q');
+        $model = new City();
+        $result = $model->where('parent_id', $q)->get();
+        $tmp = ['data' => []];
+        $result->reject(function($element)use(&$tmp){
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
+        });
+        return $tmp;
+    }
+
+    use ModelForm;
+    public function index()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header('城市管理');
+            $content->body(City::tree());
+        });
+    }
+
+    public function edit($id)
+    {
+        return Admin::content(function (Content $content) use ($id) {
+
+            $content->header('城市管理');
+            $content->description('编辑');
+
+            $content->body($this->form()->edit($id));
+        });
+    }
+    public function create()
+    {
+        return Admin::content(function (Content $content) {
+
+            $content->header('header');
+            $content->description('description');
+
+            $content->body($this->form());
+        });
+    }
+
+    protected function form()
+    {
+        return Admin::form(City::class, function (Form $form) {
+
+            $form->display('id', 'ID');
+            $options = $this->city_list(0);
+            $options[0] = '中国';
+            $form->select('parent_id','所属区域')->options($options);
+            $form->text('title','区域名');
+        });
     }
 }

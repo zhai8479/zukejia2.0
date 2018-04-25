@@ -34,6 +34,8 @@ Route::group([
     //预约看房
     $router->resource('appointments',AppointmentsController::class);
 
+    //城市管理
+    $router->resource('address',AddressController::class);
 
     // 项目
     $router->resource('project-types', ProjectTypeController::class);

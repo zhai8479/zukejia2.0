@@ -11,6 +11,7 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Navigation;
+use App\Models\City;
 
 class BaseController extends Controller
 {
@@ -42,4 +43,31 @@ class BaseController extends Controller
         }
     }
 
+    protected function city_list ($id) {
+        $list = $this->get_one($id);
+        $result =  [];
+        $this->get_list($list, $result);
+        return $result;
+    }
+
+    protected function get_one ($id)
+    {
+
+        $list = City::whereParentId($id)->get(['id', 'title']);
+        foreach ($list as &$item) {
+            $item->child = $this->get_one($item->id);
+        }
+        return $list;
+    }
+
+    protected function get_list($list, &$result = [], $key = -1)
+    {
+        $key ++ ;
+        foreach ($list as $item) {
+            $result[$item->id] = str_pad('', $key * 6 * 8, '&nbsp;', STR_PAD_LEFT) . $item->title;
+            if (!empty($item->child)) {
+                $this->get_list($item->child, $result, $key);
+            }
+        }
+    }
 }
