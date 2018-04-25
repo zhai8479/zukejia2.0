@@ -442,7 +442,7 @@ class OrdersController extends BaseController
 
         $created_at = $created_at->timestamp;
 
-        if ($created_at < time() - 1800) return $this->error_response('已超过支付时间');
+        if ($created_at < time() - 180000) return $this->error_response('已超过支付时间');
 
 
         if (RentalRecord::check_room_is_rental($order->apartment_id, $order->start_date, $order->end_date)) {

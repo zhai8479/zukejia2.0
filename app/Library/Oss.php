@@ -16,8 +16,12 @@ class OSS
 {
 
 
+    public function aa()
+    {
+        return 11111;
+    }
 
-    private $ossClient;
+    //private $ossClient;
     private static $bucketName;
 
     /**

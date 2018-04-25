@@ -26,7 +26,7 @@ class OssServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Password::class, function () {
+        $this->app->singleton(OSS::class, function () {
             return new OSS();
         });
 
