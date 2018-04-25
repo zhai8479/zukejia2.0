@@ -47,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         }
         $this->app->register(RepositoryServiceProvider::class);
         $this->app->register(PasswordServiceProvider::class);
+        $this->app->register(OssServiceProvider::class);
         $this->app->register(AliyunSmsServiceProvider::class);
     }
 }

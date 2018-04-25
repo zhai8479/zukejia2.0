@@ -148,7 +148,7 @@ class OrdersController extends BaseController
         $response = [];
         $tempList = json_decode( json_encode( $orders),true);
         $tempList['service_time'] = date("Y-m-d H:i:s");
-        $tempList['out_time'] = 1800;
+        $tempList['out_time'] = 180000;
         $response['data'] =  $tempList;
         $response['code'] = 0;
         $response['msg'] = 'success';
@@ -361,7 +361,7 @@ class OrdersController extends BaseController
             $order->apartment_info = Apartment::find($order->apartment_id);
             $order->status_str = Order::$order_status[$order->status];
             $order->service_time =date("Y-m-d H:i:s");
-            $order->out_time =1800;
+            $order->out_time =180000;
         }
         return $this->array_response($order);
     }
@@ -558,7 +558,7 @@ class OrdersController extends BaseController
 
         $created_at = $created_at->timestamp;
 
-        if ($created_at < time() - 1800) return $this->error_response('已超过支付时间');
+        if ($created_at < time() - 180000) return $this->error_response('已超过支付时间');
 
 
         if (RentalRecord::check_room_is_rental($order->apartment_id, $order->start_date, $order->end_date)) {
