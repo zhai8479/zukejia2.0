@@ -620,8 +620,8 @@ class OrdersController extends BaseController
                 $aLipayPara = $alipay->getPayPara();*/
 
 
-                require_once('/app/Api/alipay/aop/AopClient.php');
-                require_once('/app/Api/alipay/aop/request/AlipayTradeAppPayRequest.php');
+                require_once('../app/Api/alipay/aop/AopClient.php');
+                require_once( '../app/Api/alipay/aop/request/AlipayTradeAppPayRequest.php');
                 $aop = new \AopClient();
 
                 //**沙箱测试支付宝开始
