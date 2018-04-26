@@ -7,9 +7,35 @@
 
 namespace App\Library;
 
+use OSS\OssClient;
 
 class Recommend
 {
+
+    private $ossClient;
+    public function __construct($isInternal = false)
+    {
+        $this->ossClient = new OssClient(config('alioss.AccessKeyId'), config('alioss.AccessKeySecret'),  config('alioss.ossServerInternal'), false);
+    }
+
+    /**
+     * 上传本地文件
+     *
+     * @param string $bucket bucket名称
+     * @param string $object object名称
+     * @param string $file 本地文件路径
+     * @param array $options
+     * @return null
+     * @throws OssException
+     */
+    public function uploadFile($bucketName,$object, $file)
+    {
+        $oss = new OSS(false); // 上传文件使用内网，免流量费
+        $res = $oss->ossClient->uploadFile($bucketName,$object, $file, $options = NULL);
+        return $res;
+    }
+
+
     /**
      * 由user_id 生成邀请码
      * @param $user_id
