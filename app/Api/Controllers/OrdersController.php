@@ -647,7 +647,7 @@ class OrdersController extends BaseController
                 $request->setNotifyUrl("http://a1.zukehouse.com/order_alipay_notify");
                 $request->setBizContent($bizcontent);
                 //这里和普通的接口调用不同，使用的是sdkExecute
-                $response = $aop->sdkExecute($request);
+                $result = $aop->sdkExecute($request);
 
 
 
@@ -655,7 +655,7 @@ class OrdersController extends BaseController
                 return $this->error_response($exception->getMessage(), 100, [$exception]);
             }
             $response = [];
-            $response['aLipayPara'] = $aLipayPara;
+            $response['aLipayPara'] = $result;
             return $this->array_response($response);
 
         } else {
