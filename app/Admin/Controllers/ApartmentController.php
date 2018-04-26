@@ -270,7 +270,7 @@ class ApartmentController extends Controller
 
                 $form->select('status', '状态')->options([1 => '热销中', 2 => '整理中', 3 => '预租中', 4 => '已出租']);
 
-                $form->radio('is_Commend', '是否推荐')->options(['是' => '是', '否' => '否'])->default('否');
+                $form->select('is_Commend', '是否推荐')->options(['是' => '是', '否' => '否'])->rules('required');
 
                 $form->number('click_num', '点击率')->rules('required|numeric|min:0');
 
