@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => 'local',
+    'default' => 'oss',
 
     /*
     |--------------------------------------------------------------------------
@@ -68,6 +68,19 @@ return [
             'root' => public_path('uploads'),
             'visibility' => 'public',
             'url' => env('APP_URL').'/uploads',
+        ],
+        'oss' => [
+            'driver'  => 'oss',
+            'domains' => [
+                'default'   => 'oss-cn-beijing-internal.aliyuncs.com', //你的七牛域名
+                'https'     => 'static.zukehouse.com',         //你的HTTPS域名
+                'custom'    => 'static.zukehouse.com',                //你的自定义域名
+            ],
+            'access_key'=> 'LTAIfewnsSfKs8oq',  //AccessKey
+            'secret_key'=> 'joLPEzjpqopAXvY9j7LBbOQQuX8Cx2',  //SecretKey
+            'bucket'    => 'zkj-static',  //Bucket名字
+            'notify_url'=> '',  //持久化处理回调地址
+            'url'       => 'http://zkj-static.oss-cn-beijing-internal.aliyuncs.com/',  // 填写文件访问根url
         ],
     ],
 

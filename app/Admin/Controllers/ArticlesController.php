@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use App\Models\Articles;
 use App\Models\Navigation;
+use App\Library\OSSHelp;
 
 class ArticlesController extends BaseController
 {
@@ -117,6 +118,7 @@ class ArticlesController extends BaseController
             $form->text('author','作者');
             $form->image('img_url', '文章缩略图')->removable()->rules('image')->move('article');
             $form->select('display','文章是否显示')->options(Articles::$excerpts);
+
         });
     }
 

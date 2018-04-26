@@ -8,7 +8,7 @@ return [
 	'sign_type' => 'MD5',
 
 	// 服务器异步通知页面路径。
-	'notify_url' => 'http://api.zukehouse.xyz/order_alipay_notify',
+	'notify_url' => 'http://a1.zukehouse.com/order_alipay_notify',
 
 	// 页面跳转同步通知页面路径。
 	'return_url' => 'http://www.zukehouse.com/user_center/order'
