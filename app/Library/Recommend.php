@@ -12,11 +12,11 @@ use OSS\OssClient;
 class Recommend
 {
 
-    private $ossClient;
+  /*  private $ossClient;
     public function __construct($isInternal = false)
     {
         $this->ossClient = new OssClient(config('alioss.AccessKeyId'), config('alioss.AccessKeySecret'),  config('alioss.ossServerInternal'), false);
-    }
+    }*/
 
     /**
      * 上传本地文件
@@ -28,12 +28,12 @@ class Recommend
      * @return null
      * @throws OssException
      */
-    public function uploadFile($bucketName,$object, $file)
+  /*  public function uploadFile($bucketName,$object, $file)
     {
-        $oss = new OSS(false); // 上传文件使用内网，免流量费
+        $oss = new Recommend(false); // 上传文件使用内网，免流量费
         $res = $oss->ossClient->uploadFile($bucketName,$object, $file, $options = NULL);
         return $res;
-    }
+    }*/
 
 
     /**
