@@ -6,6 +6,7 @@ use App\Models\Apartment;
 use App\Models\ChainDistrict;
 use App\Library\Password;
 use App\Library\Recommend;
+use App\Library\OSSHelp;
 use App\Models\Order;
 use App\Models\Tags;
 use App\Models\User;
@@ -785,7 +786,7 @@ class UserController extends BaseController
 
 
 
-        $oss = new Recommend();
+        $oss = new OSSHelp();
         $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
         /*$client = new OssClient('LTAI1wzjD8d4crkn',
             '0JOaw5cLewixKXy85QhYIPoEmFIqKR', 'http://oss-cn-zhangjiakou-internal.aliyuncs.com',false);

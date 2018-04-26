@@ -57,6 +57,8 @@ class CreateApartmentTable extends Migration
             $table->tinyInteger('current_floor')->comment('当前楼层');
             $table->string('is_commend')->comment('是否推荐 是-是 否-否');
             $table->bigInteger('click_num')->comment('点击率');
+            $table->timestamp('Renovation_start_time')->comment('装修开始时间');
+            $table->integer('Renovation_day')->comment('装修周期（工作日）');
             $table->softDeletes();
             $table->timestamps();
         });

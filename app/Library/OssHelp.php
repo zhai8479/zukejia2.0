@@ -12,16 +12,12 @@ namespace App\Library;
 use OSS\OssClient;
 
 
-class OSS
+class OSSHelp
 {
 
 
-    public function aa()
-    {
-        return 11111;
-    }
 
-    //private $ossClient;
+    private $ossClient;
     private static $bucketName;
 
     /**
@@ -71,7 +67,7 @@ class OSS
      */
     public function uploadFile($bucketName,$object, $file)
     {
-        $oss = new OSS(false); // 上传文件使用内网，免流量费
+        $oss = new OSSHelp(false); // 上传文件使用内网，免流量费
         $res = $oss->ossClient->uploadFile($bucketName,$object, $file, $options = NULL);
         return $res;
     }
@@ -86,7 +82,7 @@ class OSS
      */
     public function deleteObject($bucketName,$ossKey)
     {
-        $oss = new OSS(false); // 上传文件使用内网，免流量费
+        $oss = new OSSHelp(false); // 上传文件使用内网，免流量费
 
         return $oss->ossClient->deleteObject($bucketName, $ossKey);
     }
@@ -104,7 +100,7 @@ class OSS
      */
     public function copyObject($fromBucket, $fromObject, $toBucket, $toObject)
     {
-        $oss = new OSS(true); // 上传文件使用内网，免流量费
+        $oss = new OSSHelp(true); // 上传文件使用内网，免流量费
 
         return $oss->ossClient->copyObject($fromBucket, $fromObject, $toBucket, $toObject);
     }
@@ -123,7 +119,7 @@ class OSS
      */
     public static function createBucket($bucketName)
     {
-        $oss = new OSS();
+        $oss = new OSSHelp();
         return $oss->ossClient->createBucket($bucketName);
     }
 

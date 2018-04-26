@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Library\OSS;
+use App\Library\OSSHelp;
 use Illuminate\Support\ServiceProvider;
 
 class OssServiceProvider extends ServiceProvider
@@ -26,17 +26,17 @@ class OssServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(OSS::class, function () {
-            return new OSS();
+        $this->app->singleton(OSSHelp::class, function () {
+            return new OSSHelp();
         });
 
         $this->app->bind('App\Library\OSS', function () {
-            return new OSS();
+            return new OSSHelp();
         });
     }
 
     public function provides()
     {
-        return [OSS::class];
+        return [OSSHelp::class];
     }
 }
