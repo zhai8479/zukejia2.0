@@ -870,12 +870,12 @@ class UserController extends BaseController
             'blood_type' => 'integer|min:1|max:4',
             'education' => 'integer|min:1|max:7',
             'profession' => 'string|max:50',
-            'country' => 'integer',
-            'province' => 'integer',
-            'city' => 'integer',
-            'province_id' => 'integer',
-            'city_id' => 'integer',
-            'district_id' => 'integer',
+//            'country' => 'integer',
+//            'province' => 'integer',
+//            'city' => 'integer',
+//            'province_id' => 'integer',
+//            'city_id' => 'integer',
+//            'district_id' => 'integer',
         ]);
         /**
          * @var User $user
@@ -896,32 +896,32 @@ class UserController extends BaseController
         if ($request->has('profession')) {
             $user->profession = $request->profession;
         }
-        if ($request->has(['country', 'province', 'city'])) {
-            $country = 1;
-            $province = $request->province;
-            $city = $request->city;
-            $exist_province = ChainDistrict::where('code', $province)->exists();
-            $exist_city = ChainDistrict::where('code', $city)->exists();
-            if (!$exist_province) return $this->error_response('code 对应省不存在');
-            if (!$exist_city) return $this->error_response('code 对应市不存在');
-            $user->country = $country;
-            $user->province = $province;
-            $user->city = $city;
-        }
-        if ($request->has([ 'province_id', 'city_id', 'district_id'])) {
-            $province = $request->province_id;
-            $city = $request->city_id;
-            $district = $request->district_id;
-             $exist_province = ChainDistrict::where('id', $province)->where('levels','1')->exists();
-            $exist_city = ChainDistrict::where('id', $city)->where('levels','2')->exists();
-            $exist_district = ChainDistrict::where('id', $district)->where('levels','3')->exists();
-            if (!$exist_province) return $this->error_response('code 对应省不存在');
-            if (!$exist_city) return $this->error_response('code 对应市不存在');
-            if (!$exist_district) return $this->error_response('code 对应区不存在');
-            $user->province_id = $province;
-            $user->city_id = $city;
-            $user->district_id = $district;
-        }
+//        if ($request->has(['country', 'province', 'city'])) {
+//            $country = 1;
+//            $province = $request->province;
+//            $city = $request->city;
+//            $exist_province = ChainDistrict::where('code', $province)->exists();
+//            $exist_city = ChainDistrict::where('code', $city)->exists();
+//            if (!$exist_province) return $this->error_response('code 对应省不存在');
+//            if (!$exist_city) return $this->error_response('code 对应市不存在');
+//            $user->country = $country;
+//            $user->province = $province;
+//            $user->city = $city;
+//        }
+//        if ($request->has([ 'province_id', 'city_id', 'district_id'])) {
+//            $province = $request->province_id;
+//            $city = $request->city_id;
+//            $district = $request->district_id;
+//             $exist_province = ChainDistrict::where('id', $province)->where('levels','1')->exists();
+//            $exist_city = ChainDistrict::where('id', $city)->where('levels','2')->exists();
+//            $exist_district = ChainDistrict::where('id', $district)->where('levels','3')->exists();
+//            if (!$exist_province) return $this->error_response('code 对应省不存在');
+//            if (!$exist_city) return $this->error_response('code 对应市不存在');
+//            if (!$exist_district) return $this->error_response('code 对应区不存在');
+//            $user->province_id = $province;
+//            $user->city_id = $city;
+//            $user->district_id = $district;
+//        }
         $user->save();
         return $this->no_content('保存成功');
     }

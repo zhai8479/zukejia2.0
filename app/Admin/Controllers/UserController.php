@@ -60,8 +60,8 @@ class UserController extends Controller
                 $form->display('id_card', '身份证')->readOnly()->value($user->id_card);
                 $form->display('sex', '性别')->value($user->sex);
                 $form->date('birthday', '生日')->readOnly()->value($user->birthday);
-                $form->display('province_str', '省')->value($user->province_str());
-                $form->display('city_str', '市')->value($user->city_str());
+//                $form->display('province_str', '省')->value($user->province_str());
+//                $form->display('city_str', '市')->value($user->city_str());
                 $form->display('recommend_code', '邀请码')->value($user->recommend_code);
                 $form->display('blood_type','血型')->value($user->blood_type);
                 $form->display('education','学历')->value($user->education);
@@ -190,26 +190,26 @@ class UserController extends Controller
             $form->text('id_card', '身份证')->rules('required');
             $form->select('sex', '性别')->options([0 => '未知', 1 => '男', 2 => '女']);
             $form->date('birthday', '生日');
-            $form->select('province', '省')->options(function(){
-                $provinceModel = new ChainDistrict();
-                $province = $provinceModel->where('parent_id', '=', 0)->get(['name','id']);
-                $tmp = [];
-                $province->reject(function($element)use(&$tmp){
-                    $tmp[$element->id] = $element->name;
-                });
-                return $tmp;
-            })->load('city', '/admin/api/city')->rules('required');
-
-            $form->select('city', '市')->options(function () {
-                $cityModel = new ChainDistrict();
-                $province = $this->province ? $this->province : 1;
-                $city = $cityModel->where('parent_id', '=', $province)->get(['name','id']);
-                $tmp = [];
-                $city->reject(function($element)use(&$tmp){
-                    $tmp[$element->id] = $element->name;
-                });
-                return $tmp;
-            });
+//            $form->select('province', '省')->options(function(){
+//                $provinceModel = new ChainDistrict();
+//                $province = $provinceModel->where('parent_id', '=', 0)->get(['name','id']);
+//                $tmp = [];
+//                $province->reject(function($element)use(&$tmp){
+//                    $tmp[$element->id] = $element->name;
+//                });
+//                return $tmp;
+//            })->load('city', '/admin/api/city')->rules('required');
+//
+//            $form->select('city', '市')->options(function () {
+//                $cityModel = new ChainDistrict();
+//                $province = $this->province ? $this->province : 1;
+//                $city = $cityModel->where('parent_id', '=', $province)->get(['name','id']);
+//                $tmp = [];
+//                $city->reject(function($element)use(&$tmp){
+//                    $tmp[$element->id] = $element->name;
+//                });
+//                return $tmp;
+//            });
             $form->select('blood_type', '血型')->options(User::$bloods);
             $form->select('education', '学历')->options(User::$educations);
             $form->text('profession', '职位');
