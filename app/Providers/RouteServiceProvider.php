@@ -40,7 +40,6 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        $this->mapMobileRoutes();
         //
     }
 
@@ -56,13 +55,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
-    }
-
-    protected function mapMobileRoutes()
-    {
-        Route::middleware('mobile')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/mobile.php'));
     }
 
     /**

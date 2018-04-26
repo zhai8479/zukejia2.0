@@ -169,6 +169,8 @@ DingoRoute::version('v1', function () {
         });
         DingoRoute::group(['prefix' => 'order'], function () {
             DingoRoute::get('apartment_use_status', 'OrdersController@apartment_use_status');
+            //支付宝手机端通知
+            DingoRoute::post('alipayNotify','OrdersController@alipayNotify');
         });
 
         // 用户积分
@@ -266,6 +268,7 @@ DingoRoute::version('v1', function () {
         DingoRoute::group(['prefix' => 'banner'],function(){
             DingoRoute::get('index','BannerController@index');
      });
+
     });
 });
 
