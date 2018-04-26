@@ -34,6 +34,8 @@ Route::group([
     //预约看房
     $router->resource('appointments',AppointmentsController::class);
 
+    //城市管理
+    $router->resource('address',AddressController::class);
 
     // 项目
     $router->resource('project-types', ProjectTypeController::class);
@@ -57,6 +59,8 @@ Route::group([
     'prefix'        => '/admin/api',
     'namespace'     => config('admin.route.namespace'),
 ], function (Router $router) {
-    $router->get('/city', 'AddressController@city');  // 1
-    $router->get('/district', 'AddressController@district') ; // 1
+    $router->get('/getData', 'AddressController@getData');  // 1
+   // $router->get('/district', 'AddressController@district') ; // 1
+ //   $router->get('/Business_circle', 'AddressController@Business_circle') ; // 1
+
 });
