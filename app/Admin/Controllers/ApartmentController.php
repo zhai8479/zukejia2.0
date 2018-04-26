@@ -231,7 +231,7 @@ class ApartmentController extends Controller
                         $tmp[$element->id] = $element->title;
                     });
                     return $tmp;
-                })->load('city', '/admin/api/city')->rules('required');
+                })->load('city', '/admin/api/getData')->rules('required');
 
                 $form->select('city', '市')->options(function () {
                     $cityModel = new City();
@@ -242,7 +242,7 @@ class ApartmentController extends Controller
                         $tmp[$element->id] = $element->title;
                     });
                     return $tmp;
-                })->load('district', '/admin/api/district')->rules('required');
+                })->load('district', '/admin/api/getData')->rules('required');
 
                 $form->select('district', '区')->options(function () {
                     $districtModel = new City();
@@ -253,14 +253,14 @@ class ApartmentController extends Controller
                         $tmp[$element->id] = $element->title;
                     });
                     return $tmp;
-                });
+                })->load('business', '/admin/api/getData')->rules('required');
 
-                $form->select('Business_circle', '商圈')->options(function () {
-                    $Business_circleModel = new City();
-                    $Business_circle = $this->Business_circle;
-                    $Business_circle = $Business_circleModel->where('parent_id', '=', $Business_circle)->get(['title','id']);
+                $form->select('business', '商圈')->options(function () {
+                    $businessModel = new City();
+                    $district = $this->district;
+                    $business = $businessModel->where('parent_id', '=', $district)->get(['title','id']);
                     $tmp = [];
-                    $Business_circle->reject(function($element)use(&$tmp){
+                    $business->reject(function($element)use(&$tmp){
                         $tmp[$element->id] = $element->title;
                     });
                     return $tmp;

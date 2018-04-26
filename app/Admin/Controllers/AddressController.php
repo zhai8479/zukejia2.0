@@ -36,11 +36,11 @@ class AddressController extends BaseController
      * @return array
      * @throws \Exception
      */
-    public function province(Request $request)
+    public function getData(Request $request)
     {
         $q = $request->get('q');
         $model = new City();
-        $result = $model->where('parent_id', 0)->get();
+        $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
             $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
