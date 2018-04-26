@@ -36,14 +36,14 @@ class AddressController extends BaseController
      * @return array
      * @throws \Exception
      */
-    public function getData(Request $request)
+    public function province(Request $request)
     {
         $q = $request->get('q');
         $model = new City();
-        $result = $model->where('parent_id', $q)->get();
+        $result = $model->where('parent_id', 0)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
         });
         return $tmp;
     }
@@ -65,7 +65,7 @@ class AddressController extends BaseController
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
         });
         return $tmp;
     }
@@ -87,7 +87,7 @@ class AddressController extends BaseController
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
         });
         return $tmp;
     }
@@ -109,7 +109,7 @@ class AddressController extends BaseController
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
         });
         return $tmp;
     }
