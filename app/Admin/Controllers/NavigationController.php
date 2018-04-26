@@ -71,9 +71,6 @@ class NavigationController extends BaseController
             $options = $this->navigation_type_list(0);
             $options[0] = '根目录';
             $form->select('parent_id','所属栏目')->options($options);
-            $form->saving(function (Form $form) {
-                if (isset($error)) return back()->withInput()->with(compact('error'));
-            });
         });
     }
 }

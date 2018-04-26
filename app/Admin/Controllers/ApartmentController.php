@@ -416,7 +416,7 @@ class ApartmentController extends Controller
 
             $form->saving(function (Form $form) {
 
-                if (isset($error)) return back()->withInput()->with(compact('error'));
+//                if (isset($error)) return back()->withInput()->with(compact('error'));
                 if ($form->province) {
                     $model = new City();
 

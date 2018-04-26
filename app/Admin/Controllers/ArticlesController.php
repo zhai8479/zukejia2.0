@@ -117,9 +117,6 @@ class ArticlesController extends BaseController
             $form->text('author','作者');
             $form->image('img_url', '文章缩略图')->removable()->rules('image')->move('article');
             $form->select('display','文章是否显示')->options(Articles::$excerpts);
-            $form->saving(function (Form $form) {
-                if (isset($error)) return back()->withInput()->with(compact('error'));
-            });
         });
     }
 

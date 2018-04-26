@@ -170,7 +170,6 @@ class UserMoneyLogController extends Controller
                 $user_money_obj->money = ($user_money  + $operator) ;
                 $user_money_obj->save();
                 $form->money ;
-                if (isset($error)) return back()->withInput()->with(compact('error'));
             });
         });
     }
