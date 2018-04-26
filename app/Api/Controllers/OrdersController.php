@@ -630,6 +630,34 @@ class OrdersController extends BaseController
         }
     }
 
+
+    /**
+     * 支付宝异步通知
+     */
+    public function alipayNotify(\Illuminate\Http\Request $request)
+    {
+        // 验证请求。
+        if (! app('alipay.mobile')->verify()) {
+//            Log::notice('Alipay notify post data verification fail.', [
+//                'data' => Request::instance()->getContent()
+//            ]);
+            return 'fail';
+        }
+
+        // 判断通知类型。
+        switch (Input::get('trade_status')) {
+            case 'TRADE_SUCCESS':
+            case 'TRADE_FINISHED':
+                // TODO: 支付成功，取得订单号进行其它相关操作。
+//                Log::debug('Alipay notify get data verification success.', [
+//                    'out_trade_no' => Input::get('out_trade_no'),
+//                    'trade_no' => Input::get('trade_no')
+//                ]);
+                break;
+        }
+
+        return 'success';
+    }
     /**
      * 已支付订单取消
      *
