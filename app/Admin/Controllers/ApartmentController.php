@@ -17,9 +17,10 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
-use App\Models\ChainDistrict;
+use App\Models\City;
 use App\Models\Tags;
 use Tests\Models\Tag;
+use Illuminate\Support\MessageBag;
 
 class ApartmentController extends Controller
 {
@@ -106,15 +107,19 @@ class ApartmentController extends Controller
             $grid->id('编号')->sortable();
             $grid->title('房屋标题');
             $grid->column('房屋地址')->display(function () {
-                $temp = new ChainDistrict();
+                $temp = new City();
                 $province = $temp->Find($this->province);
                 $city = $temp->Find($this->city);
                 $district = $temp->Find($this->district);
+                $Business_circle = $temp->Find($this->Business_circle);
                 $address =
-                    $province->name . $province->suffix .
-                    $city->name . $city->suffix;
+                    $province->title . $province->suffix .
+                    $city->title . $city->suffix;
                 if ($district) {
-                    $address .= $district->name . $district->suffix;
+                    $address .= $district->title . $district->suffix;
+                }
+                if ($Business_circle) {
+                    $address .= $Business_circle->title . $Business_circle->suffix;
                 }
                 $address .= $this->address;
                 return $address;
@@ -205,7 +210,7 @@ class ApartmentController extends Controller
                 }, '编号或地址');
             });
             //如果带了用户id，房源的操作按钮会被屏蔽
-      //      if (null !== $user_id)$grid->disableActions();
+            //      if (null !== $user_id)$grid->disableActions();
         });
     }
 
@@ -220,36 +225,48 @@ class ApartmentController extends Controller
             $form->tab('房屋地址', function ($form) {
 
                 $form->select('province', '省')->options(function(){
-                    $provinceModel = new ChainDistrict();
-                    $province = $provinceModel->where('parent_id', '=', 0)->get(['name','id']);
+                    $provinceModel = new City();
+                    $province = $provinceModel->where('parent_id', '=', 0)->get(['title','id']);
                     $tmp = [];
                     $province->reject(function($element)use(&$tmp){
-                        $tmp[$element->id] = $element->name;
+                        $tmp[$element->id] = $element->title;
                     });
                     return $tmp;
-                })->load('city', '/admin/api/city');
+                })->load('city', '/admin/api/getData')->rules('required');
 
                 $form->select('city', '市')->options(function () {
-                    $cityModel = new ChainDistrict();
+                    $cityModel = new City();
                     $province = $this->province;
-                    $city = $cityModel->where('parent_id', '=', $province)->get(['name','id']);
+                    $city = $cityModel->where('parent_id', '=', $province)->get(['title','id']);
                     $tmp = [];
                     $city->reject(function($element)use(&$tmp){
-                        $tmp[$element->id] = $element->name;
+                        $tmp[$element->id] = $element->title;
                     });
                     return $tmp;
-                })->load('district', '/admin/api/district');
+                })->load('district', '/admin/api/getData')->rules('required');
 
                 $form->select('district', '区')->options(function () {
-                    $districtModel = new ChainDistrict();
+                    $districtModel = new City();
                     $city = $this->city;
-                    $district = $districtModel->where('parent_id', '=', $city)->get(['name','id']);
+                    $district = $districtModel->where('parent_id', '=', $city)->get(['title','id']);
                     $tmp = [];
                     $district->reject(function($element)use(&$tmp){
-                        $tmp[$element->id] = $element->name;
+                        $tmp[$element->id] = $element->title;
+                    });
+                    return $tmp;
+                })->load('business', '/admin/api/getData')->rules('required');
+
+                $form->select('business', '商圈')->options(function () {
+                    $businessModel = new City();
+                    $district = $this->district;
+                    $business = $businessModel->where('parent_id', '=', $district)->get(['title','id']);
+                    $tmp = [];
+                    $business->reject(function($element)use(&$tmp){
+                        $tmp[$element->id] = $element->title;
                     });
                     return $tmp;
                 });
+
 
                 $form->select('status', '状态')->options([1 => '热销中', 2 => '整理中', 3 => '预租中', 4 => '已出租']);
 
@@ -307,11 +324,11 @@ class ApartmentController extends Controller
                     return $tmp;
                 });
 
-                $form->bed_line('single_bed', '单人床');
+             /*   $form->bed_line('single_bed', '单人床');
                 $form->bed_line('double_bed', '双人床');
                 $form->bed_line('tatami', '榻榻米');
                 $form->bed_line('round_bed', '圆床');
-                $form->bed_line('big_bed', '大床');
+                $form->bed_line('big_bed', '大床');*/
 
             })->tab('房屋描述', function ($form) {
                 $form->text('title', '房屋标题')->rules('required');
@@ -398,17 +415,19 @@ class ApartmentController extends Controller
             $form->ignore(['id']);
 
             $form->saving(function (Form $form) {
+
+//                if (isset($error)) return back()->withInput()->with(compact('error'));
                 if ($form->province) {
-                    $model = new ChainDistrict();
+                    $model = new City();
 
                     $province = $model->where('id', $form->province)->first();
                     $city = $model->where('id', $form->city)->first();
                     $district = $model->where('id', $form->district)->first();
 
-                    $address = $province->name . $province->suffix . $city->name . $city->suffix;
+                    $address = $province->title . $province->suffix . $city->title . $city->suffix;
 
                     if ($district) {
-                        $address .= $district->name . $district->suffix;
+                        $address .= $district->title . $district->suffix;
                     } else {
                         $form->district = 0;
                     }
