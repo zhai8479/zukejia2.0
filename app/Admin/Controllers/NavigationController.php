@@ -67,10 +67,13 @@ class NavigationController extends BaseController
         return Admin::form(Navigation::class, function (Form $form) {
 
             $form->display('id', 'ID');
-            $form->text('title','栏目名');
+            $form->text('title','栏目名')->rules('required');
             $options = $this->navigation_type_list(0);
             $options[0] = '根目录';
             $form->select('parent_id','所属栏目')->options($options);
+            $form->saving(function (Form $form) {
+                if (isset($error)) return back()->withInput()->with(compact('error'));
+            });
         });
     }
 }

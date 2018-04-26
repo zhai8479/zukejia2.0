@@ -20,6 +20,7 @@ use Encore\Admin\Controllers\ModelForm;
 use App\Models\City;
 use App\Models\Tags;
 use Tests\Models\Tag;
+use Illuminate\Support\MessageBag;
 
 class ApartmentController extends Controller
 {
@@ -277,9 +278,9 @@ class ApartmentController extends Controller
 
                 $form->hidden('id');
 
-                $form->saveing(function (Form $form){
-
-                });
+//                $form->saveing(function (Form $form){
+//
+//                });
 
             })->tab('基本情况', function ($form) {
                 $form->radio('type', '出租类型')->values([
@@ -333,9 +334,9 @@ class ApartmentController extends Controller
                 $form->text('title', '房屋标题')->rules('required');
                 $form->text('user_id','房东信息');
                 $form->textarea('desc', '个性描述')->rules('required');
-                $form->textarea('inner_desc', '内部描述')->rules('required');
-                $form->textarea('traffic_desc', '交通情况')->rules('required');
-                $form->textarea('environment', '周边环境')->rules('required');
+                $form->textarea('inner_desc', '内部描述');
+                $form->textarea('traffic_desc', '交通情况');
+                $form->textarea('environment', '周边环境');
             })->tab('配套设施', function ($form) {
                 $model = new Tags();
                 $bathroomUtils = $model->where('type', '=', 3)
@@ -346,7 +347,7 @@ class ApartmentController extends Controller
                 $bathroomUtils->reject(function ($item)use(&$tmp){
                     $tmp[$item->id] = $item->name;
                 });
-                $form->checkbox('bathroom_utils', '卫浴')->options($tmp)->rules('required');
+                $form->checkbox('bathroom_utils', '卫浴')->options($tmp);
 
                 $bathroomUtils = $model->where('type', '=', 3)
                     ->where('parent_id', '<>', 0)
@@ -356,7 +357,7 @@ class ApartmentController extends Controller
                 $bathroomUtils->reject(function ($item)use(&$tmp){
                     $tmp[$item->id] = $item->name;
                 });
-                $form->checkbox('electrics', '电器')->options($tmp)->rules('required');
+                $form->checkbox('electrics', '电器')->options($tmp);
 
                 $bathroomUtils = $model->where('type', '=', 3)
                     ->where('parent_id', '<>', 0)
@@ -366,7 +367,7 @@ class ApartmentController extends Controller
                 $bathroomUtils->reject(function ($item)use(&$tmp){
                     $tmp[$item->id] = $item->name;
                 });
-                $form->checkbox('bed', '床')->options($tmp)->rules('required');
+                $form->checkbox('bed', '床')->options($tmp);
 
                 $bathroomUtils = $model->where('type', '=', 3)
                     ->where('parent_id', '<>', 0)
@@ -376,7 +377,7 @@ class ApartmentController extends Controller
                 $bathroomUtils->reject(function ($item)use(&$tmp){
                     $tmp[$item->id] = $item->name;
                 });
-                $form->checkbox('kitchen_utils', '厨房')->options($tmp)->rules('required');
+                $form->checkbox('kitchen_utils', '厨房')->options($tmp);
 
                 $bathroomUtils = $model->where('type', '=', 3)
                     ->where('parent_id', '<>', 0)
@@ -386,7 +387,7 @@ class ApartmentController extends Controller
                 $bathroomUtils->reject(function ($item)use(&$tmp){
                     $tmp[$item->id] = $item->name;
                 });
-                $form->checkbox('facilities', '设备')->options($tmp)->rules('required');
+                $form->checkbox('facilities', '设备')->options($tmp);
 
                 $bathroomUtils = $model->where('type', '=', 3)
                     ->where('parent_id', '<>', 0)
@@ -397,7 +398,7 @@ class ApartmentController extends Controller
                     $tmp[$item->id] = $item->name;
                 });
 
-                $form->checkbox('requires', '要求')->options($tmp)->rules('required');
+                $form->checkbox('requires', '要求')->options($tmp);
             })->tab('真实拍照', function ($form) {
 
                 $form->multipleImage('images','图片')->rules('required')->removable();
@@ -407,13 +408,15 @@ class ApartmentController extends Controller
                 $form->hidden('keyword');
 
                 $form->radio('rental_type', '价格规则')->options([0 => '短租', 1 => '长租',2 => '特价'])->default(1);
-                $form->currency('rental_price', '租金')->symbol('￥');
-                $form->currency('rental_deposit', '押金')->symbol('￥');
+                $form->currency('rental_price', '租金')->symbol('￥')->rules('required');
+                $form->currency('rental_deposit', '押金')->symbol('￥')->rules('required');
             });
 
             $form->ignore(['id']);
 
             $form->saving(function (Form $form) {
+
+                if (isset($error)) return back()->withInput()->with(compact('error'));
                 if ($form->province) {
                     $model = new City();
 

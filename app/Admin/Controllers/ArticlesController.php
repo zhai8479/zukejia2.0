@@ -110,13 +110,16 @@ class ArticlesController extends BaseController
 
             $form->display('id', 'ID');
             $form->select('navigation_type_id','所属栏目')->options($this->navigation_type_list(0));
-            $form->text('title','标题');
-            $form->text('keywords','关键字');
-            $form->text('excerpt','文章摘要');
+            $form->text('title','标题')->rules('required');
+            $form->text('keywords','关键字')->rules('required');
+            $form->text('excerpt','文章摘要')->rules('required');
             $form->editor('content','内容')->rules('required');
             $form->text('author','作者');
             $form->image('img_url', '文章缩略图')->removable()->rules('image')->move('article');
             $form->select('display','文章是否显示')->options(Articles::$excerpts);
+            $form->saving(function (Form $form) {
+                if (isset($error)) return back()->withInput()->with(compact('error'));
+            });
         });
     }
 

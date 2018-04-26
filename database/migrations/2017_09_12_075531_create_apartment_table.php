@@ -19,6 +19,7 @@ class CreateApartmentTable extends Migration
             $table->smallInteger('province')->comment('省');
             $table->smallInteger('city')->comment('市');
             $table->smallInteger('district')->comment('区');
+            $table->smallInteger('business')->comment('商圈');
             $table->string('address')->comment('地址');
             $table->string('search_address')->comment('详细地址');
             $table->tinyInteger('status')->comment('状态 1-热销中 2-整理中 3-预租中 4-出租中');
