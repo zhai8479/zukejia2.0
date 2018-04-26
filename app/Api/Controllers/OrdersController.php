@@ -631,7 +631,7 @@ class OrdersController extends BaseController
                 $aop->rsaPrivateKey = config('alioss.alipayKey');
                 $aop->format = "json";
                 $aop->charset = "GBK";
-                $aop->signType = "RSA";
+                $aop->signType = "RSA2";
                 $aop->alipayrsaPublicKey = config('alioss.alipaySecret');
                 $bizcontent = json_encode([
                     'body'=>'支付房租与押金',
