@@ -227,7 +227,7 @@ class ApartmentController extends Controller
                         $tmp[$element->id] = $element->name;
                     });
                     return $tmp;
-                })->load('city', '/admin/api/city')->rules('required');
+                })->load('city', '/admin/api/city');
 
                 $form->select('city', '市')->options(function () {
                     $cityModel = new ChainDistrict();
@@ -238,7 +238,7 @@ class ApartmentController extends Controller
                         $tmp[$element->id] = $element->name;
                     });
                     return $tmp;
-                })->load('district', '/admin/api/district')->rules('required');
+                })->load('district', '/admin/api/district');
 
                 $form->select('district', '区')->options(function () {
                     $districtModel = new ChainDistrict();
