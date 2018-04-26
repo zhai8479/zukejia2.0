@@ -298,7 +298,6 @@ class AopClient {
 		$params['biz_content'] = $dict['biz_content'];
 
 		ksort($params);
-
 		$params['sign'] = $this->generateSign($params, $this->signType);
 
 		foreach ($params as &$value) {
