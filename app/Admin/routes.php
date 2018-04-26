@@ -60,7 +60,6 @@ Route::group([
     'namespace'     => config('admin.route.namespace'),
 ], function (Router $router) {
     $router->get('/city', 'AddressController@city');  // 1
-   // $router->get('/district', 'AddressController@district') ; // 1
- //   $router->get('/Business_circle', 'AddressController@Business_circle') ; // 1
+    $router->get('/district', 'AddressController@district') ; // 1
 
 });
