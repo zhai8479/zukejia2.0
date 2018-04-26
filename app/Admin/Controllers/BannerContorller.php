@@ -81,7 +81,7 @@ class BannerContorller extends BaseController
         return Admin::form(Banner::class, function (Form $form) {
 
             $form->display('id', 'ID');
-            $form->text('title','标题');
+            $form->text('title','标题')->rules('required');
             $form->number('order','权重');
             $form->text('link','跳转链接');
             $form->image('banner_url', '轮播图')->removable()->rules('image')->move('banner');
