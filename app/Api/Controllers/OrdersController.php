@@ -607,7 +607,7 @@ class OrdersController extends BaseController
             return $this->no_content('支付成功');
         } elseif ($pay_type == 2){  //支付方式为支付宝支付
             try{
-                //订单支付渠道改为支付宝
+              /*  //订单支付渠道改为支付宝
                 $order->pay_channel = 2;
                 $order->save();
                 //调用支付宝支付
@@ -617,7 +617,40 @@ class OrdersController extends BaseController
                 $alipay->setTotalFee($order->pay_money);
                 $alipay->setSubject('支付房租与押金');
                 $alipay->setBody('支付房租与押金');
-                $aLipayPara = $alipay->getPayPara();
+                $aLipayPara = $alipay->getPayPara();*/
+
+
+                require_once('/app/Api/alipay/aop/AopClient.php');
+                require_once('/app/Api/alipay/aop/request/AlipayTradeAppPayRequest.php');
+                $aop = new \AopClient();
+
+                //**沙箱测试支付宝开始
+                $aop->gatewayUrl = "https://openapi.alipay.com/gateway.do";
+                //实际上线app id需真实的
+                $aop->appId = "2018011001750693";
+                $aop->rsaPrivateKey = '填写工具生成的商户应用私钥';
+                $aop->format = "json";
+                $aop->charset = "UTF-8";
+                $aop->signType = "RSA";
+                $aop->alipayrsaPublicKey = '填写从支付宝开放后台查看的支付宝公钥';
+                $bizcontent = json_encode([
+                    'body'=>'支付房租与押金',
+                    'subject'=>'支付房租与押金',
+                    'out_trade_no'=>$order->order_no,//此订单号为商户唯一订单号
+                    'total_amount'=> $order->pay_money,//保留两位小数
+                    'product_code'=>$order->apartment_id
+                ]);
+                //**沙箱测试支付宝结束
+                //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+                $request = new \AlipayTradeAppPayRequest();
+                //支付宝回调
+                $request->setNotifyUrl("http://a1.zukehouse.com/order_alipay_notify");
+                $request->setBizContent($bizcontent);
+                //这里和普通的接口调用不同，使用的是sdkExecute
+                $response = $aop->sdkExecute($request);
+
+
+
             }catch (\Exception $exception) {
                 return $this->error_response($exception->getMessage(), 100, [$exception]);
             }
