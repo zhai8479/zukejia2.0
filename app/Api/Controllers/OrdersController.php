@@ -628,11 +628,11 @@ class OrdersController extends BaseController
                 $aop->gatewayUrl = "https://openapi.alipay.com/gateway.do";
                 //实际上线app id需真实的
                 $aop->appId = "2018011001750693";
-                $aop->rsaPrivateKey = '填写工具生成的商户应用私钥';
+                $aop->rsaPrivateKey = config('alioss.alipayKey');
                 $aop->format = "json";
                 $aop->charset = "UTF-8";
                 $aop->signType = "RSA";
-                $aop->alipayrsaPublicKey = '填写从支付宝开放后台查看的支付宝公钥';
+                $aop->alipayrsaPublicKey = config('alioss.alipaySecret');
                 $bizcontent = json_encode([
                     'body'=>'支付房租与押金',
                     'subject'=>'支付房租与押金',
