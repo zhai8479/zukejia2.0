@@ -14,5 +14,5 @@ return [
 	'public_key_path' => __DIR__ . '/key/public_key.pem',
 
 	// 异步通知连接。
-    'notify_url' => 'http://a1.zukehouse.com/order_alipay_notify',
+    'notify_url' => 'http://a1.zukehouse.com/order_alipaymobile_notify',
 ];

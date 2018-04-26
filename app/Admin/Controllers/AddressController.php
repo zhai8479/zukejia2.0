@@ -7,7 +7,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\ChainDistrict;
+use App\Models\City;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
@@ -36,14 +36,14 @@ class AddressController extends BaseController
      * @return array
      * @throws \Exception
      */
-    public function province(Request $request)
+    public function getData(Request $request)
     {
         $q = $request->get('q');
-        $model = new ChainDistrict();
-        $result = $model->where('parent_id', 0)->get();
+        $model = new City();
+        $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
         return $tmp;
     }
@@ -61,11 +61,11 @@ class AddressController extends BaseController
     public function city(Request $request)
     {
         $q = $request->get('q');
-        $model = new ChainDistrict();
+        $model = new City();
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
         return $tmp;
     }
@@ -83,11 +83,11 @@ class AddressController extends BaseController
     public function district(Request $request)
     {
         $q = $request->get('q');
-        $model = new ChainDistrict();
+        $model = new City();
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
         return $tmp;
     }
@@ -105,11 +105,11 @@ class AddressController extends BaseController
     public function Business_circle(Request $request)
     {
         $q = $request->get('q');
-        $model = new ChainDistrict();
+        $model = new City();
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
         $result->reject(function($element)use(&$tmp){
-            $tmp['data'][] = ['id' => $element->id, 'text' => $element->name];
+            $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
         return $tmp;
     }
@@ -119,7 +119,7 @@ class AddressController extends BaseController
     {
         return Admin::content(function (Content $content) {
             $content->header('城市管理');
-            $content->body(ChainDistrict::tree());
+            $content->body(City::tree());
         });
     }
 
@@ -146,7 +146,7 @@ class AddressController extends BaseController
 
     protected function form()
     {
-        return Admin::form(ChainDistrict::class, function (Form $form) {
+        return Admin::form(City::class, function (Form $form) {
 
             $form->display('id', 'ID');
             $options = $this->city_list(0);

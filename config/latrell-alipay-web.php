@@ -11,5 +11,5 @@ return [
 	'notify_url' => 'http://a1.zukehouse.com/order_alipay_notify',
 
 	// 页面跳转同步通知页面路径。
-	'return_url' => 'http://www.zukehouse.com/user_center/order'
+	'return_url' => 'http://a2.zukehouse.com/user_center/order'
 ];
