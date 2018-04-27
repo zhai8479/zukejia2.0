@@ -135,7 +135,10 @@ class ApartmentController extends Controller
                 else if ($value == 1) return '长租';
                 return '特价';
             });
-
+            $grid->is_commend('是否推荐')->display(function ($value) {
+                if ($value == '是') return '是';
+                else  return '否';
+            });
             $grid->column('出租价格')->display(function () {
                 return '￥' . $this->rental_price;
             });
