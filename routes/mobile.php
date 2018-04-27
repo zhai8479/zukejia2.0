@@ -10,11 +10,9 @@ Route::any("/order_alipaymobile_notify",function (\Illuminate\Http\Request $requ
     require_once('../alipay-sdk-PHP/aop/AopClient.php');
 
     $aop = new AopClient;
-    $aop->alipayrsaPublicKey = '支付宝公钥';
+    $aop->alipayrsaPublicKey = config('alioss.alipaySecret');
     $flag = $aop->rsaCheckV1($_POST, NULL, "RSA2");
-    $myfile = fopen("testfile.txt", "a");
-    fwrite($myfile, "\r\n");
-    fwrite($myfile, json_encode($_POST));
+
 
     if($_POST['trade_status'] == 'TRADE_SUCCESS' ){
         //业务处理
@@ -53,5 +51,5 @@ Route::any("/order_alipaymobile_notify",function (\Illuminate\Http\Request $requ
     }else{
         return 'fail';
     }
-    fclose($myfile);
+
 });
