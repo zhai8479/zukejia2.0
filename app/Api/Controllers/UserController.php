@@ -29,8 +29,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use JWTAuth;
+use Mockery\Exception;
 use Sms;
-
+use App\Models\AlipayLog;
 
 /**
  * 用户操作接口
@@ -772,31 +773,32 @@ class UserController extends BaseController
      */
     public function change_avatar(HttpRequest $request)
     {
+        try {
+            AlipayLog::create(['log_text11'=>'1.头像上传开始']);
+            $this->validate($request, [
+                'avatar' => 'required|image'
+            ]);
 
-        $this->validate($request, [
-            'avatar' => 'required|image'
-        ]);
-        
-        $path = getcwd() . '/avatar/';
-        $file_name =  $request->file('avatar')->hashName();
-        $request->file('avatar')->move($path, $file_name);
-        /**
-         * @var  User $user
-         */
+            $path = getcwd() . '/avatar/';
+            $file_name = $request->file('avatar')->hashName();
+            $request->file('avatar')->move($path, $file_name);
+            /**
+             * @var  User $user
+             */
 
-
-
-        $oss = new OSSHelp();
-        $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
-        /*$client = new OssClient('LTAI1wzjD8d4crkn',
-            '0JOaw5cLewixKXy85QhYIPoEmFIqKR', 'http://oss-cn-zhangjiakou-internal.aliyuncs.com',false);
-         $client->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);*/
-
-        $user = $this->auth->user();
-        $user->avatar_url = '/avatar/'.$file_name;
-        $user->save();
-        return $this->array_response(['path' => $path, 'full_path' => '/avatar/'.$file_name]);
-
+            /* $oss = new OSSHelp();
+             $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);*/
+            AlipayLog::create(['log_text11'=>'2.头像上传完成']);
+            $user = $this->auth->user();
+            $user->avatar_url = '/avatar/' . $file_name;
+            $user->save();
+            AlipayLog::create(['log_text11'=>'3.数据库修改成功']);
+            return $this->array_response(['path' => $path, 'full_path' => '/avatar/' . $file_name]);
+        }
+        catch (Exception $ex)
+        {
+            AlipayLog::create(['log_text11'=>$ex->getMessage()]);
+        }
     }
 
 

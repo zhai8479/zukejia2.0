@@ -678,21 +678,21 @@ class OrdersController extends BaseController
      */
     public function alipayNotify(\Illuminate\Http\Request $request)
     {
-        AlipayLog::create(['log_text11'=>'1。支付回调开始']);
+        //AlipayLog::create(['log_text11'=>'1。支付回调开始']);
         try {
             require_once('../app/Api/alipay/aop/AopClient.php');
             require_once( '../app/Api/alipay/aop/request/AlipayTradeAppPayRequest.php');
-            AlipayLog::create(['log_text'=>'2。支付引用结束']);
+         //   AlipayLog::create(['log_text'=>'2。支付引用结束']);
             $aop = new \AopClient;
             $aop->alipayrsaPublicKey = config('alioss.alipaySecret');
             $flag = $aop->rsaCheckV1($_POST, NULL, "RSA2");
-            AlipayLog::create(['log_text'=>'3。密钥设置完毕']);
+          //  AlipayLog::create(['log_text11'=>'3。密钥设置完毕']);
 
             if ($_POST['trade_status'] == 'TRADE_SUCCESS') {
-                AlipayLog::create(['log_text'=>'3。1验证通过']);
+              //  AlipayLog::create(['log_text11'=>'3。1验证通过']);
                 //业务处理
                 $order = \App\Models\Order::where("order_no", $_POST['out_trade_no'])->first();
-                AlipayLog::create(['log_text'=>'4获取订单信息']);
+            //    AlipayLog::create(['log_text'=>'4获取订单信息']);
                 $pay_start_at = $pay_over_at = date('Y-m-d H:i:s');
                 //生成一个订单号
                 $pay_order_no = date('Ymd') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
@@ -722,14 +722,14 @@ class OrdersController extends BaseController
                 $order->order_pay_no = $pay_order_no;
                 $order->status = 2;
                 $order->save();
-                AlipayLog::create(['log_text'=>'5订单修改成功']);
+              //  AlipayLog::create(['log_text11'=>'5订单修改成功']);
                 return "success";
 
             } else {
-                AlipayLog::create(['log_text'=>'3。2验证失败']);
+               // AlipayLog::create(['log_text11'=>'3。2验证失败']);
                 return 'fail';
             }
-            AlipayLog::create(['log_text'=>'直接调用结束']);
+           // AlipayLog::create(['log_text11'=>'直接调用结束']);
             return 'fail';
         }
         catch (Exception $ex) {
