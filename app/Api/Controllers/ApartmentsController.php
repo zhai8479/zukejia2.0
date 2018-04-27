@@ -2,7 +2,7 @@
 
 namespace App\Api\Controllers;
 
-use App\Models\ChainDistrict;
+use App\Models\City;
 use App\Models\Tags;
 use App\Presenters\ApartmentPresenter;
 use Dingo\Blueprint\Annotation\Method\Get;

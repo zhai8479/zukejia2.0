@@ -161,9 +161,9 @@ class Apartment extends Model implements Transformable
      */
     public function indexListFilter($model)
     {
-        $provinceModel = \DB::table('chain_district')->where('id', '=', $model->province)->first();
-        $cityModel = \DB::table('chain_district')->where('id', '=', $model->city)->first();
-        $districtModel = \DB::table('chain_district')->where('id', '=', $model->district)->first();
+        $provinceModel = \DB::table('city')->where('id', '=', $model->province)->first();
+        $cityModel = \DB::table('city')->where('id', '=', $model->city)->first();
+        $districtModel = \DB::table('city')->where('id', '=', $model->district)->first();
         $decorationStyle = \DB::table('tag')->where('id', '=', $model->decoration_style)->value('name');
         $direction = \DB::table('tag')->where('id', '=', $model->direction)->value('name');
 
@@ -199,8 +199,8 @@ class Apartment extends Model implements Transformable
         $returnArr =  [
             'id'                    => (int) $model->id,
 
-            'province'              =>  ['name' => $provinceModel->name, 'id' => $model->province],
-            'city'                  =>  ['name' => $cityModel->name, 'id' => $model->city],
+            'province'              =>  ['title' => $provinceModel->title, 'id' => $model->province],
+            'city'                  =>  ['title' => $cityModel->title, 'id' => $model->city],
             'address'               =>  $model->address,
             'status'                =>  $statusFilter($model->status),
             'title'                 =>  $model->title,
@@ -239,7 +239,7 @@ class Apartment extends Model implements Transformable
         ];
 
         if ($districtModel) {
-            $returnArr['district'] = ['name' => $districtModel->name, 'id' => $model->district];
+            $returnArr['district'] = ['title' => $districtModel->title, 'id' => $model->district];
         }
         return $returnArr;
     }
