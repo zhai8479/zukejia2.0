@@ -4,6 +4,7 @@ namespace App\Api\Controllers;
 
 use App\Criteria\MyCriteria;
 use App\Models\Apartment;
+use App\Models\Log;
 use App\Models\Order;
 use App\Models\OrderCheckInUser;
 use App\Models\OrderPay;
@@ -31,6 +32,7 @@ use Dingo\Api\Http\Request as HttpRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
+use Mockery\Exception;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\OrderCreateRequest;
@@ -676,27 +678,64 @@ class OrdersController extends BaseController
      */
     public function alipayNotify(\Illuminate\Http\Request $request)
     {
-        // 验证请求。
-        if (! app('alipay.mobile')->verify()) {
-//            Log::notice('Alipay notify post data verification fail.', [
-//                'data' => Request::instance()->getContent()
-//            ]);
+        Log::create(['log_text'=>'1。支付回调开始']);
+        try {
+            require_once('../alipay-sdk-PHP/aop/request/AlipayTradeAppPayRequest.php');
+            require_once('../alipay-sdk-PHP/aop/AopClient.php');
+            Log::create(['log_text'=>'2。支付引用结束']);
+            $aop = new AopClient;
+            $aop->alipayrsaPublicKey = config('alioss.alipaySecret');
+            $flag = $aop->rsaCheckV1($_POST, NULL, "RSA2");
+            Log::create(['log_text'=>'3。密钥设置完毕']);
+
+            if ($_POST['trade_status'] == 'TRADE_SUCCESS') {
+                Log::create(['log_text'=>'3。1验证通过']);
+                //业务处理
+                $order = \App\Models\Order::where("order_no", $_POST['out_trade_no'])->first();
+                Log::create(['log_text'=>'4获取订单信息']);
+                $pay_start_at = $pay_over_at = date('Y-m-d H:i:s');
+                //生成一个订单号
+                $pay_order_no = date('Ymd') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
+//            @file_put_contents("pay_order_no.php",$pay_order_no);
+                \App\Models\OrderPay::create([
+                    'order_id' => $order->id,
+                    'order_pay_no' => $pay_order_no,
+                    'ip' => $request->ip(),
+                    'pay_channel' => 2,
+                    'pay_account' => '',
+                    'pay_start_at' => $pay_start_at,
+                    'pay_over_at' => $pay_over_at,
+                    'pay_status' => 3,
+                ]);
+                // 记录房子被租数据
+                \App\Models\RentalRecord::create([
+                    'apartment_id' => $order->apartment_id,
+                    'start_date' => $order->start_date,
+                    'end_date' => $order->end_date,
+                    'order_id' => $order->id,
+                ]);
+                $order->pay_channel = 2;
+                $order->pay_start_at = $pay_start_at;
+                $order->pay_over_at = $pay_over_at;
+                $order->pay_account = '';
+                $order->pay_status = 3;
+                $order->order_pay_no = $pay_order_no;
+                $order->status = 2;
+                $order->save();
+                Log::create(['log_text'=>'5订单修改成功']);
+                return "success";
+
+            } else {
+                Log::create(['log_text'=>'3。2验证失败']);
+                return 'fail';
+            }
+            Log::create(['log_text'=>'直接调用结束']);
             return 'fail';
         }
-
-        // 判断通知类型。
-        switch (Input::get('trade_status')) {
-            case 'TRADE_SUCCESS':
-            case 'TRADE_FINISHED':
-                // TODO: 支付成功，取得订单号进行其它相关操作。
-//                Log::debug('Alipay notify get data verification success.', [
-//                    'out_trade_no' => Input::get('out_trade_no'),
-//                    'trade_no' => Input::get('trade_no')
-//                ]);
-                break;
+        catch (Exception $ex) {
+            Log::create(['log_text'=>$ex->getMessage()]);
+            return 'fail';
         }
-
-        return 'success';
     }
     /**
      * 已支付订单取消
