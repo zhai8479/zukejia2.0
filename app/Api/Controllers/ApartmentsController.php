@@ -87,6 +87,8 @@ class ApartmentsController extends BaseController
         {
             $rental_type = $request->input('rental_type');
         }
+
+
         $direction = $request->input('direction') ? (int)$request->input('direction') : 0;
         $decorationStyle = $request->input('decoration_style') ? (int)$request->input('decoration_style') : 0;
         $startPrice = $request->input('start_price') ? (float)$request->input('start_price') : 0.00;
@@ -109,7 +111,8 @@ class ApartmentsController extends BaseController
         if ($district) $qr = $qr->where('district', $district);
         if ($startDate && $endDate) $qr = $qr->whereBetween('updated_at', [$startDate, $endDate]);
         if ($type) $qr = $qr->whereIn('type', explode(',', $type));
-        if (isset($rental_type)) {
+        if ( strlen($rental_type)>0)
+        {
             $qr = $qr->whereIn('rental_type',explode(',', $rental_type));
         }
         if ($decorationStyle) $qr = $qr->where('decoration_style', $decorationStyle);
