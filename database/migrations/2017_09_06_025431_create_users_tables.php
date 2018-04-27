@@ -34,9 +34,9 @@ class CreateUsersTables extends Migration
             $table->string('avatar_url', 255)->nullable()->comment('用户头像');
             $table->string('recommend_code', 100)->nullable()->comment('用户唯一邀请码');
             $table->unsignedInteger('from_user_id')->comment('邀请者id')->nullable();
-//            $table->integer('province_id')->nullable()->comment('省编号');
-//            $table->integer('city_id')->nullable()->comment('市编号');
-//            $table->integer('district_id')->nullable()->comment('区编号');
+            $table->integer('province_id')->nullable()->comment('省编号');
+            $table->integer('city_id')->nullable()->comment('市编号');
+            $table->integer('district_id')->nullable()->comment('区编号');
             $table->timestamps();
         });
         DB::update("alter table users AUTO_INCREMENT = 10000");

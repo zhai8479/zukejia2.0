@@ -143,48 +143,48 @@ class User extends Authenticatable implements JWTSubject
         return url(env("APP_URL").$url);
     }
 
-//    /**
-//     * 修改国家
-//     * @param $value
-//     * @return mixed
-//     */
-//    public function getCountryAttribute($value)
-//    {
-//        return intval($value);
-//    }
-//
-//    /**
-//     * 修改省
-//     * @param $value
-//     * @return mixed
-//     */
-//    public function getProvinceAttribute($value)
-//    {
-//        return (int)$value;
-//    }
-//
-//    public function getCityAttribute($value)
-//    {
-//        return (int)$value;
-//    }
-//
-//    public function province_str()
-//    {
-//        if ($this->province) {
-//            return ChainDistrict::find($this->province)->value('name');
-//        } else {
-//            return '';
-//        }
-//    }
-//
-//    public function city_str()
-//    {
-//        if ($this->province) {
-//            return ChainDistrict::find($this->province)->value('name');
-//        } else {
-//            return '';
-//        }
-//    }
+    /**
+     * 修改国家
+     * @param $value
+     * @return mixed
+     */
+    public function getCountryAttribute($value)
+    {
+        return intval($value);
+    }
+
+    /**
+     * 修改省
+     * @param $value
+     * @return mixed
+     */
+    public function getProvinceAttribute($value)
+    {
+        return (int)$value;
+    }
+
+    public function getCityAttribute($value)
+    {
+        return (int)$value;
+    }
+
+    public function province_str()
+    {
+        if ($this->province) {
+            return ChainDistrict::find($this->province)->value('name');
+        } else {
+            return '';
+        }
+    }
+
+    public function city_str()
+    {
+        if ($this->province) {
+            return ChainDistrict::find($this->province)->value('name');
+        } else {
+            return '';
+        }
+    }
     /**
      * 管理员添加用户
      *

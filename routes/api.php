@@ -82,10 +82,10 @@ DingoRoute::version('v1', function () {
         DingoRoute::group(['prefix' => 'district'], function () {
             // 获取省列表
             DingoRoute::get('province_list', 'DistrictController@province_list');
-            // 获取市列表
+            // 获取市及以下列表
             DingoRoute::get('city_list', 'DistrictController@city_list');
-            // 根据省代码，获取市列表
-            DingoRoute::get('city_list_by_province_code', 'DistrictController@city_list_by_province_code');
+//            // 根据省代码，获取市列表
+//            DingoRoute::get('city_list_by_province_code', 'DistrictController@city_list_by_province_code');
         });
 
         // 入住人接口
