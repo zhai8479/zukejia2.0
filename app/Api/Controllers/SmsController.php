@@ -81,7 +81,7 @@ class SmsController  extends BaseController
                 //清除redis
                 Cache::delete($key);
                 $result = $this->repository->sendSmsCode($mobile);
-                return $this->array_response($result,'success');
+                return ['code'=>0,'msg'=>'success'];
             }
             return $this->fail(10503,'您输入的图形验证码不正确');
         }
