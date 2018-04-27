@@ -32,6 +32,7 @@ use JWTAuth;
 use Mockery\Exception;
 use Sms;
 use App\Models\AlipayLog;
+use App\Repositories\SmsRepository;
 
 /**
  * 用户操作接口
@@ -45,7 +46,7 @@ class UserController extends BaseController
      * @var UserIntegralRepositoryEloquent $userIntegralRepository
      */
     public $userIntegralRepository;
-
+    public $smsRepository;
 
 
 
@@ -53,9 +54,10 @@ class UserController extends BaseController
      * UserController constructor.
      * @param UserIntegralRepository $userIntegralRepository
      */
-    public function __construct(UserIntegralRepository $userIntegralRepository)
+    public function __construct(UserIntegralRepository $userIntegralRepository	 ,SmsRepository $smsRepository)
     {
         $this->userIntegralRepository = $userIntegralRepository;
+        $this->smsRepository = $smsRepository;
     }
 
     /**
@@ -122,9 +124,11 @@ class UserController extends BaseController
             $user_name = $request['user_name'];
             if (!is_string($user_name) || strlen($user_name) > 40) return $this->error_response('用户名格式不正确');
         }
-        $code = $request->input('code');
-        // 校验验证码
-        $check_code  = Sms::checkCode($mobile, 'template_register_key_name', $code);
+//        $code = $request->input('code');
+//        // 校验验证码
+//        $check_code  = Sms::checkCode($mobile, 'template_register_key_name', $code);
+        $smsCode = $request->input('code');
+        $check_code = $this->smsRepository->verifySmsCode($mobile,$smsCode);
         if (! $check_code) {
             return $this->error_response('验证码无效');
         }

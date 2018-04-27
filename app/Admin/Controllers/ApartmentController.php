@@ -226,7 +226,9 @@ class ApartmentController extends Controller
 
                 $form->select('province', '省')->options(function(){
                     $provinceModel = new City();
-                    $province = $provinceModel->where('parent_id', '=', 0)->get(['title','id']);
+                    $province = $provinceModel->where('parent_id', '=', 0)
+                        ->orderby('order')
+                        ->get(['title','id']);
                     $tmp = [];
                     $province->reject(function($element)use(&$tmp){
                         $tmp[$element->id] = $element->title;
@@ -237,7 +239,9 @@ class ApartmentController extends Controller
                 $form->select('city', '市')->options(function () {
                     $cityModel = new City();
                     $province = $this->province;
-                    $city = $cityModel->where('parent_id', '=', $province)->get(['title','id']);
+                    $city = $cityModel->where('parent_id', '=', $province)
+                        ->orderby('order')
+                        ->get(['title','id']);
                     $tmp = [];
                     $city->reject(function($element)use(&$tmp){
                         $tmp[$element->id] = $element->title;
@@ -248,7 +252,9 @@ class ApartmentController extends Controller
                 $form->select('district', '区')->options(function () {
                     $districtModel = new City();
                     $city = $this->city;
-                    $district = $districtModel->where('parent_id', '=', $city)->get(['title','id']);
+                    $district = $districtModel->where('parent_id', '=', $city)
+                        ->orderby('order')
+                        ->get(['title','id']);
                     $tmp = [];
                     $district->reject(function($element)use(&$tmp){
                         $tmp[$element->id] = $element->title;
@@ -259,7 +265,9 @@ class ApartmentController extends Controller
                 $form->select('business', '商圈')->options(function () {
                     $businessModel = new City();
                     $district = $this->district;
-                    $business = $businessModel->where('parent_id', '=', $district)->get(['title','id']);
+                    $business = $businessModel->where('parent_id', '=', $district)
+                        ->orderby('order')
+                        ->get(['title','id']);
                     $tmp = [];
                     $business->reject(function($element)use(&$tmp){
                         $tmp[$element->id] = $element->title;
@@ -324,11 +332,11 @@ class ApartmentController extends Controller
                     return $tmp;
                 });
 
-             /*   $form->bed_line('single_bed', '单人床');
-                $form->bed_line('double_bed', '双人床');
-                $form->bed_line('tatami', '榻榻米');
-                $form->bed_line('round_bed', '圆床');
-                $form->bed_line('big_bed', '大床');*/
+                /*   $form->bed_line('single_bed', '单人床');
+                   $form->bed_line('double_bed', '双人床');
+                   $form->bed_line('tatami', '榻榻米');
+                   $form->bed_line('round_bed', '圆床');
+                   $form->bed_line('big_bed', '大床');*/
 
             })->tab('房屋描述', function ($form) {
                 $form->text('title', '房屋标题')->rules('required');
@@ -409,14 +417,13 @@ class ApartmentController extends Controller
 
                 $form->radio('rental_type', '价格规则')->options([0 => '短租', 1 => '长租',2 => '特价'])->default(1);
                 $form->currency('rental_price', '租金')->symbol('￥')->rules('required');
-                $form->currency('rental_deposit', '押金')->symbol('￥')->rules('required');
+                $form->currency('rental_deposit', '押金')->symbol('￥');
             });
 
             $form->ignore(['id']);
 
             $form->saving(function (Form $form) {
 
-//                if (isset($error)) return back()->withInput()->with(compact('error'));
                 if ($form->province) {
                     $model = new City();
 

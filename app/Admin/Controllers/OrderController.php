@@ -137,7 +137,7 @@ class OrderController extends Controller
             $grid->actions(function ($action) {
                 $action->disableEdit();
                 $action->disableDelete();
-                $action->append('<a href="/admin/order_detail/' . $action->getKey() . '"><i class="fa fa-folder-open-o"></i></a>');
+ //               $action->append('<a href="/admin/order_detail/' . $action->getKey() . '"><i class="fa fa-folder-open-o"></i></a>');
             });
         });
     }
