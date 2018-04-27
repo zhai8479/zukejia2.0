@@ -358,7 +358,16 @@ class OrdersController extends BaseController
         $order = $this->repository->find($id);
         if ($order) {
             $order->check_in_users =  StayPeople::whereIn('id', OrderCheckInUser::where('order_id', $order->id)->pluck('stay_people_id'))->get();
-            $order->apartment_info = Apartment::find($order->apartment_id);
+
+            $apartment =  Apartment::where('id',$order->apartment_id)->get();
+            $result = [];
+            $apartment->reject(function($item)use(&$result, $apartment){
+                $result[] = $item->indexListFilter($item);
+            });
+
+            $order->apartment_info =$result[0];
+
+
             $order->status_str = Order::$order_status[$order->status];
             $order->service_time =date("Y-m-d H:i:s");
             $order->out_time =180000;
