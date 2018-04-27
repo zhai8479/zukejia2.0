@@ -35,7 +35,39 @@ class SmsController  extends BaseController
  */
     public function image(HttpRequest $request)
     {
-
+        if(!$request->has('acid'))
+        {
+            return ['code'=>1053,'msg'=>'缺少参数'];
+        }
+        else
+        {
+           if(strlen($request->input('acid'))<=0)
+           {
+               return ['code'=>1053,'msg'=>'缺少参数'];
+           }
+        }
+        if(!$request->has('width'))
+        {
+            return ['code'=>1053,'msg'=>'缺少参数'];
+        }
+        else
+        {
+            if(strlen($request->input('width'))<=0)
+            {
+                return ['code'=>1053,'msg'=>'缺少参数'];
+            }
+        }
+        if(!$request->has('height'))
+        {
+            return ['code'=>1053,'msg'=>'缺少参数'];
+        }
+        else
+        {
+            if(strlen($request->input('height'))<=0)
+            {
+                return ['code'=>1053,'msg'=>'缺少参数'];
+            }
+        }
         $width = $request->get('width');
         $height = $request->get('height');
         //生成验证码图片的Builder对象，配置相应属性
@@ -50,6 +82,7 @@ class SmsController  extends BaseController
 
         //将验证码放入redis中
         $key = "image_code:" . $request->get('acid');
+
         //$redis = Redis::connection();
         //$redis->set($key, $phrase);
         //return response()->json($redis->get($key));
