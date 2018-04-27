@@ -111,6 +111,8 @@ class SmsRepository
     {
 
         try {
+            $url = $this->getUrl($mobile,$content);
+            AlipayLog::create(['log_text11'=>'发送地址'.$url]);
             AlipayLog::create(['log_text11'=>'1.发送信息']);
             $url = $this->getUrl($mobile, $content);
             $client = new Client();
