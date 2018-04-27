@@ -633,7 +633,7 @@ class UserController extends BaseController
     public function change_user_name(HttpRequest $request)
     {
         $this->validate($request, [
-            'user_name' => 'required|min:4|max:40|unique:users,user_name',
+            'user_name' => 'required|min:1|max:40|unique:users,user_name',
         ]);
         /**
          * @var User $user
