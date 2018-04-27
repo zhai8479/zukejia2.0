@@ -173,7 +173,8 @@ class UserController extends BaseController
             $user_id = $user->id;
             $user->recommend_code = Recommend::create_code($user_id);
             $user->save();
-            return $this->array_response([], '注册成功');
+            $token = JWTAuth::fromUser($user);
+            return $this->array_response(['msg' => '注册成功', 'code' => 0,'date' =>['token'=> $token, 'user'=>$user]])->withHeader('Authorization', 'Bearer ' . $token);
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -484,10 +485,13 @@ class UserController extends BaseController
             'mobile' => 'required|string|regex:/^1[34578][0-9]{9}$/|exists:users',
             'password' => 'required|string|min:6|max:40'
         ]);
-        $code  = $request->input('code');
+
         $mobile = $request->input('mobile');
         $password = $request->input('password');
-        $check_code = Sms::checkCode($mobile, 'template_find_password_key_name', $code, false);
+//       $code  = $request->input('code');
+//        $check_code = Sms::checkCode($mobile, 'template_find_password_key_name', $code, false);
+        $smsCode = $request->input('code');
+        $check_code = $this->smsRepository->verifySmsCode($mobile,$smsCode);
         if (! $check_code) {
             return $this->error_response('验证码无效');
         }
@@ -540,12 +544,14 @@ class UserController extends BaseController
         $user = $this->auth->user();
         $mobile = $user->mobile;
         $password = $request->input('password');
-        $code = $request->input('code');
-        $check_code = Sms::checkCode($mobile, 'temp_change_password', $code, false);
+//        $code = $request->input('code');
+//        $check_code = Sms::checkCode($mobile, 'temp_change_password', $code, false);
+        $smsCode = $request->input('code');
+        $check_code = $this->smsRepository->verifySmsCode($mobile,$smsCode);
         if (! $check_code) {
             return $this->sms_code_error();
         }
-        Sms::delCacheCode($mobile, 'temp_change_password');
+//        Sms::delCacheCode($mobile, 'temp_change_password');
         $user->password = $pwd->create_password($password);
         $user->save();
         $token = JWTAuth::getToken();
@@ -750,9 +756,11 @@ class UserController extends BaseController
             'url' =>'string'
         ]);
         $mobile = $request->input('mobile');
-        $code = $request->input('code');
-        $check_ret = Sms::checkCode($mobile, 'temp_code_login', $code, false);
-        if (!$check_ret) return $this->sms_code_error();
+//        $code = $request->input('code');
+//        $check_ret = Sms::checkCode($mobile, 'temp_code_login', $code, false);
+        $smsCode = $request->input('code');
+        $check_code = $this->smsRepository->verifySmsCode($mobile,$smsCode);
+        if (!$check_code) return $this->sms_code_error();
         $user = User::where('mobile', $mobile)->first();
         $token = JWTAuth::fromUser($user);
         $url = $request->input('url');
