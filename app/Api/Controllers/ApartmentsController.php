@@ -523,8 +523,8 @@ class ApartmentsController extends BaseController
         $qr = new Apartment();
         $pageSize = $request->input('pageSize') ? (int)$request->input('pageSize') : 4;
         $commend = $qr->where('is_commend', '是')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
-        $roommates = $qr->where('type','3')->where('is_commend', '否')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
-        $wholerent =$qr->where('type','1')->where('is_commend', '否')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
+        $roommates = $qr->where('type','3')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
+        $wholerent =$qr->where('type','1')->orderBy(\DB::raw('RAND()'))->limit($pageSize)->get();
         $commendlist = [];
         $commend->reject(function($item)use(&$commendlist, $commend){
             $commendlist[] = $item->indexListFilter($item);
