@@ -18,6 +18,7 @@ use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Carbon\Carbon;
 use App\Models\logs;
+use App\Models\AlipayLog;
 
 class SmsRepository
 {
@@ -109,13 +110,22 @@ class SmsRepository
     public function sendAsyncRequest($mobile,$content, $success, $failure)
     {
 
-        $url = $this->getUrl($mobile,$content);
-        $client = new Client();
-        $data = $this->getParameter($mobile,$content);
-        $promise = $client->requestAsync('POST', env('SMS_REQUEST_URL').$url,[]);
-
-        $promise->then($success, $failure);
-        $promise->wait();
+        try {
+            AlipayLog::create(['log_text11'=>'1.发送信息']);
+            $url = $this->getUrl($mobile, $content);
+            $client = new Client();
+            AlipayLog::create(['log_text11'=>'2.创建对象成功']);
+            $data = $this->getParameter($mobile, $content);
+            $promise = $client->requestAsync('POST', env('SMS_REQUEST_URL') . $url, []);
+            AlipayLog::create(['log_text11'=>'2.发送开始了']);
+            $promise->then($success, $failure);
+            AlipayLog::create(['log_text11'=>'3.发送结束']);
+            $promise->wait();
+        }
+        catch (Exception $ex)
+        {
+            AlipayLog::create(['log_text11'=>$ex->getMessage()]);
+        }
     }
 
     public function sendSyncRequest($mobile,$content)

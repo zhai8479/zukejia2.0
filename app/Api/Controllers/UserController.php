@@ -778,7 +778,7 @@ class UserController extends BaseController
     public function change_avatar(HttpRequest $request)
     {
         try {
-            AlipayLog::create(['log_text11'=>'1.头像上传开始']);
+           // AlipayLog::create(['log_text11'=>'1.头像上传开始']);
             $this->validate($request, [
                 'avatar' => 'required|image'
             ]);
@@ -792,11 +792,11 @@ class UserController extends BaseController
 
             /* $oss = new OSSHelp();
              $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);*/
-            AlipayLog::create(['log_text11'=>'2.头像上传完成']);
+            //AlipayLog::create(['log_text11'=>'2.头像上传完成']);
             $user = $this->auth->user();
             $user->avatar_url = '/avatar/' . $file_name;
             $user->save();
-            AlipayLog::create(['log_text11'=>'3.数据库修改成功']);
+         //   AlipayLog::create(['log_text11'=>'3.数据库修改成功']);
             return $this->array_response(['path' => $path, 'full_path' => '/avatar/' . $file_name]);
         }
         catch (Exception $ex)
