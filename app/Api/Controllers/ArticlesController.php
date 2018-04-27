@@ -26,6 +26,21 @@ class ArticlesController extends BaseController {
     }
 
     /**
+     * 根据栏目名获取关于我们详细信息
+     * @Get("show")
+     * @param Request $request
+     * @return array
+     */
+    public function showme(Request $request){
+        $this->validate($request, [
+            'navigation_type_id' =>'required|int'
+        ]);
+        $article =Articles::where('navigation_type_id',$request->input('navigation_type_id'))
+            ->first();
+        return $this->array_response($article);
+    }
+
+    /**
      * 获取文章列表
      *
      * @Get("index")

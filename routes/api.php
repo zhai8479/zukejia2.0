@@ -263,6 +263,8 @@ DingoRoute::version('v1', function () {
             DingoRoute::get('index','ArticlesController@index');
             //文章详情
             DingoRoute::get('show/{id}','ArticlesController@show');
+            //获取关于我们详情
+            DingoRoute::get('showme','ArticlesController@showme');
         });
         //轮播设置
         DingoRoute::group(['prefix' => 'banner'],function(){
