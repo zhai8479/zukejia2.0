@@ -653,7 +653,7 @@ class OrdersController extends BaseController
                 //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
                 $request = new \AlipayTradeAppPayRequest();
                 //支付宝回调
-                $request->setNotifyUrl("http://a1.zukehouse.com/order_alipaymobile_notify");
+                $request->setNotifyUrl("http://a1.zukehouse.com/order/alipayNotify");
                 $request->setBizContent($bizcontent);
                 //这里和普通的接口调用不同，使用的是sdkExecute
                 $result = $aop->sdkExecute($request);
