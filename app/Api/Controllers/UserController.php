@@ -797,7 +797,7 @@ class UserController extends BaseController
             $user->avatar_url = '/avatar/' . $file_name;
             $user->save();
          //   AlipayLog::create(['log_text11'=>'3.数据库修改成功']);
-            return $this->array_response(['path' => $path, 'full_path' => '/avatar/' . $file_name]);
+            return $this->array_response(['path' => $path, 'full_path' => env('APP_URL').'/avatar/' . $file_name]);
         }
         catch (Exception $ex)
         {
