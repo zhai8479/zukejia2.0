@@ -79,9 +79,9 @@ class SmsController  extends BaseController
             $code = Cache::get($key);
             if ($code == $image_code) {
                 //清除redis
-               // Cache::delete($key);
+                Cache::delete($key);
                 $result = $this->repository->sendSmsCode($mobile);
-                return $this->array_response([$result],'success');
+                return $this->array_response($result,'success');
             }
             return $this->fail(10503,'您输入的图形验证码不正确');
         }

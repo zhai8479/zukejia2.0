@@ -111,15 +111,15 @@ class SmsRepository
     {
 
         try {
-            AlipayLog::create(['log_text11'=>'1.发送信息']);
-            $url = $this->getUrl($mobile, $content);
+            $url = $this->getUrl($mobile,$content);
+            //AlipayLog::create(['log_text11'=>'1.发送信息']);
             $client = new Client();
-            AlipayLog::create(['log_text11'=>'2.创建对象成功']);
+            //AlipayLog::create(['log_text11'=>'2.创建对象成功']);
             $data = $this->getParameter($mobile, $content);
             $promise = $client->requestAsync('POST', env('SMS_REQUEST_URL') . $url, []);
-            AlipayLog::create(['log_text11'=>'2.发送开始了']);
+            // AlipayLog::create(['log_text11'=>'2.发送开始了']);
             $promise->then($success, $failure);
-            AlipayLog::create(['log_text11'=>'3.发送结束']);
+            // AlipayLog::create(['log_text11'=>'3.发送结束']);
             $promise->wait();
         }
         catch (Exception $ex)
