@@ -235,7 +235,7 @@ class Apartment extends Model implements Transformable
             'Renovation_start_time' => $model->Renovation_start_time,
             'Renovation_day'        => $model->Renovation_day,
             'click_num'             =>  $model->click_num,
-            'is_commend'            =>  $model->is_Commend,
+            'is_commend'            =>  $model->is_commend,
             'created_at'            =>  $model->created_at,
             'updated_at'            =>  $model->updated_at
         ];
