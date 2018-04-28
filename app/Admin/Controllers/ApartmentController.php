@@ -421,7 +421,7 @@ class ApartmentController extends Controller
                 $form->radio('rental_type', '价格规则')->options([0 => '短租', 1 => '长租',2 => '特价'])->default(1);
                 $form->currency('rental_price', '租金')->symbol('￥')->rules('required');
                 $form->currency('rental_deposit', '押金')->symbol('￥');
-                $form->number('Renovation_day', '装修周期（工作日）')->rules('numeric|min:1');
+                $form->number('Renovation_day', '装修周期（工作日）')->rules('numeric|min:0');
                 $form->datetime('Renovation_start_time', '装修开始时间')->format('YYYY-MM-DD HH:mm:ss');
 
             });
