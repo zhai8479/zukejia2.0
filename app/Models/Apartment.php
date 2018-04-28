@@ -230,10 +230,12 @@ class Apartment extends Model implements Transformable
             'rental_type'           =>  $rentalFilter($model->rental_type),
             'rental_price'          =>  $model->rental_price,
             'rental_deposit'        =>  $model->rental_deposit,
-            'total_floor'        =>  $model->total_floor,
-            'current_floor'        =>  $model->current_floor,
-            'click_num'        =>  $model->click_num,
-            'is_commend'        =>  $model->is_Commend,
+            'total_floor'           =>  $model->total_floor,
+            'current_floor'         =>  $model->current_floor,
+            'Renovation_start_time' => $model->Renovation_start_time,
+            'Renovation_day'        => $model->Renovation_day,
+            'click_num'             =>  $model->click_num,
+            'is_commend'            =>  $model->is_Commend,
             'created_at'            =>  $model->created_at,
             'updated_at'            =>  $model->updated_at
         ];

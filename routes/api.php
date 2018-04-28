@@ -131,7 +131,7 @@ DingoRoute::version('v1', function () {
             DingoRoute::get('show/{id}', 'ApartmentsController@show');
             // 获取房源列表
             DingoRoute::get('index', 'ApartmentsController@index');
-            DingoRoute::get('city', 'ApartmentsController@city');//获取城市信息
+            DingoRoute::get('city', 'ApartmentsController@city');//获取城市列表
             DingoRoute::get('get_city_by_key', 'ApartmentsController@get_city_by_key');
             DingoRoute::get('district', 'ApartmentsController@district');//获取行政区域信息
             DingoRoute::get('decoration_style', 'ApartmentsController@decorationStyle');//获取装修风格

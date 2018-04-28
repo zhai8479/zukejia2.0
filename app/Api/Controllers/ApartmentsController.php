@@ -270,61 +270,61 @@ class ApartmentsController extends BaseController
      */
     public function city(HttpRequest $request)
     {
-        $open = $request->input('open') ? $request->input('open')  : 0;
-        $strwhere = '';
-        $strwhere1= '';
-        if($open>0)
-        {
-            $strwhere = ' AND is_open_shop = 1';
-            $strwhere1= ' WHERE city.is_open_shop = 1';
-        }
-        $apartment = \DB::select("
-            SELECT
-                city. NAME AS c_name,
-                city.id AS c_id,
-                city.pinyin,
-                city.initial,
-                city.initials,
-                COUNT(apartment.id) AS house_number
-            FROM
-                (
-                    SELECT
-                        *
-                    FROM
-                        chain_district
-                    WHERE
-                        id IN (1, 2, 3, 4) ".$strwhere."
-                ) AS city
-            LEFT JOIN apartment ON city.id = apartment.city
-            GROUP BY
-                city.id
-            UNION
-            SELECT
-                city.`name` AS c_name,
-                city.id AS c_id,
-                city.pinyin,
-                city.initial,
-                city.initials,
-                COUNT(apartment.id) AS house_number
-            FROM
-                (
-                    SELECT
-                        *
-                    FROM
-                        chain_district
-                    WHERE
-                        parent_id = 0
-                    AND id NOT IN (1, 2, 3, 4)
-                ) AS province
-            INNER JOIN chain_district AS city ON city.parent_id = province.id
-            LEFT JOIN apartment ON city.id = apartment.city
-            ".$strwhere1."
-            GROUP BY
-                city.id
-	    ");
+//        $open = $request->input('open') ? $request->input('open')  : 0;
+//        $strwhere = '';
+//        $strwhere1= '';
+//        if($open>0)
+//        {
+//            $strwhere = ' AND is_open_shop = 1';
+//            $strwhere1= ' WHERE city.is_open_shop = 1';
+//        }
+//        $apartment = \DB::select("
+//            SELECT
+//                city. NAME AS c_name,
+//                city.id AS c_id,
+//                city.pinyin,
+//                city.initial,
+//                city.initials,
+//                COUNT(apartment.id) AS house_number
+//            FROM
+//                (
+//                    SELECT
+//                        *
+//                    FROM
+//                        chain_district
+//                    WHERE
+//                        id IN (1, 2, 3, 4) ".$strwhere."
+//                ) AS city
+//            LEFT JOIN apartment ON city.id = apartment.city
+//            GROUP BY
+//                city.id
+//            UNION
+//            SELECT
+//                city.`name` AS c_name,
+//                city.id AS c_id,
+//                city.pinyin,
+//                city.initial,
+//                city.initials,
+//                COUNT(apartment.id) AS house_number
+//            FROM
+//                (
+//                    SELECT
+//                        *
+//                    FROM
+//                        chain_district
+//                    WHERE
+//                        parent_id = 0
+//                    AND id NOT IN (1, 2, 3, 4)
+//                ) AS province
+//            INNER JOIN chain_district AS city ON city.parent_id = province.id
+//            LEFT JOIN apartment ON city.id = apartment.city
+//            ".$strwhere1."
+//            GROUP BY
+//                city.id
+//	    ");
+        $city =  City::whereIn('parent_id', City::where('parent_id', 0)->pluck('id'))->get();
 
-        return $this->array_response($apartment,'success');
-
+        return $this->array_response($city,'success');
     }
 
     /**
@@ -347,15 +347,12 @@ class ApartmentsController extends BaseController
     public function district(HttpRequest $requesst)
     {
         $cityId = $requesst->input('city_id') ? $requesst->input('city_id') : 2009;
-        $model = new ChainDistrict();
+        $model = new City();
         $result = $model
             ->where('parent_id', $cityId)
             ->get([
                 'id',
-                'name',
-                'pinyin',
-                'initial',
-                'initials'
+                'title'
             ]);
 
         return $this->array_response($result,'success');
