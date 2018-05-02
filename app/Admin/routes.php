@@ -37,6 +37,9 @@ Route::group([
     //城市管理
     $router->resource('address',AddressController::class);
 
+    //app版本管理
+    $router->resource('version',VersionContorller::class);
+
     // 项目
     $router->resource('project-types', ProjectTypeController::class);
     $router->resource('project', ProjectController::class);

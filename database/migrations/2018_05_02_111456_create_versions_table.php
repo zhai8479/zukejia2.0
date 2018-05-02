@@ -15,10 +15,10 @@ class CreateVersionsTable extends Migration
     {
         Schema::create('versions', function (Blueprint $table) {
             $table->increments('id');
-            $table->smallInteger('type')->length(5);
-            $table->string('version', 50);
-            $table->string('url', 50);
-            $table->string('message', 50);
+            $table->smallInteger('type')->length(5)->comment('更新类型：1：非强制更新，2：强制更新');
+            $table->string('version', 50)->comment('版本号');
+            $table->string('url', 50)->comment('app下载路径');
+            $table->string('message', 50)->comment('更新说明');
             $table->timestamps();
         });
     }

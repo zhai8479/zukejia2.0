@@ -41,8 +41,17 @@ class VersionController extends BaseController {
         ]);
         $version =$request->input('version');
 
+        //查询到最新版本信息
         $server = Version::orderBy('created_at','desc')->first();
+        //获取文件路径
+        $url = $server->url;
+        //将文件路径处理为完整路径
+        $url1= url(env("APP_URL").'/uploads/'.$url);
+        //将完整路径写入到$server
+        $server->url = $url1;
+        //获取版本号
         $server_id =$server->version;
+        //校验判断
         if ($server_id == $version) return $this->array(['msg'=>'已是最新版本','code'=> 200]);
         else return $this->array_response($server);
     }
