@@ -75,6 +75,7 @@ class OrderController extends Controller
     {
         return Admin::grid(Order::class, function (Grid $grid) {
             $model = new Order();
+            $grid->model()->orderBy('created_at', 'desc');
             $grid->disableCreation();
             $grid->filter(function ($filter) {
                 // 禁用id查询框

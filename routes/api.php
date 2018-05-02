@@ -270,7 +270,13 @@ DingoRoute::version('v1', function () {
         DingoRoute::group(['prefix' => 'banner'],function(){
             DingoRoute::get('index','BannerController@index');
      });
-
+        //版本更新
+        DingoRoute::group(['prefix' => 'versions'],function(){
+        //版本发布
+        DingoRoute::post('store','VersionController@store');
+        //版本检测
+        DingoRoute::post('check','VersionController@check');
+        });
     });
 });
 
