@@ -798,8 +798,8 @@ class UserController extends BaseController
              * @var  User $user
              */
 
-            /* $oss = new OSSHelp();
-             $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);*/
+             $oss = new OSSHelp();
+             $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
             //AlipayLog::create(['log_text11'=>'2.头像上传完成']);
             $user = $this->auth->user();
             $user->avatar_url = '/avatar/' . $file_name;
