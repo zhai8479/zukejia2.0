@@ -227,7 +227,7 @@ class ApartmentController extends Controller
         return Admin::form(Apartment::class, function (Form $form) {
             $form->tab('房屋地址', function ($form) {
 
-                $form->select('province', '省')->options(function(){
+                $form->select('province', '省(必填)')->options(function(){
                     $provinceModel = new City();
                     $province = $provinceModel->where('parent_id', '=', 0)
                         ->orderby('order')
@@ -239,7 +239,7 @@ class ApartmentController extends Controller
                     return $tmp;
                 })->load('city', '/admin/api/getData')->rules('required');
 
-                $form->select('city', '市')->options(function () {
+                $form->select('city', '市（必填）')->options(function () {
                     $cityModel = new City();
                     $province = $this->province;
                     $city = $cityModel->where('parent_id', '=', $province)
@@ -252,7 +252,7 @@ class ApartmentController extends Controller
                     return $tmp;
                 })->load('district', '/admin/api/getData')->rules('required');
 
-                $form->select('district', '区')->options(function () {
+                $form->select('district', '区（必填）')->options(function () {
                     $districtModel = new City();
                     $city = $this->city;
                     $district = $districtModel->where('parent_id', '=', $city)
@@ -285,7 +285,7 @@ class ApartmentController extends Controller
 
                 $form->number('click_num', '点击率')->rules('required|numeric|min:0');
 
-                $form->text('address', '详细地址')->rules('required');
+                $form->text('address', '详细地址（必填）')->rules('required');
 
                 $form->hidden('id');
 
@@ -301,9 +301,9 @@ class ApartmentController extends Controller
                     4 => '酒店式公寓'
                 ])->default(1);
 
-                $form->number('total_floor', '总楼层')->rules('required|numeric|min:1');
-                $form->number('current_floor', '当前楼层')->rules('required|numeric|min:1');
-                $form->number('room', '室')->rules('required|numeric|min:1');
+                $form->number('total_floor', '总楼层（必填）')->rules('required|numeric|min:1');
+                $form->number('current_floor', '当前楼层（必填）')->rules('required|numeric|min:1');
+                $form->number('room', '室（必填）')->rules('required|numeric|min:1');
                 $form->number('hall', '厅')->rules('required|numeric|min:0');
                 $form->number('bathroom', '卫')->rules('required|numeric|min:0');
                 $form->number('kitchen', '厨')->rules('required|numeric|min:0');
@@ -342,9 +342,9 @@ class ApartmentController extends Controller
                    $form->bed_line('big_bed', '大床');*/
 
             })->tab('房屋描述', function ($form) {
-                $form->text('title', '房屋标题')->rules('required');
+                $form->text('title', '房屋标题（必填）')->rules('required');
                 $form->text('user_id','房东信息');
-                $form->textarea('desc', '个性描述')->rules('required');
+                $form->textarea('desc', '个性描述（必填）')->rules('required');
                 $form->textarea('inner_desc', '内部描述');
                 $form->textarea('traffic_desc', '交通情况');
                 $form->textarea('environment', '周边环境');
@@ -419,7 +419,7 @@ class ApartmentController extends Controller
                 $form->hidden('keyword');
 
                 $form->radio('rental_type', '价格规则')->options([0 => '短租', 1 => '长租',2 => '特价'])->default(1);
-                $form->currency('rental_price', '租金')->symbol('￥')->rules('required');
+                $form->currency('rental_price', '租金（必填）')->symbol('￥')->rules('required');
                 $form->currency('rental_deposit', '押金')->symbol('￥');
                 $form->number('Renovation_day', '装修周期（工作日）')->rules('numeric|min:0');
                 $form->datetime('Renovation_start_time', '装修开始时间')->format('YYYY-MM-DD HH:mm:ss');
