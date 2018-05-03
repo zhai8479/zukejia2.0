@@ -33,6 +33,7 @@ use Mockery\Exception;
 use Sms;
 use App\Models\AlipayLog;
 use App\Repositories\SmsRepository;
+use OSS\OssClient;
 
 /**
  * 用户操作接口
@@ -798,14 +799,16 @@ class UserController extends BaseController
              * @var  User $user
              */
 
-             $oss = new OSSHelp();
-             $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
+           /*  $oss = new OSSHelp();
+             $oss->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);*/
+            $client = new OssClient(config('alioss.AccessKeyId'), config('alioss.AccessKeySecret'),  config('alioss.ossServerInternal'),false);
+        $client->uploadFile('zkj-static' , 'avatar/'.$file_name,$path .$file_name, $options = NULL);
             //AlipayLog::create(['log_text11'=>'2.头像上传完成']);
             $user = $this->auth->user();
             $user->avatar_url = '/avatar/' . $file_name;
             $user->save();
          //   AlipayLog::create(['log_text11'=>'3.数据库修改成功']);
-            return $this->array_response(['path' => $path, 'full_path' => env('APP_URL').'/avatar/' . $file_name]);
+            return $this->array_response(['path' => $path, 'full_path' => env('IMAGE_URL').'/avatar/' . $file_name]);
         }
         catch (Exception $ex)
         {

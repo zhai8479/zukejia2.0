@@ -193,7 +193,7 @@ class Apartment extends Model implements Transformable
         $images = [];
         if ($images_arr) {
             foreach ($images_arr as $image) {
-                $images[] = asset(\Storage::disk('admin')->url($image));
+                $images[] = asset(\Storage::disk('oss')->url($image));
             }
         }
         $returnArr =  [

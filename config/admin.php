@@ -67,8 +67,8 @@ return [
         'disk' => 'oss',
 
         'directory'  => [
-            'image'  => 'image',
-            'file'   => 'file',
+            'image'  => 'images',
+            'file'   => 'sdk',
         ],
     ],
 

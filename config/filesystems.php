@@ -71,14 +71,16 @@ return [
         ],
         'oss' => [
             'driver'  => 'oss',
-            'endpoint'      => 'oss-cn-beijing-internal.aliyuncs.com', // OSS 外网节点或自定义外部域名
+            'endpoint'      => 'oss-cn-zhangjiakou.aliyuncs.com', // OSS 外网节点或自定义外部域名
             'cdnDomain' => 'static.zukehouse.com',               // 如果isCName为true, getUrl会判断cdnDomain是否设定来决定返回的url，如果cdnDomain未设置，则使用endpoint来生成url，否则使用cdn
-            'access_id'=> 'LTAIfewnsSfKs8oq',  //AccessKey
-            'access_key'=> 'joLPEzjpqopAXvY9j7LBbOQQuX8Cx2',  //SecretKey
+            'access_id'=> 'LTAI1wzjD8d4crkn',  //AccessKey
+            'access_key'=> '0JOaw5cLewixKXy85QhYIPoEmFIqKR',  //SecretKey
             'bucket'    => 'zkj-static',  //Bucket名字
             'debug'  => false,
-            'isCName'       => false,
-            'ssl'           => false // true to use 'https://' and false to use 'http://'. default is false,
+            'isCName'=> false,
+            'ssl'  => false,
+            'url'=>'http://static.zukehouse.com'// true to use 'https://' and false to use 'http://'. default is false,
+
         ],
     ],
 

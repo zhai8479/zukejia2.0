@@ -179,7 +179,7 @@ class ApartmentController extends Controller
             $grid->actions(function($actions) use($grid) {
                 $actions->disableDelete();
                 $id = $actions->getKey();
-                $actions->prepend('<a href="http://www.zukehouse.com/house_details?house_id=' . $id . ' "target="_blank" title="详情" style="padding-right: 5px"><i class="fa fa-eye" aria-hidden="true"></i></a>');
+                $actions->prepend('<a href="'.env('WEB_URL').'/renthousedetail?id=' . $id . '" target="_blank" title="详情" style="padding-right: 5px"><i class="fa fa-eye" aria-hidden="true"></i></a>');
             });
 
             $grid->filter(function ($filter) {
