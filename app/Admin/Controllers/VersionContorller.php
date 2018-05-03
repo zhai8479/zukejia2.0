@@ -35,10 +35,10 @@ class VersionContorller extends BaseController
 
             $content->header('发布新版本');
             $content->description('发布');
+            $content->body($this->form());
             $oss = new OSSHelp(false);
             $path = getcwd() . '/uploads/file/';
             $oss->uploadFile('zkj-static','sdk/zukehouse-app-release.apk',$path.'zukehouse-app-release.apk');
-            $content->body($this->form());
         });
     }
 
