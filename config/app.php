@@ -191,6 +191,10 @@ return [
          * alipay
          */
         Latrell\Alipay\AlipayServiceProvider::class,
+        /*
+                 * Alioss
+                 */
+        Jacobcyl\AliOSS\AliOssServiceProvider::class,
     ],
 
     /*
