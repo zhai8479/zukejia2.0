@@ -32,13 +32,9 @@ class VersionContorller extends BaseController
     public function create()
     {
         return Admin::content(function (Content $content) {
-
             $content->header('发布新版本');
             $content->description('发布');
             $content->body($this->form());
-            $oss = new OSSHelp(false);
-            $path = getcwd() . '/uploads/file/';
-            $oss->uploadFile('zkj-static','sdk/zukehouse-app-release.apk',$path.'zukehouse-app-release.apk');
         });
     }
 
@@ -85,6 +81,9 @@ class VersionContorller extends BaseController
             $form->text('version','版本号')->rules('required');
             $form->file('url','上传APP')->move('','zukehouse-app-release.apk')->rules('required');
             $form->text('message', '更新说明')->rules('required');
+            $oss = new OSSHelp(false);
+            $path = getcwd() . '/uploads/file/';
+            $oss->uploadFile('zkj-static','sdk/zukehouse-app-release.apk',$path.'zukehouse-app-release.apk');
         });
     }
 
