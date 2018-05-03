@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Traits\OSS;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -9,6 +10,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 use App\Models\Version;
+use App\Library\OSSHelp;
 
 class VersionContorller extends BaseController
 {
@@ -33,7 +35,8 @@ class VersionContorller extends BaseController
 
             $content->header('发布新版本');
             $content->description('发布');
-
+            $oss = new OSSHelp(false);
+            $oss->uploadFile('zkj-static','sdk/zukehouse-app-release.apk','');
             $content->body($this->form());
         });
     }
