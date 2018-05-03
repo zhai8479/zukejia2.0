@@ -75,9 +75,9 @@ class VersionContorller extends BaseController
     {
         return Admin::form(Version::class, function (Form $form) {
             $form->display('id', 'ID');
-//            $form->number('type','更新类型')->rules('required');
             $form->select('type', '更新类型')->options(['1' => '非强制更新', '2' => '强制更新'])->rules('required');
             $form->text('version','版本号')->rules('required');
+            $form->number('size','更新包大小(M)')->rules('required');
             $form->file('url','上传APP')->move('','zukehouse-app-release.apk')->rules('required');
             $form->text('message', '更新说明')->rules('required');
         });

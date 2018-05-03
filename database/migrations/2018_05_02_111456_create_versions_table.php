@@ -17,6 +17,7 @@ class CreateVersionsTable extends Migration
             $table->increments('id');
             $table->smallInteger('type')->length(5)->comment('更新类型：1：非强制更新，2：强制更新');
             $table->string('version', 50)->comment('版本号');
+            $table->tinyInteger('size')->comment('更新包大小');
             $table->string('url', 50)->comment('app下载路径');
             $table->string('message', 50)->comment('更新说明');
             $table->timestamps();
