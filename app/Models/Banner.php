@@ -20,6 +20,6 @@ class Banner extends Model
 {
     public function getBannerUrlAttribute($url)
     {
-        return url(env("APP_URL").'/uploads/'.$url);
+        return url(env("IMAGE_URL").$url);
     }
 }
