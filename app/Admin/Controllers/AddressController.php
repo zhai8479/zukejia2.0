@@ -42,9 +42,11 @@ class AddressController extends BaseController
         $model = new City();
         $result = $model->where('parent_id', $q)->get();
         $tmp = ['data' => []];
+        $tmp['data'][] =['id' => 0, 'text' => '请选择'];
         $result->reject(function($element)use(&$tmp){
             $tmp['data'][] = ['id' => $element->id, 'text' => $element->title];
         });
+
         return $tmp;
     }
 
