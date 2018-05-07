@@ -48,6 +48,6 @@ class Articles extends Model
     ];
     public function getImgUrlAttribute($url)
     {
-        return url(env("APP_URL").'/uploads/'.$url);
+        return url(env("IMAGE_URL").'/'.$url);
     }
 }
