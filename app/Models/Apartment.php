@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Facades\Cache;
+use App\Models\City;
 class Apartment extends Model implements Transformable
 {
     use TransformableTrait;
@@ -154,6 +155,28 @@ class Apartment extends Model implements Transformable
         }
     }
 
+
+    public function getCityForCache()
+    {
+        $key = 'cache_cityList';
+        if (!Cache::has($key)) {
+            $cityLists = City::query()->get();
+            Cache::set($key, $cityLists,300);
+        }
+        return Cache::get($key);
+    }
+
+
+    public function getTagForCache()
+    {
+        $key = 'cache_TagList';
+        if (!Cache::has($key)) {
+            $tagLists = Tags::query()->get();
+            Cache::set($key, $tagLists,300);
+        }
+        return Cache::get($key);
+    }
+
     /**
      * 对数据进行处理
      * @param Apartment $model
@@ -161,11 +184,13 @@ class Apartment extends Model implements Transformable
      */
     public function indexListFilter($model)
     {
-        $provinceModel = \DB::table('city')->where('id', '=', $model->province)->first();
-        $cityModel = \DB::table('city')->where('id', '=', $model->city)->first();
-        $districtModel = \DB::table('city')->where('id', '=', $model->district)->first();
-        $decorationStyle = \DB::table('tag')->where('id', '=', $model->decoration_style)->value('name');
-        $direction = \DB::table('tag')->where('id', '=', $model->direction)->value('name');
+        $cityLists = $this->getCityForCache();
+        $tagLists = $this->getTagForCache();
+        $provinceModel = $cityLists->where('id', '=', $model->province)->first();
+        $cityModel = $cityLists->where('id', '=', $model->city)->first();
+        $districtModel = $cityLists->where('id', '=', $model->district)->first();
+        $decorationStyle = $tagLists->where('id', '=', $model->decoration_style)->first()->name;
+        $direction = $tagLists->where('id', '=', $model->direction)->first()->name;
 
         $status = $this->status_value;
         $statusFilter = function($tStatus)use($status){
@@ -180,10 +205,10 @@ class Apartment extends Model implements Transformable
             return ['name' => $this->rental_type_val[$type], 'value' => $type];
         };
 
-        $facilitiesFilter = function($ids) {
-            $utils = \DB::table('tag')->whereIn('id',  explode(',', $ids))->get();
+        $facilitiesFilter = function($ids)use($tagLists) {
+            $unLists = $tagLists->find(explode(',', $ids));
             $bathArr = [];
-            foreach($utils as $key => $value) {
+            foreach($unLists as $key => $value) {
                 $bathArr[] = ['id' => $value->id, 'name' => $value->name];
             }
             return $bathArr;
