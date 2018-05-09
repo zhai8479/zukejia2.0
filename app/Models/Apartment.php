@@ -65,8 +65,7 @@ class Apartment extends Model implements Transformable
      */
     protected $rental_type_val = [
         0 => '短租',
-        1 => '长租',
-        2 => '特价'
+        1 => '长租'
     ];
 
     /**

@@ -61,7 +61,7 @@ class ApartmentsController extends BaseController
      *      @Parameter("end_price", description="价格范围结束值 float"),
      *      @Parameter("room", description="房间数量 array"),
      *      @Parameter("facilities", description="设施 array"),
-     *      @Parameter("rental_type", description="0-短租 1-长租 2-特价"),
+     *      @Parameter("rental_type", description="0-短租 1-长租 "),
      *      @Parameter("page", description="当前页 integer"),
      *      @Parameter("pageSize", description="页面大小 integer"),
      *      @Parameter("keyword",description="关键词  string")
@@ -568,7 +568,7 @@ class ApartmentsController extends BaseController
      * @Get("get_rental_list")
      *
      * @Parameters({
-     *     @Parameter("rental_type", description="0-短租 1-长租 2-特价")
+     *     @Parameter("rental_type", description="0-短租 1-长租 ")
      * })
      *
      * @param HttpRequest $request

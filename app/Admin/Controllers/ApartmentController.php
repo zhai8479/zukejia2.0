@@ -132,8 +132,7 @@ class ApartmentController extends Controller
 
             $grid->rental_type('价格规则')->display(function ($value) {
                 if ($value == 0) return '短租';
-                else if ($value == 1) return '长租';
-                return '特价';
+                return '长租';
             });
             $grid->is_commend('是否推荐')->display(function ($value) {
                 if ($value == '是') return '是';
@@ -190,7 +189,7 @@ class ApartmentController extends Controller
                 $filter->where(function ($query) {
                     $input = $this->input - 1;
                     $query->where('rental_type', $input);
-                }, '价格规则')->select(['0' => '短租', '1' => '长租','2' => '特价']);
+                }, '价格规则')->select(['0' => '短租', '1' => '长租']);
 
                 // 出租类型过滤器
                 $filter->where(function ($query) {
@@ -418,7 +417,7 @@ class ApartmentController extends Controller
                 $form->hidden('search_address');
                 $form->hidden('keyword');
 
-                $form->radio('rental_type', '价格规则')->options([0 => '短租', 1 => '长租',2 => '特价'])->default(1);
+                $form->radio('rental_type', '价格规则')->options([0 => '短租', 1 => '长租'])->default(1);
                 $form->currency('rental_price', '租金（必填）')->symbol('￥')->rules('required');
                 $form->currency('rental_deposit', '押金')->symbol('￥');
                 $form->number('Renovation_day', '装修周期（工作日）')->rules('numeric|min:0');
